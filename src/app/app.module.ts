@@ -26,6 +26,19 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import { VisualiserComponent } from './pages/visualiser/visualiser.component';
 import {NgxPaginationModule} from "ngx-pagination";
 import {NgxCaptchaModule} from "ngx-captcha";
+import { UpdateByAdminComponent } from './pages/update-by-admin/update-by-admin.component';
+import { SuperamdinComponent } from './pages/superamdin/superamdin.component';
+import { AddadminComponent } from './pages/administrateur/add-admin/addadmin.component';
+import { AddProfileComponent } from './pages/administrateur/add-profile/add-profile.component';
+import { UpdateadminComponent } from './pages/administrateur/update-admin/updateadmin.component';
+import { UpdateProfileComponent } from './pages/administrateur/update-profile/update-profile.component';
+import { ListeTraitantComponent } from './pages/administrateur/liste-traitant/liste-traitant.component';
+import { AddTitreComponent } from './pages/add-titre/add-titre.component';
+import { UpdateTitreComponent } from './pages/update-titre/update-titre.component';
+import { FilterPipe } from './filter.pipe';
+import { CapitalizePipe } from './capitalize.pipe';
+import { IntercoComponent } from './pages/interco/interco.component';
+
 
 @NgModule({
     declarations: [
@@ -47,6 +60,18 @@ import {NgxCaptchaModule} from "ngx-captcha";
         AccessDenyComponent,
         ChangePasswordComponent,
         VisualiserComponent,
+        UpdateByAdminComponent,
+        SuperamdinComponent,
+        AddadminComponent,
+        AddProfileComponent,
+        UpdateadminComponent,
+        UpdateProfileComponent,
+        ListeTraitantComponent,
+        AddTitreComponent,
+        UpdateTitreComponent,
+        FilterPipe,
+        CapitalizePipe,
+        IntercoComponent
     ],
     imports: [
         BrowserModule,

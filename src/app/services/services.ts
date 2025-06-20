@@ -1,8 +1,10 @@
+export { UtilisateurService } from './services/utilisateur.service';
+export { ProfileService } from './services/profile.service';
 export { DemandeurService } from './services/demandeur.service';
 export { UserControllerService } from './services/user-controller.service';
 export { UploadControllerService } from './services/upload-controller.service';
-export { UtilisateurService } from './services/utilisateur.service';
 export { FileuploadService } from './services/fileupload.service';
+export { TitreService } from './services/titre.service';
 export { NotifService } from './services/notif.service';
 export { DemandeService } from './services/demande.service';
 export { MailService } from './services/mail.service';

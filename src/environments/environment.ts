@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
+  apiUrl :'http://localhost:8080',
+  
   recaptcha: {
-    siteKey: '6LfKNi0cAAAAACeYwFRY9_d_qjGhpiwYUo5gNW5-',
+    // siteKey: '6LfKNi0cAAAAACeYwFRY9_d_qjGhpiwYUo5gNW5-',
+    // siteKey: '6Lec8i0qAAAAANuNhPztaDG503ffz16BHQWcaCYY'
+    // siteKey: '6Lc4sTIqAAAAAI7UrqmcsaSTOZTKunHPmi427LKV'
   },
 };
 

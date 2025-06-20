@@ -7,22 +7,19 @@
         </app-card>
     </div>
   </section>
-
   <section class="content mt-5 lg-section">
-   
       <div class="row">
         <div class="col-12">
-          <div class="card" style="background-color: rgb(241, 240, 240);">
+          <div class="card">
             <div class="card-header">
-              <input class="form-control" style="width: 50%; float: right;" type="search" name="name" [(ngModel)]="name" (ngModelChange)="Search()" placeholder="Rechercher..." >
-              
-              <h3 class="card-title">{{titre}}</h3>
+              <!-- <input class="form-control" style="width: 50%; float: right;" type="search" name="name" [(ngModel)]="name" (ngModelChange)="Search()" placeholder="Rechercher..." > -->
+              <input type="search" style="width: 50%; float: right;" id="form1" [(ngModel)]="searchtext" class="form-control" placeholder="Recherche..." aria-label="search"/> 
+              <h4 class="card-title"><b>{{titre}}</b></h4>
             </div>
             <!-- /.card-header -->
             <div class="">
-              <table id="" class="table" style="background: none;">
-                
-                <thead>
+              <table class="table">
+                <thead class="thead">
                 <tr>
                   <th>Prénom et Nom</th>
                   <th>Date et Lieu de Naissance</th>
@@ -31,29 +28,41 @@
                   <th>Action</th>
                 </tr>
                 </thead>
-               
-
                 <tbody>
-                <tr *ngFor="let demande of demandes | paginate: {itemsPerPage: itemsPerPage, currentPage: p} ">
-                  <td>{{demande.demandeurDTO?.fullName}}</td>
-                  <td>{{demande.demandeurDTO?.datedenaissance}} à {{demande.demandeurDTO?.lieudenaissance}}</td>
+                <tr *ngFor="let demande of demandes  | filter:searchtext | paginate: {itemsPerPage: itemsPerPage, currentPage: p}">
+                  <td>{{demande.demandeurDTO?.fullName | capitalize }}</td>
+                  <td>{{demande.demandeurDTO?.datedenaissance | date: 'dd-MM-yyyy'}}  à {{demande.demandeurDTO?.lieudenaissance | capitalize }}</td>
                   <td>{{demande.demandeurDTO?.nin}}</td>
-                  <td>{{demande.statut}}</td>
-                  <td><a [routerLink]="['/verification', demande.id]">voir</a></td>
+                  <!-- <td>{{demande.statut}}</td> -->
+                  <td [ngClass]="{
+                     'status-encours': demande.statut  === 'cours',
+                     'status-approuve': demande.statut === 'approuvée',
+                     'status-rejete': demande.statut === 'rejetée'
+                       }">
+                      {{ demande.statut | capitalize }}
+              </td>
+                  <td>
+                    <a [routerLink]="['/verification', demande.id]" style="color: goldenrod;">traiter</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <!-- <a [routerLink]="['/update-by-admin',demande.id]" [hidden]="demande.statut == 'approuvee'"><i class="fa fa-pencil-square" aria-hidden="true"></i></a> -->
+                    <a [ngClass]="demande.statut!='approuvée' ? 'inactiveLink' : '' " [routerLink]="['/visualiser', demande.id]" target="_blank"  [hidden]="demande.statut == 'cours'">
+                      <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+                      <i class="bi bi-eye text-dark"></i>
+                    </a> &nbsp;
+                    <a (click)="clickMethod(demande.id)" style="color: red;">
+                      <!-- <img class="supprimer" src="/assets/supprimer.png" alt=""> -->
+                      <i class="bi bi-trash3"></i>
+                    </a>
+                  </td>
                 </tr>
                 </tbody>
                 
               </table>
-              <div *ngIf="noDataFound" class="alert">
-                Demande non Trouvée 
-               <img (click)="refresh()" src="/assets/recharger (1).png"  alt="">
-              </div>
             </div>
           </div>
         </div>
       </div>
     <div class="row">
-      <div class="mt-8 py-5 flex justify-center item-center">
+      <div class="py-4 flex justify-center item-center page  mt-3">
         <pagination-controls (pageChange)="p =$event"></pagination-controls>
       </div>
     </div>

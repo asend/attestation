@@ -1,48 +1,100 @@
 <app-nav></app-nav>
-<div class="container mt-5">
-   
-  <div class="row justify-content-md-center">
-    <div class="col-md-6">
-        <div  class="alert alert-danger" *ngIf="err==1" >
-          <strong>login ou mot de passe incorrect</strong>
-        </div>
-      <form class="form">
-        <h3>Se Connecter</h3>
-        <div class="form-group">
-          <label >Nom Utilisateur <span class="obligatoire">*</span> :</label>
-          <input type="text" name="username" required [(ngModel)]="user.email"
-                 class="form-control" #username="ngModel"
-                  >
-                  <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
-                    <div *ngIf="username.errors?.['required']">
-                      Le nom d'utilisateur est obligatoire.
-                    </div>
-                  </div>
-        </div>
-        <div class="form-group">
-          <label >Mot de passe <span class="obligatoire">*</span> :</label>
-          <input type="password" name="password" required [(ngModel)]="user.password"
-                  class="form-control" #password="ngModel">
-                  <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
-                    <div *ngIf="password.errors?.['required']">
-                      Le mot de passe est obligatoire.
-                    </div>
-                  </div>
-        </div>
-        <p>Mot de passe oublié? <a routerLink="/reset-password">Réinitialiser </a></p>
-        <div class="row justify-content-md-center gap sm">
-          <button *ngIf="loading==false" type="button" class="btn btn-success" (click)="onLoggedin()">Connexion</button>
-          <div *ngIf="loading==true" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
+  <div class="container card mt-5">
+    <div class="row">
+      <!-- Guide Section -->
+      <div class="col-12 col-sm-10 col-md-6 offset-sm-0 mt-3">
+        <p style="font-family: 'Times New Roman', Times, serif;" class="paragraphe">
+          <span style="color: red; letter-spacing: 3px; background-color: rgb(26, 26, 6);padding: 8px; border-radius: 8px;"><strong>GUIDE D'INSCRIPTION!</strong></span> <br><br>
+          <b><i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            Pour les nouveaux utilisateurs :</b><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Si vous accédez à cette plateforme pour la première fois, veuillez procéder à votre inscription
+          afin de créer un compte. <br>
+          <b>&nbsp;&nbsp;&nbsp;1. </b>Connectez-vous avec votre email et mot de passe <br>
+          <b>&nbsp;&nbsp;&nbsp;2. </b>Complétez votre profil : <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Suivez les étapes nécessaires pour renseigner les informations requises avant de soumettre votre
+          demande. <br><br>
+          <b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pour les utilisateurs déjà inscrits :</b> <br>
+          <b>&nbsp;&nbsp;&nbsp;1. </b>Connectez-vous à votre compte à l’aide de vos identifiants. <br>
+          <b>&nbsp;&nbsp;&nbsp;2. </b>Soumettez votre demande : <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cliquez sur le bouton “Effectuer une demande” pour initier la procédure d’obtention de votre
+          attestation. <br><br>
+          <span style="color: red;">Note : Désormais, effectuez votre demande en ligne sans vous déplacer et recevez votre
+            attestation directement par whatsapp et e-mail.</span>
+        </p>
+      </div>
+      <!-- Form Section -->
+      <div class="col-12 col-sm-10 col-md-5 offset-sm-1 offset-md-1">
+        <form class="form" #loginForm="ngForm">
+          <h3>Authentification</h3>
+          <div class="form-group">
+            <label>Votre adresse mail<span class="obligatoire">*</span> :</label>
+            <input type="text" name="username" required [(ngModel)]="user.email" class="form-control" #username="ngModel">
+            <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
+              <div *ngIf="username.errors?.['required']">
+                Votre adresse mail est obligatoire.
+              </div>
             </div>
           </div>
 
-          <button type="button"
-                  class="btn btn-primary" routerLink="/inscription">Inscription</button>
-        </div>       
-      </form>
+
+
+          <div class="form-group position-relative">
+            <label>Votre mot de passe <span class="obligatoire">*</span> :</label>
+            <div class="input-group">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                name="password" 
+                required 
+                [(ngModel)]="user.password" 
+                class="form-control"
+                #password="ngModel">
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="togglePasswordVisibility()" style="cursor: pointer;">
+                  <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                </span>
+              </div>
+            </div>
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+              <div *ngIf="password.errors?.['required']">
+                Le mot de passe est obligatoire.
+              </div>
+            </div>
+          </div>
+          
+
+
+          <!-- <div class="form-group">
+            <label>Mot de passe <span class="obligatoire">*</span> :</label>
+            <input type="password" name="password" required [(ngModel)]="user.password" class="form-control"
+              #password="ngModel">
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+              <div *ngIf="password.errors?.['required']">
+                Le mot de passe est obligatoire.
+              </div>
+            </div>
+          </div> -->
+
+
+
+          <p>Mot de passe oublié? <a routerLink="/reset-password">Réinitialiser</a></p>
+          <div class="d-flex justify-content-center gap-3">
+            <button *ngIf="loading==false" type="button" class="btn btn-success" (click)="onLoggedin()"
+              [disabled]="loginForm.invalid"><i class="fa fa-user"></i> Connexion</button>
+            <div *ngIf="loading==true" class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <button type="button" class="btn btni btn-primary" routerLink="/inscription">Inscription <i class="fa fa-sign-in" aria-hidden="true"></i> </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-<app-footer></app-footer>
+
+
+
+
+  
+  <app-footer></app-footer>
+ 

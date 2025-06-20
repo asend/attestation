@@ -1,13 +1,20 @@
-.img-logo{
+
+.content {
+  margin-top: 120px; /* Adjust this to account for the navbar height */
+}
+
+/* Other styles remain unchanged */
+.img-logo {
   max-height: 70px;
   margin-right: 1rem;
 }
+
 .navbar-nav {
   align-items: center;
   justify-content: center;
-  position: fixed;
 }
-p.rds{
+
+p.rds {
   font-size: 8px;
   color: #000;
   padding-top: 2px;
@@ -16,31 +23,33 @@ p.rds{
   text-transform: uppercase;
   font-weight: bold;
 }
-p.pbf{
+
+p.pbf {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px !important;
+  padding: 0px !important;
   font-size: 10px;
 }
-p.text{
+
+p.text {
   margin-bottom: 0px;
   color: #000;
   font-weight: bold;
-  font-size: 15px;
-  text-transform: uppercase !important;
   font-size: 14px;
+  text-transform: uppercase !important;
 }
 
-.logo{
+.logo {
   max-height: 48px;
 }
 
-.navbar-brand{
+.navbar-brand {
   align-items: center;
   justify-content: center;
 }
-.navbar-header-custom{
+
+.navbar-header-custom {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,64 +57,79 @@ p.text{
   padding: 5px !important;
 }
 
-.senegal-logo{
+.senegal-logo {
   padding-top: 11px;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
 }
+
 .dropdown > a {
   justify-content: right;
   padding-right: 10px;
 }
+
 .dropdown-menu {
   inset: unset !important;
   right: 0px !important;
 }
-.header-conntent{
-  display:flex;
+
+.header-conntent {
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.footer-content{
+
+.footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
 }
-.footer-content > img{
+
+.footer-content > img {
   width: 50px;
   height: 50px;
 }
-.rounded-circle{
+
+.rounded-circle {
   height: 48px;
 }
-ul{
+
+ul {
   list-style: none;
 }
-app-footer{
+
+app-footer {
   position: relative;
   bottom: 0px;
   width: 100%;
 }
 
-.banner{
-  background-color: #f2f2f2;
+.banner {
+  /* background-color: #f2f2f2; */
+  background-color: #155724;
   display: flex;
+  color: white;
   justify-content: center;
-  justify-items: center;
   text-align: center;
-  padding: 20px 0px 20px 0px;
+  padding: 20px 0px;
   font-weight: 600;
   border: 1px solid #d1cdcd;
   letter-spacing: 2px;
   margin: 0px;
 }
-
-#navbarSupportedContent > col-12{
-  padding: 0px;
+.btn1{
+  background-color:rgb(252, 194, 7) ;
+  color: black;
+  border: none;
+}
+.btn1:hover{
+  background-color: #155724 ;
+  color: white;
+  border: none;
 }
 
 @media screen and (max-width: 768px) {
@@ -115,33 +139,40 @@ app-footer{
     font-weight: bold;
     font-size: 11px;
     text-transform: uppercase !important;
-    font-size: 10px;
   }
-  p.pbf {
+  .l1{
     display: none;
   }
-  .rds{
+  
+  .logo {
+    max-height: 65px;
+    right: 680px;
+  }
+ 
+
+  p.pbf, .rds, .text {
     display: none;
   }
-  .text{
-    display: none;
-  }
-  .navbar-header-custom{
-    flex-direction:column;
+
+  .navbar-header-custom {
+    flex-direction: column;
   }
 }
 
-@media screen and (max-width: 370px){
-  body {
-    background-color: black;
+@media screen and (max-width: 370px) {
+  .navbar-header-custom {
+    flex-direction: column;
   }
-  .navbar-header-custom{
-    flex-direction:column;
+  .l1{
+    display: none;
+  }
+  .l2{
+    float: left;
   }
 }
-.blinking-text{
+
+.blinking-text {
   color: green;
   margin-right: 10px;
   font-weight: 600;
 }
-

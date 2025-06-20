@@ -2,29 +2,92 @@
   .sm{
     padding: 0px 0px 0px 15px;
   }
+  .container .row {
+    flex-direction: column-reverse !important;
+  }
 }
 
 h3{
-  font-family: 20px;
+  font-family: 10px;
   text-transform: uppercase;
   margin-bottom: 40px;
   text-align: center;
-  font-weight: 600;
-  background-color: white;
-  padding: 8px;
-  letter-spacing: 1px;
-  border-radius: 5px 5px 5px 5px;
+  font-weight: 500;
+  background-color: #495057;
+  padding: 6px;
+   border-radius: 5px 5px 5px 5px;
+   color: white;
+   font-size: 20px;
+}
+.btni{
+  background-color: #0c5460;
+  border: none;
+}
+.btni:hover{
+  
+  border: none;
+  background-color: #17a2b8;
 }
 
+
 button{
-  margin-top: 20px;
+  margin: 20px;
 }
 
 form{
-  background-color: #f2f2f2f2;
+  background-color: white;
   border-radius: 25px 25px 25px 25px;
+  border: 1px solid rgb(124, 123, 123);
   padding: 20px;
-  /* box-shadow: 10px 10px 10px 8px rgba(199, 198, 198, 0.8); */
-  border: 2rem solid  rgb(246, 244, 244);
+  /* background-image: url("src/assets/b1.webp"); */
+
 }
+
+.div{
+  display: flex;
+}
+h4{
+  font-family: ar;
+}
+
+h5{
+  font-family: ar;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+li{
+  font-family: ar;
+}
+
+.card{
+  border: none;
+}
+.c1{
+  padding: 50px;
+  color: rgb(212, 177, 177);
+}
+.c2{
+  padding: 15px;
+  color: rgb(100, 124, 144);
+}
+.card{
+  /* background-color: rgb(247, 248, 247); */
+  padding: 20px;
+}
+
+.paragraphe{
+
+  /* background-size: cover; */
+}
+
+
+
+
+
+
+
+
+
+
+
 

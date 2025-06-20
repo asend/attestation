@@ -1,0 +1,47 @@
+<app-nav></app-nav>
+  <div>
+    <div class="row container">
+        <!-- col-1 -->
+        <div class="col-sm-4 offset-1">
+          <div class="">
+                <form (ngSubmit)="saveTitre()">
+                    <label class="form-label" for="titre"><h3>Ajouter un titre</h3></label>
+                    <input id="titre" [(ngModel)]="titre.titre"  class="form-control" name="titre" placeholder="saisir le titre" required />
+                    <button type="submit" class="btn b1 btn-primary">Ajouter</button>
+                    <button class="btn b1 btn-warning"><a (click)="retour()">retour</a></button>
+                  </form>
+          </div>
+        </div>
+
+
+        <!-- col-2 -->
+        <div class="col-sm-6 offset-1">
+            <h3>Les titres</h3>
+            <div class="card">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let titre of titreDTO">
+                    <td >{{titre.id}}</td>
+                    <td>{{titre.titre}}</td>
+                    <td>
+                      <img *ngIf="titre.id" (click)="deleteTitre(titre.id)" src="/assets/supprimer.png" width="25px" height="25px" alt="">
+
+                      <!-- <button *ngIf="titre.id" class="btn b2 btn-danger" (click)="deleteTitre(titre.id)" >Supprimer</button> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  <app-footer></app-footer>
+  

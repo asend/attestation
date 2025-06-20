@@ -11,7 +11,7 @@ export interface SendMailRejectInterne$Params {
   id: number;
 }
 
-export function sendMailRejectInterne(http: HttpClient, rootUrl: string, params: SendMailRejectInterne$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function sendMailRejectInterne(http: HttpClient, rootUrl: string, params: SendMailRejectInterne$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, sendMailRejectInterne.PATH, 'get');
   if (params) {
     rb.path('id', params.id, {});
@@ -22,7 +22,7 @@ export function sendMailRejectInterne(http: HttpClient, rootUrl: string, params:
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
     })
   );
 }

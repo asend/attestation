@@ -16,23 +16,46 @@ import {TokenGuardGuard} from "./security/token-guard.guard";
 import {ChangePasswordComponent} from "./pages/change-password/change-password.component";
 import {QrCodeComponent} from "./pages/qr-code/qr-code.component";
 import {VisualiserComponent} from "./pages/visualiser/visualiser.component";
+import { AccessGuard } from './security/access.guard';
+import { UpdateByAdminComponent } from './pages/update-by-admin/update-by-admin.component';
+import { SuperamdinComponent } from './pages/superamdin/superamdin.component';
+import { AddadminComponent } from './pages/administrateur/add-admin/addadmin.component';
+import { UpdateadminComponent } from './pages/administrateur/update-admin/updateadmin.component';
+import { UpdateProfileComponent } from './pages/administrateur/update-profile/update-profile.component';
+import { AddProfileComponent } from './pages/administrateur/add-profile/add-profile.component';
+import { ListeTraitantComponent } from './pages/administrateur/liste-traitant/liste-traitant.component';
+import { AddTitreComponent } from './pages/add-titre/add-titre.component';
+import { IntercoComponent } from './pages/interco/interco.component';
 
 const routes: Routes = [
+  // {path: 'connexion', component:LoginComponent,canActivate:[AccessGuard]},
   {path: 'connexion', component:LoginComponent},
-  {path: 'inscription', component:RegisterComponent},
+  {path: 'interco', component:IntercoComponent},
+  {path: 'inscription', component:RegisterComponent,canActivate:[AccessGuard]},
   {path: 'accueil', component:AccueilComponent},
   {path: 'demandeur', component:AddDemandeurComponent, canActivate:[TokenGuardGuard]},
   {path: 'update-demandeur', component:UpdateDemandeurComponent, canActivate:[TokenGuardGuard]},
-  {path: 'verification/:id', component:VerificationComponent, canActivate:[AdminGuardGuard,AdminGuardGuard]},
-  {path: 'reset-password', component:RestPasswordComponent},
+  {path: 'update-by-admin/:id', component:UpdateByAdminComponent, canActivate:[AdminGuardGuard]},
+  {path: 'verification/:id', component:VerificationComponent, canActivate:[AdminGuardGuard,TokenGuardGuard]},
+  {path: 'reset-password', component:RestPasswordComponent,canActivate:[AccessGuard]},
   {path: 'change-password', component:ChangePasswordComponent, canActivate:[TokenGuardGuard]},
   {path: 'new-password/:token', component:NewPasswordComponent},
   {path: 'verifierscan/:code', component:QrCodeComponent},
   {path: 'visualiser/:id', component:VisualiserComponent, canActivate:[TokenGuardGuard]},
   {path: 'mes-demandes/:id', component:ListDemandeComponent, canActivate:[TokenGuardGuard]},
-  {path: 'admin/dashboard', component:DashboardComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  {path: 'traitant/dashboard', component:DashboardComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  {path: 'admin/dashboard', component:SuperamdinComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  {path: 'add-admin', component:AddadminComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  {path: 'update-admin/:id', component:UpdateadminComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  {path: 'add-titre', component:AddTitreComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+
+  // {path: 'add-profile', component:AddProfileComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  // {path: 'update-profile/:id', component:UpdateProfileComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  // {path: 'traitant', component:ListeTraitantComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+
   {path: 'access-denied', component:AccessDenyComponent},
-  { path: '', redirectTo: 'connexion', pathMatch: 'full' }
+  {path: '', redirectTo: 'connexion', pathMatch: 'full'},
+  // {path: '', redirectTo: 'interco', pathMatch: 'full'},
 ];
 
 @NgModule({

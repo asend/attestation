@@ -25,6 +25,10 @@ export interface Utilisateur {
   profile?: Profile;
   signature?: string;
   statut?: boolean;
+  titre?: string;
   typePieces?: string;
   username?: string;
+  telephone?: string;
+  matriculeSolde?: string;
+
 }

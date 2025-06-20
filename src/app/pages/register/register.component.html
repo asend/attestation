@@ -1,11 +1,7 @@
-  <app-nav></app-nav>
+  <!-- <app-nav></app-nav>
   <div class="container mt-5">
     <div class="row justify-content-md-center">
       <div class="col-md">
-        <div class="alert alert-danger" id="banner" role="alert">
-          Attenttion ! veuillez saisir des informations valides et
-          au cours de cette precédure d'inscription, tous les champs sont obligatoires.
-        </div>
         <form [formGroup]="myForm">
           <h3>S'INSCRIRE</h3>
           <div  class="alert alert-danger" *ngIf="err">
@@ -24,37 +20,44 @@
         </div>
 
           <div class="col-md-6">
-            <label>Prénom <span class="obligatoire">*</span> :</label>
-            <input type="text" name="prenom" class="form-control" formControlName="prenom" [(ngModel)]="user.prenom">
-            <span *ngIf="myForm.controls['prenom'].hasError('required')&& myForm.controls['prenom'].touched" class="text-danger">Prenom est obligatoire</span>
-           <span *ngIf="myForm.controls['prenom'].hasError('whitespace')&& myForm.controls['prenom'].touched" class="text-danger">espace non autorisé</span>
+            <label>Nom <span class="obligatoire">*</span> :</label>
+            <input type="text" name="nom" class="form-control" formControlName="nom" [(ngModel)]="user.nom">
+            <span *ngIf="myForm.controls['nom'].hasError('required')&& myForm.controls['nom'].touched" class="text-danger">nom est obligatoire</span>
+           <span *ngIf="myForm.controls['nom'].hasError('whitespace')&& myForm.controls['nom'].touched" class="text-danger">espace non autorisé</span>
           </div>
         </div>
 
 
           <div class="row form-group">
           <div class="col-md-6">
-            <label>Nom <span class="obligatoire">*</span> :</label>
-            <input type="text" name="nom" class="form-control" formControlName="nom" [(ngModel)]="user.nom">
-            <span *ngIf="myForm.controls['nom'].hasError('required')&& myForm.controls['nom'].touched" class="text-danger">nom est obligatoire</span>
-           <span *ngIf="myForm.controls['nom'].hasError('whitespace')&& myForm.controls['nom'].touched" class="text-danger">espace non autorisé</span>
-        </div>
+            
+       
+           <label>Prénom <span class="obligatoire">*</span> :</label>
+           <input type="text" name="prenom" class="form-control" formControlName="prenom" [(ngModel)]="user.prenom">
+           <span *ngIf="myForm.controls['prenom'].hasError('required')&& myForm.controls['prenom'].touched" class="text-danger">Prenom est obligatoire</span>
+          <span *ngIf="myForm.controls['prenom'].hasError('whitespace')&& myForm.controls['prenom'].touched" class="text-danger">espace non autorisé</span>
+          </div>
 
           <div class="col-md-6">
             <label>email <span class="obligatoire">*</span> :</label>
             <input type="text" name="email" class="form-control" formControlName="email" [(ngModel)]="user.email" (paste)="onPaste($event)">
             <span *ngIf="myForm.controls['email'].hasError('required')&& myForm.controls['email'].touched" class="text-danger">email est obligatoire </span>
             <span *ngIf="myForm.controls['email'].hasError('email')&& myForm.controls['email'].touched" class="text-danger">email non valide</span>
+
+          
+            
         </div>
       </div>
 
 
         <div class="row  form-group">
           <div class="col-md-6">
+         
             <label>Confirme Email <span class="obligatoire">*</span> :</label>
             <input type="text" name="confirmemail" class="form-control" formControlName="confirmemail" (paste)="onPaste($event)">
           <span *ngIf="myForm.controls['email'].hasError('required')&& myForm.controls['email'].touched" class="text-danger"> email est obligatoire </span>
-          <span *ngIf="myForm.controls['email'].hasError('email')&& myForm.controls['email'].touched" class="text-danger"> email non valide </span>
+          <span *ngIf="myForm.controls['email'].hasError('email')&& myForm.controls['email'].touched" class="text-danger"> email non valide </span> 
+            
         </div>
 
           <div class="col-md-6">
@@ -66,6 +69,10 @@
         </div>
 
           <div class="row form-group">
+          <div class="col-md-6 recaptcha">
+           <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" formControlName="recaptcha"></ngx-recaptcha2>
+          </div>
+
           <div class="col-md-6">
             <label>Confirmer Mot de passe <span class="obligatoire">*</span> :</label>
             <input type="password" name="confirmPassword" formControlName="confirmPassword" class="form-control" (paste)="onPaste($event)">
@@ -75,9 +82,7 @@
           <div>
             
           </div>
-          <div class="col-md-6 recaptcha">
-          <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" formControlName="recaptcha"></ngx-recaptcha2>
-          </div>
+         
           </div>
           <p>vous avez un compte? <a routerLink="/connexion">se connecter </a></p>
           <div class="row justify-content-md-center gap sm">
@@ -93,4 +98,901 @@
       </div>
     </div>
   </div>
-  <app-footer></app-footer>
+  <app-footer></app-footer> -->
+<!-- 
+  <app-nav></app-nav>
+<div class="container mt-5">
+  <div class="row justify-content-md-center">
+    <div class="col-md">
+      <form [formGroup]="myForm">
+        <h3>S'INSCRIRE</h3>
+        <div class="alert alert-danger" *ngIf="err">
+          <strong>{{ err }}</strong>
+        </div>
+        <ul>
+          <li *ngFor="let m of errMessage" class="btn-danger"> {{ m }} </li>
+        </ul>
+
+        <div class="row form-group">
+          <div class="col-md-6">
+            <label>Nin <span class="obligatoire">*</span> :</label>
+            <input
+              type="text"
+              name="nin"
+              class="form-control"
+              formControlName="nin"
+              [(ngModel)]="user.nin"
+            />
+            <span
+              *ngIf="myForm.controls['nin'].hasError('required') && myForm.controls['nin'].touched"
+              class="text-danger"
+              >Nin est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.controls['nin'].hasError('whitespace') && myForm.controls['nin'].touched"
+              class="text-danger"
+              >Espace non autorisé</span
+            >
+          </div>
+
+          <div class="col-md-6">
+            <label>Nom <span class="obligatoire">*</span> :</label>
+            <input
+              type="text"
+              name="nom"
+              class="form-control"
+              formControlName="nom"
+              [(ngModel)]="user.nom"
+            />
+            <span
+              *ngIf="myForm.controls['nom'].hasError('required') && myForm.controls['nom'].touched"
+              class="text-danger"
+              >Nom est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.controls['nom'].hasError('whitespace') && myForm.controls['nom'].touched"
+              class="text-danger"
+              >Espace non autorisé</span
+            >
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-6">
+            <label>Prénom <span class="obligatoire">*</span> :</label>
+            <input
+              type="text"
+              name="prenom"
+              class="form-control"
+              formControlName="prenom"
+              [(ngModel)]="user.prenom"
+            />
+            <span
+              *ngIf="myForm.controls['prenom'].hasError('required') && myForm.controls['prenom'].touched"
+              class="text-danger"
+              >Prénom est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.controls['prenom'].hasError('whitespace') && myForm.controls['prenom'].touched"
+              class="text-danger"
+              >Espace non autorisé</span
+            >
+          </div>
+
+          <div class="col-md-6">
+            <label>Email <span class="obligatoire">*</span> :</label>
+            <input
+              type="text"
+              name="email"
+              class="form-control"
+              formControlName="email"
+              [(ngModel)]="user.email"
+              (paste)="onPaste($event)"
+            />
+            <span
+              *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+              class="text-danger"
+              >Email est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.controls['email'].hasError('email') && myForm.controls['email'].touched"
+              class="text-danger"
+              >Email non valide</span
+            >
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-6">
+            <label>Confirme Email <span class="obligatoire">*</span> :</label>
+            <input
+              type="text"
+              name="confirmemail"
+              class="form-control"
+              formControlName="confirmemail"
+              (paste)="onPaste($event)"
+            />
+            <span
+              *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+              class="text-danger"
+              >Email est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.controls['email'].hasError('email') && myForm.controls['email'].touched"
+              class="text-danger"
+              >Email non valide</span
+            >
+          </div>
+
+          <div class="col-md-6">
+            <label>Mot de passe <span class="obligatoire">*</span> :</label>
+            <input
+              type="password"
+              name="password"
+              formControlName="password"
+              [(ngModel)]="user.password"
+              class="form-control"
+              (paste)="onPaste($event)"
+            />
+            <span
+              *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+              class="text-danger"
+              >Mot de passe est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.controls['password'].hasError('minlength') && myForm.controls['password'].touched"
+              class="text-danger"
+              >Mot de passe doit contenir au moins 6 caractères</span
+            >
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-6 order-last order-md-first recaptcha">
+            <ngx-recaptcha2
+              #captchaElem
+              [siteKey]="siteKey"
+              formControlName="recaptcha"
+            ></ngx-recaptcha2>
+          </div>
+
+          <div class="col-md-6">
+            <label>Confirmer Mot de passe <span class="obligatoire">*</span> :</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              formControlName="confirmPassword"
+              class="form-control"
+              (paste)="onPaste($event)"
+            />
+            <span
+              *ngIf="myForm.controls['confirmPassword'].hasError('required') && myForm.controls['confirmPassword'].touched"
+              class="text-danger"
+              >Confirmer mot de passe est obligatoire</span
+            >
+            <span
+              *ngIf="myForm.get('confirmPassword')?.touched && myForm.get('confirmPassword')?.value != myForm.get('password')?.value"
+              class="text-danger"
+              >Le mot de passe confirmé ne correspond pas au mot de passe tapé</span
+            >
+          </div>
+        </div>
+
+        <p>
+          Vous avez un compte?
+          <a routerLink="/connexion">Se connecter</a>
+        </p>
+        <div class="row justify-content-md-center gap sm">
+          <button
+            *ngIf="loading == false"
+            type="button"
+            [disabled]="myForm.invalid"
+            class="btn btn-success"
+            (click)="onRegister()"
+          >
+            S'inscrire
+          </button>
+          <div *ngIf="loading == true" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger" routerLink="/connexion">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer> -->
+<!-- <app-nav></app-nav>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <form [formGroup]="myForm">
+        <h3 class="text-center">S'INSCRIRE</h3>
+        <div class="alert alert-danger" *ngIf="err">
+          <strong>{{ err }}</strong>
+        </div>
+        <ul>
+          <li *ngFor="let m of errMessage" class="btn-danger"> {{ m }} </li>
+        </ul>
+
+        <div class="row">
+         
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>NIN <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="nin"
+                class="form-control"
+                formControlName="nin"
+                [(ngModel)]="user.nin"
+              />
+              <span
+                *ngIf="myForm.controls['nin'].hasError('required') && myForm.controls['nin'].touched"
+                class="text-danger"
+                >NIN est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['nin'].hasError('whitespace') && myForm.controls['nin'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Prénom <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="prenom"
+                class="form-control"
+                formControlName="prenom"
+                [(ngModel)]="user.prenom"
+              />
+              <span
+                *ngIf="myForm.controls['prenom'].hasError('required') && myForm.controls['prenom'].touched"
+                class="text-danger"
+                >Prénom est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['prenom'].hasError('whitespace') && myForm.controls['prenom'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Nom <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="nom"
+                class="form-control"
+                formControlName="nom"
+                [(ngModel)]="user.nom"
+              />
+              <span
+                *ngIf="myForm.controls['nom'].hasError('required') && myForm.controls['nom'].touched"
+                class="text-danger"
+                >Nom est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['nom'].hasError('whitespace') && myForm.controls['nom'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+
+            <div class="form-group recaptcha">
+              <ngx-recaptcha2
+                #captchaElem
+                [siteKey]="siteKey"
+                formControlName="recaptcha"
+              ></ngx-recaptcha2>
+            </div>
+          </div>
+
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Email <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="email"
+                class="form-control"
+                formControlName="email"
+                [(ngModel)]="user.email"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+                class="text-danger"
+                >Email est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['email'].hasError('email') && myForm.controls['email'].touched"
+                class="text-danger"
+                >Email non valide</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Confirmer Email <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="confirmemail"
+                class="form-control"
+                formControlName="confirmemail"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['confirmemail'].hasError('required') && myForm.controls['confirmemail'].touched"
+                class="text-danger"
+                >Confirmer Email est obligatoire</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Mot de passe <span class="obligatoire">*</span> :</label>
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                formControlName="password"
+                [(ngModel)]="user.password"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+                class="text-danger"
+                >Mot de passe est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['password'].hasError('minlength') && myForm.controls['password'].touched"
+                class="text-danger"
+                >Mot de passe doit contenir au moins 6 caractères</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Confirmer Mot de passe <span class="obligatoire">*</span> :</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                class="form-control"
+                formControlName="confirmPassword"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['confirmPassword'].hasError('required') && myForm.controls['confirmPassword'].touched"
+                class="text-danger"
+                >Confirmer mot de passe est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.get('confirmPassword')?.touched && myForm.get('confirmPassword')?.value != myForm.get('password')?.value"
+                class="text-danger"
+                >Le mot de passe confirmé ne correspond pas au mot de passe tapé</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center">
+          Vous avez un compte ?
+          <a routerLink="/connexion">Se connecter</a>
+        </p>
+
+        <div class="row justify-content-center gap-sm">
+          <button
+            *ngIf="!loading"
+            type="button"
+            [disabled]="myForm.invalid"
+            class="btn btn-success"
+            (click)="onRegister()"
+          >
+            S'inscrire
+          </button>
+          <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger" routerLink="/connexion">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
+
+ -->
+
+
+
+
+<!-- 
+ <app-nav></app-nav>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <form [formGroup]="myForm">
+        <h3 class="text-center">S'INSCRIRE</h3>
+        <div class="alert alert-danger" *ngIf="err">
+          <strong>{{ err }}</strong>
+        </div>
+        <ul>
+          <li *ngFor="let m of errMessage" class="btn-danger"> {{ m }} </li>
+        </ul>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>NIN <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="nin"
+                class="form-control"
+                formControlName="nin"
+                [(ngModel)]="user.nin"
+              />
+              <span
+                *ngIf="myForm.controls['nin'].hasError('required') && myForm.controls['nin'].touched"
+                class="text-danger"
+                >NIN est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['nin'].hasError('whitespace') && myForm.controls['nin'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+            <div class="form-group">
+              <label>Prénom <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="prenom"
+                class="form-control"
+                formControlName="prenom"
+                [(ngModel)]="user.prenom"
+              />
+              <span
+                *ngIf="myForm.controls['prenom'].hasError('required') && myForm.controls['prenom'].touched"
+                class="text-danger"
+                >Prénom est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['prenom'].hasError('whitespace') && myForm.controls['prenom'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+            <div class="form-group">
+              <label>Nom <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="nom"
+                class="form-control"
+                formControlName="nom"
+                [(ngModel)]="user.nom"
+              />
+              <span
+                *ngIf="myForm.controls['nom'].hasError('required') && myForm.controls['nom'].touched"
+                class="text-danger"
+                >Nom est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['nom'].hasError('whitespace') && myForm.controls['nom'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Email <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="email"
+                class="form-control"
+                formControlName="email"
+                [(ngModel)]="user.email"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+                class="text-danger"
+                >Email est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['email'].hasError('email') && myForm.controls['email'].touched"
+                class="text-danger"
+                >Email non valide</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Confirmer Email <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="confirmemail"
+                class="form-control"
+                formControlName="confirmemail"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['confirmemail'].hasError('required') && myForm.controls['confirmemail'].touched"
+                class="text-danger"
+                >Confirmer Email est obligatoire</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Mot de passe <span class="obligatoire">*</span> :</label>
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                formControlName="password"
+                [(ngModel)]="user.password"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+                class="text-danger"
+                >Mot de passe est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['password'].hasError('minlength') && myForm.controls['password'].touched"
+                class="text-danger"
+                >Mot de passe doit contenir au moins 6 caractères</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Confirmer Mot de passe <span class="obligatoire">*</span> :</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                class="form-control"
+                formControlName="confirmPassword"
+                (paste)="onPaste($event)"
+              />
+              <span
+                *ngIf="myForm.controls['confirmPassword'].hasError('required') && myForm.controls['confirmPassword'].touched"
+                class="text-danger"
+                >Confirmer mot de passe est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.get('confirmPassword')?.touched && myForm.get('confirmPassword')?.value != myForm.get('password')?.value"
+                class="text-danger"
+                >Le mot de passe confirmé ne correspond pas au mot de passe tapé</span
+              >
+            </div>
+          </div>
+       
+        <div class="form-group recaptcha">
+          <ngx-recaptcha2
+            #captchaElem
+            [siteKey]="siteKey"
+            formControlName="recaptcha"
+          ></ngx-recaptcha2>
+        </div>
+      </div>
+        <p>
+          Vous avez un compte ?
+          <a routerLink="/connexion">Se connecter</a>
+        </p>
+        <div class="row justify-content-center">
+          <button
+            *ngIf="loading == false"
+            type="button"
+            [disabled]="myForm.invalid"
+            class="btn btn-success"
+            (click)="onRegister()"
+          >
+            S'inscrire
+          </button>
+          <div *ngIf="loading == true" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger" routerLink="/connexion">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<app-nav></app-nav>
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <form [formGroup]="myForm">
+        <!-- <h3 class="text-center">Inscription</h3> -->
+        <h4 class="text-center" id="enteteform"> Formulaire d'inscription</h4>
+        <div class="alert alert-danger" *ngIf="err">
+          <strong>{{ err }}</strong>
+        </div>
+        <ul>
+          <li *ngFor="let m of errMessage" class="btn-danger"> {{ m }} </li>
+        </ul>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>NIN <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="nin"
+                class="form-control"
+                formControlName="nin"
+                [(ngModel)]="user.nin"
+                (click)="onFieldClick('nin')"
+              />
+              <span
+                *ngIf="myForm.controls['nin'].hasError('required') && myForm.controls['nin'].touched"
+                class="text-danger"
+                >NIN est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['nin'].hasError('whitespace') && myForm.controls['nin'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+            <div class="form-group">
+              <label>Prénom <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="prenom"
+                class="form-control"
+                formControlName="prenom"
+                [(ngModel)]="user.prenom"
+                (click)="onFieldClick('prenom')"
+              />
+              <span
+                *ngIf="myForm.controls['prenom'].hasError('required') && myForm.controls['prenom'].touched"
+                class="text-danger"
+                >Prénom est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['prenom'].hasError('whitespace') && myForm.controls['prenom'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+            <div class="form-group">
+              <label>Nom <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="nom"
+                class="form-control"
+                formControlName="nom"
+                [(ngModel)]="user.nom"
+                (click)="onFieldClick('nom')"
+              />
+              <span
+                *ngIf="myForm.controls['nom'].hasError('required') && myForm.controls['nom'].touched"
+                class="text-danger"
+                >Nom est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['nom'].hasError('whitespace') && myForm.controls['nom'].touched"
+                class="text-danger"
+                >Espace non autorisé</span
+              >
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Email <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="email"
+                class="form-control"
+                formControlName="email"
+                [(ngModel)]="user.email"
+                (paste)="onPaste($event)"
+                (click)="onFieldClick('email')"
+              />
+              <span
+                *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+                class="text-danger"
+                >Email est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['email'].hasError('email') && myForm.controls['email'].touched"
+                class="text-danger"
+                >Email non valide</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Confirmer Email <span class="obligatoire">*</span> :</label>
+              <input
+                type="text"
+                name="confirmemail"
+                class="form-control"
+                formControlName="confirmemail"
+                (paste)="onPaste($event)"
+                (click)="onFieldClick('confirmemail')"
+              />
+              <span
+                *ngIf="myForm.controls['confirmemail'].hasError('required') && myForm.controls['confirmemail'].touched"
+                class="text-danger"
+                >Confirmer votre Email</span
+              >
+            </div>
+
+            <!-- <div class="form-group">
+              <label>Mot de passe <span class="obligatoire">*</span> :</label>
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                formControlName="password"
+                [(ngModel)]="user.password"
+                (paste)="onPaste($event)"
+                (click)="onFieldClick('password')"
+              />
+              <span
+                *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+                class="text-danger"
+                >Mot de passe est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.controls['password'].hasError('minlength') && myForm.controls['password'].touched"
+                class="text-danger"
+                >Mot de passe doit contenir au moins 6 caractères</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Confirmer Mot de passe <span class="obligatoire">*</span> :</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                class="form-control"
+                formControlName="confirmPassword"
+                (paste)="onPaste($event)"
+                (click)="onFieldClick('confirmPassword')"
+              />
+              <span
+                *ngIf="myForm.controls['confirmPassword'].hasError('required') && myForm.controls['confirmPassword'].touched"
+                class="text-danger"
+                >Confirmer mot de passe est obligatoire</span
+              >
+              <span
+                *ngIf="myForm.get('confirmPassword')?.touched && myForm.get('confirmPassword')?.value != myForm.get('password')?.value"
+                class="text-danger"
+                >Le mot de passe confirmé ne correspond pas au mot de passe tapé</span
+              >
+            </div> -->
+
+            <div class="form-group position-relative">
+              <label>Mot de passe <span class="obligatoire">*</span> :</label>
+              <div class="input-group">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  name="password"
+                  class="form-control"
+                  formControlName="password"
+                  [(ngModel)]="user.password"
+                  (paste)="onPaste($event)"
+                  (click)="onFieldClick('password')"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" (click)="togglePasswordVisibility('password')" style="cursor: pointer;">
+                    <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                  </span>
+                </div>
+              </div>
+              <span *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched" class="text-danger">
+                Mot de passe est obligatoire
+              </span>
+              <span *ngIf="myForm.controls['password'].hasError('minlength') && myForm.controls['password'].touched" class="text-danger">
+                Mot de passe doit contenir au moins 6 caractères
+              </span>
+            </div>
+            
+            <div class="form-group position-relative">
+              <label>Confirmer Mot de passe <span class="obligatoire">*</span> :</label>
+              <div class="input-group">
+                <input
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  name="confirmPassword"
+                  class="form-control"
+                  formControlName="confirmPassword"
+                  (paste)="onPaste($event)"
+                  (click)="onFieldClick('confirmPassword')"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" (click)="togglePasswordVisibility('confirmPassword')" style="cursor: pointer;">
+                    <i [class]="showConfirmPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                  </span>
+                </div>
+              </div>
+              <span *ngIf="myForm.controls['confirmPassword'].hasError('required') && myForm.controls['confirmPassword'].touched" class="text-danger">
+                Confirmer mot de passe est obligatoire
+              </span>
+              <span *ngIf="myForm.get('confirmPassword')?.touched && myForm.get('confirmPassword')?.value != myForm.get('password')?.value" class="text-danger">
+                Le mot de passe confirmé ne correspond pas.
+              </span>
+            </div>
+            <div class="form-group recaptcha">
+              <ngx-recaptcha2
+                #captchaElem
+                [siteKey]="siteKey"
+                formControlName="recaptcha"
+              ></ngx-recaptcha2>
+            </div>
+            <p>
+              Vous avez un compte ?
+              <a routerLink="/connexion">Se connecter</a>
+            </p>
+          </div>
+            
+          </div>
+
+        <!-- <div class="form-group recaptcha">
+          <ngx-recaptcha2
+            #captchaElem
+            [siteKey]="siteKey"
+            formControlName="recaptcha"
+          ></ngx-recaptcha2>
+        </div> -->
+      <!-- </div> -->
+       
+        <div class="row justify-content-center">
+          <button type="button" class="btn btn-danger" id="annuler" routerLink="/connexion">
+            Annuler
+          </button>
+          <div>
+          <button
+          id="incrire"
+            *ngIf="loading == false"
+            type="button"
+            [disabled]="myForm.invalid"
+            class="btn btn-success"
+            (click)="onRegister()"
+          >
+            S'inscrire
+          </button>
+          <div *ngIf="loading == true" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

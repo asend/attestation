@@ -5,9 +5,11 @@
 app-card{
   padding: 5px;
   margin: 0px;
+  color: white;
 }
 app-card > div {
   padding-top: 10px;
+  color: white;
 }
 .row > div{
   padding: 0px;
@@ -27,4 +29,42 @@ img{
   height : 30px;
   width:30px;
   color: greenyellow;
+}
+.thead{
+  background-color: rgb(28, 27, 27);
+  color: white;
+}
+h4{
+  font-family: ar;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.fa-pencil-square{
+  width: 30px;
+  height: 30px;
+}
+.status-encours {
+  color: blue; /* Statut en cours */
+  font-weight: bold;
+}
+
+.status-approuve {
+  color: green; /* Statut approuvé */
+  font-weight: bold;
+}
+
+.status-rejete {
+  color: red; /* Statut rejeté */
+  font-weight: bold;
+}
+.fa-pencil-square{
+  color:#bb8e04!important;
+}
+.fa-eye{
+  color:black;
+}
+.supprimer{
+  width: 20px;
+  height: 15px;
 }

@@ -1,0 +1,57 @@
+<app-nav></app-nav>
+<div class="container mt-5">
+  <form>
+    <fieldset>
+      <h3>Modifier Le Traitant</h3>
+      <div class="row form-group">
+        <div class="col-md-4">
+          <label >NIN <span class="obligatoire">*</span> :</label>
+          <input  type="text" class="form-control" name="nin" [(ngModel)]="currentUtilisateur.nin"  placeholder="nin">
+        </div>
+        <div class="col-md-4">
+          <label >Prenom <span class="obligatoire">*</span> :</label>
+          <input type="text" class="form-control" name="prenom" required  [(ngModel)]="currentUtilisateur.prenom"  placeholder="prénom">
+        </div>
+        <div class="col-md-4">
+          <label >Nom <span class="obligatoire">*</span> :</label>
+          <input type="text" class="form-control" name="nom" required  [(ngModel)]="currentUtilisateur.nom" placeholder="nom">
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-4">
+          <label>Email<span class="obligatoire">*</span> :</label>
+          <input type="email" class="form-control" name="email" required [(ngModel)]="currentUtilisateur.email"  placeholder="email">
+        </div>
+
+        <div class="col-md-4">
+          <label>Téléphone<span class="obligatoire">*</span> :</label>
+          <input type="text" class="form-control" name="telephone" required [(ngModel)]="currentUtilisateur.telephone"  placeholder="telephone">
+        </div>
+      
+        <div class="col-md-4">
+          <label >Titre <span class="obligatoire">*</span> :</label>
+          <input type="text" class="form-control" name="titre" required [(ngModel)]="currentUtilisateur.titre"  placeholder="titre">
+        </div>
+        <div class="col-md-4">
+          <label >Signature : </label>
+          <!-- <input type="text" class="form-control" name="signature" required [(ngModel)]="currentUtilisateur.signature"  placeholder="signature" #signature="ngModel"> -->
+          <input type="file" id="file" accept=".pdf, .jpg, .jpeg, .png" size="4MB" (change)="onImageUpload($event)" class="form-control">
+        </div>
+      </div>
+    </fieldset>
+    <div class="row form-group">
+    </div>
+    <fieldset>
+      <div class="row form-group mb-3 gap">
+        <button  *ngIf="loading==false" type="submit" class="btn btn-success" (click)="onUpdate()">valider</button>
+        <div *ngIf="loading==true" class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <button class="btn btn-danger" (click)="annuler()">annuler</button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<app-footer></app-footer>

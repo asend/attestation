@@ -1,0 +1,114 @@
+ <div class="container">
+    <h4 class="text-center m-5">Effectuez une demande d'Attestation</h4>
+    <!-- <form [formGroup]="formDemande" (ngSubmit)="onSubmit()"> -->
+        <form [formGroup]="formDemande">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" id="nin" formControlName="nin" placeholder=" " required>
+                    <label for="nin">NIN <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="text" id="prenom" formControlName="prenom" placeholder=" " required>
+                    <label for="prenom">Prénom <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="text" id="nom" formControlName="nom" placeholder=" " required>
+                    <label for="nom">Nom <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="date" id="datedenaissance" formControlName="datedenaissance" required>
+                    <label for="datedenaissance">Date de Naissance <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="text" id="lieudenaissance" formControlName="lieudenaissance" placeholder=" " required>
+                    <label for="lieudenaissance">Lieu de Naissance <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <select id="sexe" class="form-select" formControlName="sexe" required>
+                        <option value="" selected disabled></option>
+                        <option value="masculin">Masculin</option>
+                        <option value="feminin">Feminin</option>
+                    </select>
+                    <label for="sexe">Sexe <span class="obligatoire text-danger">*</span></label>
+                </div>
+                <!-- <div class="form-group recaptcha">
+                    <ngx-recaptcha2
+                      #captchaElem
+                      [siteKey]="siteKey"
+                      formControlName="recaptcha">
+                    </ngx-recaptcha2>
+                </div> -->
+            </div>
+    
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="email" id="email" formControlName="email" placeholder=" " required>
+                    <label for="email">Email <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="email" id="confirmemail" formControlName="confirmemail" placeholder=" " required>
+                    <label for="confirmemail">Confirmer Email <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+    
+                <div class="form-group">
+                    <input type="text" id="fonction" formControlName="fonction" placeholder=" " required>
+                    <label for="fonction">Fonction <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="text" id="telephone" formControlName="telephone" placeholder=" " required>
+                    <label for="telephone">Téléphone <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <div class="form-group">
+                    <input type="text" id="adresse" formControlName="adresse" placeholder=" " required>
+                    <label for="adresse">Adresse <span class="obligatoire text-danger">*</span></label>
+                </div>
+    
+                <!-- <div class="form-group">
+                    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf" formControlName="file"  multiple (change)="onFileSelected($event)" />
+                </div> -->
+                <div class="form-group">
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/*,application/pdf"
+                      formControlName="file"
+                      multiple
+                      (change)="onFileSelected($event)"
+                      capture="camera"
+                    />
+                    <label for="fileInput">Téléchargez une image ou prenez une photo</label>
+                  </div>
+            </div>
+        </div>
+    
+        <div class="text-center mt-3">
+            <button style="margin-right: 20px;"  *ngIf="loading === false" type="submit" class="btn btn-primary" (click)="onSubmit()">Soumettre</button>
+            <div *ngIf="loading === true" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+              <button  type="cancel" class="btn btn-danger" (click)="annuler()">Annuler</button>
+
+        </div>
+    </form>
+
+
+
+   <h6>
+    {{
+        formDemande.value | json
+    }}
+   </h6>
+</div>
+

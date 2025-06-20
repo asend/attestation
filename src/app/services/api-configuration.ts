@@ -10,6 +10,8 @@ import { Injectable } from '@angular/core';
 })
 export class ApiConfiguration {
   rootUrl: string = 'http://localhost:8080';
+  // rootUrl: string = 'https://api.demarche.mfprsp.com';
+
 }
 
 /**

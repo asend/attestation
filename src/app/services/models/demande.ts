@@ -20,4 +20,6 @@ export interface Demande {
   utilisateur?: Utilisateur;
   valide?: boolean;
   validite?: boolean;
+  motifrejet?: string;
+
 }

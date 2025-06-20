@@ -1,30 +1,7 @@
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  margin: 0px;
-  padding: 15px 0px 0px 15px;
-  background-color: #f2f2f2;
-}
-
 .logo {
   width: 100%;
-  height: 3px;
-}
-
-.footer-bottom{
-  display: flex;
-  justify-content: space-around;
-  padding: 8px 0px 0px 8px;
-  background-color: #f8f9fa;
-}
-
-/* .row{
-  margin: 0px;
-} */
-
-@media screen and (max-width: 768px) {
-
-
+  height: 4px;
+  
 }
 p{
   font-size: 13px;
@@ -34,7 +11,7 @@ p{
   padding: 1px;
 }
 .down{
-  margin-top: 5px;
+  margin-top: 2px;
 }
 .top{
   margin-top: 10px;
@@ -42,3 +19,4 @@ p{
  p{
   text-align: center;
 }
+

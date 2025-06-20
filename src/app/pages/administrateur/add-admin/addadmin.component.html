@@ -1,0 +1,59 @@
+<app-nav></app-nav>
+<div class="container mt-5">
+    <form [formGroup]="myForm">
+      <h5></h5>
+    <fieldset>
+        <h3>Ajouter Un Traitant</h3>
+        <div class="row form-group">
+          <div class="col-md-4">
+            <label >NIN :</label>
+            <input type="text" name="nin" class="form-control" formControlName="nin" [(ngModel)]="user.nin">
+        </div>
+            <div class="col-md-4">
+                <label >Prenom :</label>
+                <input type="text" name="prenom" class="form-control" formControlName="prenom" [(ngModel)]="user.prenom">
+              </div>
+            <div class="col-md-4">
+                <label >Nom :</label>
+                <input  type="text" class="form-control" name="nom" formControlName="nom" [(ngModel)]="user.nom"  placeholder="nom">
+            </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4">
+            <label >Email <span class="obligatoire">*</span> :</label>
+            <input type="text" name="email" class="form-control" formControlName="email" [(ngModel)]="user.email">
+          </div>
+          <div class="col-md-4">
+            <label>Mot de passe <span class="obligatoire">*</span> : </label>
+            <input type="password" name="password" formControlName="password" [(ngModel)]="user.password" class="form-control">
+          </div>
+         
+          <div class="col-md-4">
+            <label >Titre <span class="obligatoire">*</span> :</label>
+            <select class="form-control" name="titre" formControlName="titre" [(ngModel)]="user.titre">           
+               <option selected>Choisir le titre</option>
+              <option *ngFor="let titre of titres" >{{ titre.titre }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label>Téléphone <span class="obligatoire">*</span> : </label>
+            <input type="text" name="telephone" formControlName="telephone" [(ngModel)]="user.telephone" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label>signature <span class="obligatoire">*</span></label>
+                <input type="file" name="file" id="file" accept=".pdf, .jpg, .jpeg, .png" (change)="onImageUpload($event)" class="form-control">
+          </div>
+        </div>
+    </fieldset>
+      <div class="row form-group mb-3">
+        <button *ngIf="loading==false" type="button" class="btn btn-success" (click)="onCreate()" >S'insrire</button>
+        <div *ngIf="loading==true" class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <button class="btn btn-danger" (click)="annuler()">annuler</button>
+      </div>
+    </form>
+</div>
+<app-footer></app-footer>

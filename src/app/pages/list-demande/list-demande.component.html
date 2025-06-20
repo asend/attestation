@@ -1,13 +1,24 @@
 <app-nav></app-nav>
-<div class="container mt-5">
+<div  class="container mt-5">
   <div class="row justify-content-center">
     <div *ngIf="!visible" class="alert alert-danger" id="banner" role="alert">
-      Vous avez une attestation en cours de validé ou une demande en cours, <br> par contre vous ne pouvez pas éffectuer une nouvelle  demande pour le moment.
+      Vous avez une attestation en cours de validité ou une demande en cours, <br> par contre vous ne pouvez pas éffectuer une nouvelle  demande pour le moment.
     </div>
   </div>
-  <div class="row justify-content-end">
-    <button [disabled]="!visible" class="btn btn-success mb-3" (click)="onMakeDemande($event)" id="btn" title="Vous avez une demande en cours ou une attestation en cours de validitée">Effectuer une demande</button>
+  <div >
+    <div class="row justify-content-end">
+      <button *ngIf="loading==false" [hidden]="!visible" class="btn btn-success mb-3" (click)="onMakeDemande($event)" id="btn" title="Vous avez une demande en cours ou une attestation en cours de validité">
+        Effectuer une demande
+      </button>
+      <div *ngIf="loading==true" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
   </div>
+  
+  
   <div  *ngIf="da.length>0" class="row">
     <div class="col-md-12">
       <h3>Liste de mes demandes approuvées</h3>
@@ -16,7 +27,7 @@
         <tr>
           <th scope="col">Date demande</th>
           <th scope="col" class="hide-sm">Téléphone</th>
-          <th scope="col" class="hide-sm">Etat</th>
+          <!-- <th scope="col" class="hide-sm">Etat</th> -->
           <th scope="col">Télécharger</th>
           <th scope="col" style="color: red;">Date d'expiration</th>
         </tr>
@@ -30,7 +41,7 @@
           <td class="hide-sm" *ngIf="demande.statut=='rejetee'">Demande rejetée</td>
           <td><a [ngClass]="demande.statut!='approuvee' ? 'inactiveLink' : '' " [routerLink]="['/visualiser', demande.id]" target="_blank">    <!--button (click)="upload(demande.id)"--><i class="fa fa-eye" aria-hidden="true"></i></a><!--/button--></td>
           <td>{{demande.dateexpiration}}</td>
-          <!--<a  [routerLink]="'/visualiser/'+demande.id" style="cursor: pointer"></a>visualiser-->
+          <!-- <a  [routerLink]="'/visualiser/'+demande.id" style="cursor: pointer"></a>visualiser -->
         </tr>
         </tbody>
       </table>
@@ -54,12 +65,7 @@
         <td *ngIf="demande.statut=='cours'"  class="hide-sm">En cours de traitement</td>
         <td *ngIf="demande.statut=='approuvee'"  class="hide-sm">Demande approuvée</td>
         <td *ngIf="demande.statut=='rejetee'"  class="hide-sm">Demande rejetée</td>
-        <!-- <td><a (click)="onDelete(demande.id)"><i class="fa fa-trash"></i></a></td> -->
-        <!-- <td><a (click)="onDelete(demande.id)" style="color: red;">supprimée</a></td> -->
-        <td><a (click)=" clickMethod(id)" style="color: red;">supprimée</a></td>
-
-
-        <!--<a  [routerLink]="'/visualiser/'+demande.id" style="cursor: pointer"></a>visualiser-->
+        <td><a (click)="clickMethod(demande)" style="color: red;">Annuler</a></td>
       </tr>
       </tbody>
     </table>
@@ -81,10 +87,32 @@
         <td *ngIf="demande.statut=='cours'">En cours de traitement</td>
         <td *ngIf="demande.statut=='approuvee'">Demande approuvée</td>
         <td *ngIf="demande.statut=='rejetee'">Demande rejetée</td>
+        <td [hidden]="demande.statut == 'cours' || demande.statut == 'approuvee'"><a  style="color: red;" [routerLink]="['/update-demandeur']">Corriger</a></td>
         <!--<a  [routerLink]="'/visualiser/'+demande.id" style="cursor: pointer"></a>visualiser-->
       </tr>
       </tbody>
+       
     </table>
+    <!-- <div class="card">
+      <ul>
+        <li>
+          Motifs de rejetées: 
+        </li> <br>
+        <li>
+          Si vous etes un agent de l'Etat.
+        </li>
+        <li>
+          ou bien
+        </li>
+        <li>
+          Les informations saisies lors de votre procedure d'inscription sont differentes de ceux se trouvant sur la piéce uploader.
+        </li><br>
+        <li> 
+          Merci de rectifier les informations saisies si vous n'êtes pas agent de l'Etat. <br>
+          Ou bien d'apporter plus d'informations en envoyant des preuves justificatives avant d'éffectuer une nouvelle demande.
+        </li>
+      </ul>
+    </div> -->
   </div>
 
 </div>

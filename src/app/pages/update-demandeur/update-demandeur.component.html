@@ -1,128 +1,231 @@
-<app-nav></app-nav>
-<div class="container mt-5">
-  <form>
-    <h5>MODIFICATION INFORMATIONS</h5>
-    <fieldset>
-      <h3>Informations personnelles</h3>
-      <div class="row form-group">
-        <div class="col-md-4">
-          <label >NIN <span class="obligatoire">*</span> :</label>
-          <input readonly type="text" class="form-control" name="nin" [(ngModel)]="currentDemandeur.nin"  placeholder="nin">
-        </div>
-        <div class="col-md-4">
-          <label >Prenom <span class="obligatoire">*</span> :</label>
-          <input type="text" class="form-control" name="prenom" required  [(ngModel)]="currentDemandeur.prenom"  placeholder="prénom" #prenom="ngModel">
-          <div *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)" class="alert alert-danger">
-            <div *ngIf="prenom.errors?.['required']">
-              Le prénom est obligatoire.
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <label >Nom <span class="obligatoire">*</span> :</label>
-          <input type="text" class="form-control" name="nom" required  [(ngModel)]="currentDemandeur.nom" placeholder="nom" #nom="ngModel">
-          <div *ngIf="nom.invalid && (nom.dirty || nom.touched)" class="alert alert-danger">
-            <div *ngIf="nom.errors?.['required']">
-              Le nom est obligatoire.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-4">
-          <label >Date de naissance <span class="obligatoire">*</span> :</label>
-          <input type="date" class="form-control" name="datedenaissance" required [(ngModel)]="currentDemandeur.datedenaissance"  placeholder="date de naissance" #datenaissance="ngModel">
-          <div *ngIf="datenaissance.invalid && (datenaissance.dirty || datenaissance.touched)" class="alert alert-danger">
-            <div *ngIf="datenaissance.errors?.['required']">
-              La date de naissance est obligatoire.
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <label >Lieu de naissance <span class="obligatoire">*</span> :</label>
-          <input type="text" class="form-control" name="lieudenaissance" required [(ngModel)]="currentDemandeur.lieudenaissance"  placeholder="lieu de naissance" #lieudenaissance="ngModel">
-          <div *ngIf="lieudenaissance.invalid && (lieudenaissance.dirty || lieudenaissance.touched)" class="alert alert-danger">
-            <div *ngIf="lieudenaissance.errors?.['required']">
-              Le lieu de naissance est obligatoire.
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <label >Sexe <span class="obligatoire">*</span> :</label>
-          <select class="form-control" name="sexe" required  [(ngModel)]="currentDemandeur.sexe" #sexe="ngModel">
-            <option value="">Choisir</option>
-            <option value="masculin">Masculin</option>
-            <option value="feminin">Féminin</option>
-          </select>
-          <div *ngIf="sexe.invalid && (sexe.dirty || sexe.touched)" class="alert alert-danger">
-            <div *ngIf="sexe.errors?.['required']">
-              Le sexe est obligatoire.
-            </div>
-          </div>
-        </div>
-      </div>
-    </fieldset>
-    <fieldset>
-      <h3 class="autre">Autres informations</h3>
-      <div class="row form-group">
-        <div class="col-md-6 col-sm-12">
-          <div class="row form-group">
-            <div class="col-12">
-              <label >Adresse <span class="obligatoire">*</span> :</label>
-              <input type="text" class="form-control" name="adresse"  required [(ngModel)]="currentDemandeur.adresse" placeholder="adresse" #adresse="ngModel">
-              <div *ngIf="adresse.invalid && (adresse.dirty || adresse.touched)" class="alert alert-danger">
-                <div *ngIf="adresse.errors?.['required']">
-                  L'adresse est obligatoire.
+  <!-- <app-nav></app-nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="weather-card rain" style="width: 100%; height: auto;">
+          <h3 class="m-4">Modification Du Demandeur</h3>
+          <div class="bottom">
+            <form>
+              <fieldset>
+                <div class="col-md-12 mb-3">
+                  <label><b>NIN</b> <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control" name="nin" [(ngModel)]="currentDemandeur.nin" placeholder="NIN">
                 </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <label >Téléphone <span class="obligatoire">*</span> :</label>
-              <input type="text" class="form-control" name="telephone"  required [(ngModel)]="currentDemandeur.telephone" placeholder="téléphone" #telephone="ngModel">
-              <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" class="alert alert-danger">
-                <div *ngIf="telephone.errors?.['required']">
-                  Le téléphone est obligatoire.
+                <div class="col-md-12 mb-3">
+                  <label><b>Prénom</b> <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control" name="prenom" required [(ngModel)]="currentDemandeur.prenom" placeholder="Prénom" #prenom="ngModel">
+                  <div *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)" class="text-danger">
+                    Le prénom est obligatoire.
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-12"><label >Fonction <span class="obligatoire">*</span> :</label>
-              <input type="text" class="form-control" name="fonction"  required [(ngModel)]="currentDemandeur.fonction" placeholder="fonction" id="fonction" #fonction="ngModel">
-              <div *ngIf="fonction.invalid && (fonction.dirty || fonction.touched)" class="alert alert-danger">
-                <div *ngIf="fonction.errors?.['required']">
-                  La fonction est obligatoire.
+                <div class="col-md-12 mb-3">
+                  <label><b>Nom</b> <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control" name="nom" required [(ngModel)]="currentDemandeur.nom" placeholder="Nom" #nom="ngModel">
+                  <div *ngIf="nom.invalid && (nom.dirty || nom.touched)" class="text-danger">
+                    Le nom est obligatoire.
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12">
-          <div class="row">
-            <div class="col">
-              <label >scanner cni : ( jpeg, jpg, png, pdf )</label>
-              <input type="file" id="file" accept=".pdf, .jpg, .jpeg, .png" size="4MB" (change)="onImageUpload($event)" class="form-control">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div class="office-viewer">
-                <iframe [src]='urlSafe' width='100%' height='auto'></iframe>
+                <div class="col-md-12 mb-3">
+                  <label><b>Date de naissance</b> <span class="text-danger">*</span> :</label>
+                  <input type="date" class="form-control" name="datedenaissance" required [(ngModel)]="currentDemandeur.datedenaissance" #datenaissance="ngModel">
+                  <div *ngIf="datenaissance.invalid && (datenaissance.dirty || datenaissance.touched)" class="text-danger">
+                    La date de naissance est obligatoire.
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label><b>Lieu de naissance</b> <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control" name="lieudenaissance" required [(ngModel)]="currentDemandeur.lieudenaissance" placeholder="Lieu de naissance" #lieudenaissance="ngModel">
+                  <div *ngIf="lieudenaissance.invalid && (lieudenaissance.dirty || lieudenaissance.touched)" class="text-danger">
+                    Le lieu de naissance est obligatoire.
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label><b>Email</b> <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control" name="email" required [(ngModel)]="currentDemandeur.email" placeholder="email" #lieudenaissance="ngModel">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label><b>Téléphone</b> <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control" name="telephone" required [(ngModel)]="currentDemandeur.telephone" placeholder="telephone" #lieudenaissance="ngModel">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label><b>Sexe</b> <span class="text-danger">*</span> :</label>
+                  <select class="form-control" name="sexe" required [(ngModel)]="currentDemandeur.sexe" #sexe="ngModel">
+                    <option value="">Choisir</option>
+                    <option value="masculin">Masculin</option>
+                    <option value="feminin">Féminin</option>
+                  </select>
+                  <div *ngIf="sexe.invalid && (sexe.dirty || sexe.touched)" class="text-danger">
+                    Le sexe est obligatoire.
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+  
+            <div class="bottom">
+              <div class="d-flex">
+                <button *ngIf="!loading" type="submit" class="btn btn-success me-2" (click)="onUpdate()">Valider</button>
+                <div *ngIf="loading" class="spinner-border text-primary me-2" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+                <button type="button" class="btn btn-danger" (click)="annuler()">Annuler</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </fieldset>
-    <fieldset>
-      <div class="row form-group mb-3 gap">
-        <button  *ngIf="loading==false" type="submit" class="btn btn-success" (click)="onUpdate()">valider</button>
-        <div *ngIf="loading==true" class="d-flex justify-content-center">
+  
+      <div class="col-12 col-md-6">
+        <div class="weather-card one" style="width: 95%; height: auto;">
+          <h3 class="mt-4">Uploader un fichier</h3>
+          <p>Nombre de fichiers ajoutés : {{ currentDemandeur.fieluploads?.length }}</p>
+          <input type="file" name="file[]" multiple="true" id="files" accept=".pdf, .jpg, .jpeg, .png" (change)="onImageUploads($event)" class="form-control mb-5">
+  
+          <div *ngIf="currentDemandeur.fieluploads?.length" class="wrapper col-md-12 mb-3 mt-5">
+            <div *ngFor="let image of currentDemandeur.fieluploads" class="mb-3">
+              <iframe
+                [src]="santizer.bypassSecurityTrustResourceUrl(urlimage + '/api/uploads/getImageByIdFile/' + image.id)"
+                class="w-100"
+                style="height: 200px;"
+                frameborder="0">
+              </iframe>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <app-footer></app-footer>
+   -->
+
+
+   <app-nav></app-nav>
+<div class="container">
+  <div class="floating-form">
+    <h5 class="text-center mb-3">MODIFIEZ VOS INFORMATIONS</h5>
+
+    <form #updateForm="ngForm" (ngSubmit)="onUpdate()" novalidate>
+
+      <div class="form-sections">
+        <!-- Informations personnelles -->
+        <fieldset>
+          <legend>Informations personnelles</legend>
+
+          <div class="form-group">
+            <input type="text" name="nin" [(ngModel)]="currentDemandeur.nin" required placeholder=" " #nin="ngModel" />
+            <label>NIN<span style="color: red;">*</span></label>
+            <div *ngIf="nin.invalid && (nin.dirty || nin.touched)" class="text-danger">Le NIN est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="prenom" [(ngModel)]="currentDemandeur.prenom" required placeholder=" " #prenom="ngModel" />
+            <label>Prénom<span style="color: red;">*</span></label>
+            <div *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)" class="text-danger">Le prénom est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="nom" [(ngModel)]="currentDemandeur.nom" required placeholder=" " #nom="ngModel" />
+            <label>Nom<span style="color: red;">*</span></label>
+            <div *ngIf="nom.invalid && (nom.dirty || nom.touched)" class="text-danger">Le nom est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <input type="date" name="datedenaissance" [(ngModel)]="currentDemandeur.datedenaissance" required placeholder=" " #datedenaissance="ngModel" />
+            <label>Date de naissance<span style="color: red;">*</span></label>
+            <div *ngIf="datedenaissance.invalid && (datedenaissance.dirty || datedenaissance.touched)" class="text-danger">La date de naissance est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="lieudenaissance" [(ngModel)]="currentDemandeur.lieudenaissance" required placeholder=" " #lieudenaissance="ngModel" />
+            <label>Lieu de naissance<span style="color: red;">*</span></label>
+            <div *ngIf="lieudenaissance.invalid && (lieudenaissance.dirty || lieudenaissance.touched)" class="text-danger">Le lieu de naissance est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="fonction" [(ngModel)]="currentDemandeur.fonction" required placeholder=" " #email="ngModel" />
+            <label>Fonction<span style="color: red;">*</span></label>
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">L’email est obligatoire.</div>
+          </div>
+
+
+          <div class="form-group">
+            <select name="sexe" [(ngModel)]="currentDemandeur.sexe" required #sexe="ngModel">
+              <option value="" disabled selected hidden></option>
+              <option value="masculin">Masculin</option>
+              <option value="feminin">Féminin</option>
+            </select>
+            <label>Sexe<span style="color: red;">*</span></label>
+            <div *ngIf="sexe.invalid && (sexe.dirty || sexe.touched)" class="text-danger">Le sexe est obligatoire.</div>
+          </div>
+        </fieldset>
+
+        <!-- Autres informations -->
+        <fieldset>
+          <legend>Autres informations</legend>
+
+          <div class="form-group">
+            <input type="email" name="email" [(ngModel)]="currentDemandeur.email" required placeholder=" " #email="ngModel" />
+            <label>Email<span style="color: red;">*</span></label>
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">L’email est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="telephone" [(ngModel)]="currentDemandeur.telephone" required placeholder=" " #telephone="ngModel" />
+            <label>Téléphone<span style="color: red;">*</span></label>
+            <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" class="text-danger">Le téléphone est obligatoire.</div>
+          </div>
+
+          <div class="form-group">
+            <select name="region" formControlName="region" [(ngModel)]="currentDemandeur.region" (change)="onRegionSelected($event)">
+              <option value="" disabled selected hidden></option>
+              <option *ngFor="let region of regions" [value]="region.id">{{ region.nom }}</option>
+            </select>
+            <label>Région<span style="color: red;">*</span></label>
+          </div>
+        
+          <div class="form-group" *ngIf="isSelect">
+            <select name="departement" formControlName="departement" [(ngModel)]="currentDemandeur.departement">
+              <option value="" disabled selected hidden></option>
+              <option *ngFor="let d of departements" [value]="d.id">{{ d.nom }}</option>
+            </select>
+            <label>Département<span style="color: red;">*</span></label>
+          </div>
+         
+          <div class="form-group">
+            <input type="file" name="file[]" multiple id="files" accept=".pdf, .jpg, .jpeg, .png" (change)="onImageUploads($event)" />
+            <label for="files">Scanner CNI<span style="color: red;">*</span></label>
+            <small class="text-muted d-block" style="color: red!important;">
+              Formats acceptés : jpeg, jpg, png, pdf<br>
+              Obligatoire: le scan de votre pièce d'identité recto verso est requis.
+            </small>
+          </div>
+
+          <div class="form-group" *ngIf="currentDemandeur.fieluploads?.length">
+            <div *ngFor="let image of currentDemandeur.fieluploads" class="mb-3">
+              <iframe
+                [src]="santizer.bypassSecurityTrustResourceUrl(urlimage + '/api/uploads/getImageByIdFile/' + image.id)"
+                class="w-100"
+                style="height: 200px;"
+                frameborder="0">
+              </iframe>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Boutons -->
+      <div class="form-group text-center mt-4">
+        <button type="button" class="btn btn-danger me-2" (click)="annuler()">Annuler</button> &nbsp; &nbsp;
+        <button *ngIf="!loading" type="submit" class="btn btn-success" [disabled]="updateForm.invalid">Valider</button>
+        <div *ngIf="loading" class="d-flex justify-content-center mt-2">
           <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Chargement...</span>
           </div>
         </div>
-        <button class="btn btn-danger" (click)="annuler()">annuler</button>
       </div>
-    </fieldset>
-  </form>
+
+    </form>
+  </div>
 </div>
 <app-footer></app-footer>

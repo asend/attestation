@@ -36,7 +36,6 @@ export class AuthService {
     this.token = jwt;
     this.isloggedIn = true;
     this.decodeJWT();
-
   }
 
   decodeJWT() {
@@ -79,6 +78,12 @@ export class AuthService {
       return false;
     return  this.profil == 'admin' ? true : false
   }
+  isTraitant():boolean{
+    if (!this.profil) //this.roles== undefiened
+      return false;
+    return  this.profil == 'traitant' ? true : false
+  }
+  
 
   logout() {
     this.isloggedIn= false;
@@ -107,7 +112,14 @@ export class AuthService {
   getToken(): string {
     return this.token;
   }
+  //   getToken(): string | null {
+  //   return localStorage.getItem('token');
+  // }
 
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return token != null && !this.isTokenExpired(); // Ensure token exists and is not expired
+  }
 
 
 }

@@ -1,11 +1,10 @@
-<div class="small-box" [ngClass]="infoStatistique.infoStyle || 'bg-primary'" (click)="emitInfo(infoStatistique.slug)">
+<div class="small-box {{infoStatistique.textcolor}}" [ngClass]="infoStatistique.infoStyle" (click)="emitInfo(infoStatistique.slug)">
   <div class="inner">
-    <h3 style="text-align: center;">{{infoStatistique.nombre}}</h3>
-    <p style="text-align: center;">{{infoStatistique.title}}</p>
+    <h3 class="number" style="text-align: center;">{{infoStatistique.nombre}}</h3>
+    <p style="text-align: center;">{{infoStatistique.title}}
+    <i class="icon" [ngClass]="infoStatistique.icons"></i></p>
   </div>
-  <div class="icon">
-    Lister
-  </div>
-  <!--a (click)="emitInfo(infoStatistique.slug)" class="small-box-footer">Details <i class="fa-solid fa-hand-middle-finger"></i></a-->
+  
 </div>
+
 

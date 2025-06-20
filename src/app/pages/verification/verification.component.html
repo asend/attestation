@@ -1,63 +1,127 @@
 <app-nav></app-nav>
 <div class="container">
-
   <div class="row boutton mt-5">
     <button class="btn btn-warning" (click)="onBack()">Annuler</button>
-    <button *ngIf="loading==false" class="btn btn-success" (click)="onApproved()">Approuver</button>
+   
+    <button *ngIf="verifierClicked &&  loading==false" id="approuved" class="btn btn-success" (click)="clickApprouve()" >Approuver</button>
     <div *ngIf="loading==true" class="d-flex justify-content-center">
       <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only">loading</span>
       </div>
     </div>
-    <!--button class="btn btn-danger" (click)="onRejected()">Rejeter</button-->
+    <button class="btn btn-info" id="Jirafe" style="color: black;">
+      <a href="http://girafe-new.intranet.gouv.sn/" id="Jirafe" (click)="onVerifierClicked()"  style="color: black;" target="_blank">Vérifier sur Jirafe</a>
+    </button>
     <div class="dropdown navbar navbar-expand-lg navbar-light bg-light">
-      <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Rejeter
-      </button>
-      <div *ngIf="loadingReject==false" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" (click)="rejectInternet(currentDemande)">Interne</a>
-        <a class="dropdown-item" (click)="rejectExtern(currentDemande)">Externe</a>
-      </div>
-      <div *ngIf="loadingReject==true"    class="d-flex justify-content-center">
+      <!-- <button id="myBtn" class="btn btn-danger" (click)="openModal()">Rejeter</button>  -->
+      <button id="myBtn" *ngIf="onRejet==false" class="btn btn-danger" (click)="onRejectDemande()">Rejetez</button> 
+      <div *ngIf="onRejet==true" class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+          <span class="sr-only">loading</span>
+        </div>
+      </div>
+      <!-- debut pupup add motif rejet -->
+      <!-- <div id="myModal" class="modal" *ngIf="isModalOpen">
+        <div class="modal-content">
+          <span class="close" (click)="closeModal()">&times;</span> 
+          <textarea 
+            cols="30" 
+            rows="10" 
+            [(ngModel)]="currentDemande.motifrejet" 
+            placeholder="Saisir le motif rejet ..."
+          ></textarea>
+          <button 
+            id="myBtn" 
+            (click)="onRejectDefinitif()" 
+            class="btn btn-danger"
+          >
+            Envoyer Motif Rejet
+          </button>
+
+          <div *ngIf="loadingMotifReject" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading ...</span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    <!-- fin  pupup add motif rejet -->
+    <!-- debut pupup add Matricule Solde -->
+    <div id="myModal" class="modal" *ngIf="isModalMatriculeOpen">
+      <div class="modal-content">
+        <span class="close" (click)="closeModalMatricule()">&times;</span> 
+        <input [(ngModel)]="currentDemandeur.matriculeSolde" placeholder="Saisir le matricule de la solde">
+        <button id="myBtn" (click)="onRejectDemande()" class="btn btn-danger" [disabled]="!currentDemandeur.matriculeSolde?.trim() || loadingMatriculeSolde">
+          Valider son Matricule
+        </button>
+        <div *ngIf="loadingMatriculeSolde" class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading ...</span>
+          </div>
         </div>
       </div>
     </div>
-
+    <!-- fin pupup add Matricule Solde -->
+    </div>
   </div>
-  <div class="row mt-5">
-    <div class="col-md-6">
-      <table class="table table-striped">
+  <div class="row">
+    <div class="col-md-6 mt-5">
+      <table class="table table-bordered">
         <tr>
-          <th>Prenom</th>
-          <th>{{currentDemande.demandeurDTO?.prenom}}</th>
+          <td>Prenom:</td>
+          <th>{{currentDemande.demandeurDTO?.prenom  }}</th>
         </tr>
         <tr>
-          <th>Nom</th>
+          <td>Nom:</td>
           <th>{{currentDemande.demandeurDTO?.nom}}</th>
         </tr>
         <tr>
-          <th>Date de naissance</th>
-          <th>{{currentDemande.demandeurDTO?.datedenaissance}}</th>
+          <td>Date de naissance:</td>
+          <th>{{currentDemande.demandeurDTO?.datedenaissance | date: 'dd-MM-yyyy'}}</th>
         </tr>
         <tr>
-          <th>Lieu de naissance</th>
+          <td>Lieu de naissance:</td>
           <th>{{currentDemande.demandeurDTO?.lieudenaissance}}</th>
         </tr>
         <tr>
-          <th>Numéro d'identification national</th>
+          <td>CNI:</td>
           <th>{{currentDemande.demandeurDTO?.nin}}</th>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <th>{{currentDemande.demandeurDTO?.email}}</th>
+        </tr>
+        <tr>
+          <td>Télephone:</td>
+          <th>{{currentDemande.demandeurDTO?.telephone}}</th>
+        </tr>
+        <tr>
+          <td>Fonction:</td>
+          <th>{{currentDemande.demandeurDTO?.fonction}}</th>
+        </tr>
+        <tr>
+          <th colspan="2"> 
+            <a style="font-size: 20px;" [routerLink]="['/update-by-admin',currentDemande.demandeurDTO?.id]"
+            title="Cliquez ici pour modifier les informations de cet utilisateur">Modifier</a>
+          </th>
         </tr>
       </table>
     </div>
     <div class="col-md-6">
-      <div class="office-viewer">
-        <iframe [src]='urlSafe' width='100%' height='500px'></iframe>
+      <div class="wrapper col-md-12 mb-3 mt-5">
+        <!-- *ngIf="currentDemande.demandeurDTO?.fieluploads?.length" -->
+        <div *ngFor="let image of currentDemande.demandeurDTO?.fieluploads" class="mb-3">
+          <iframe
+            [src]="santizer.bypassSecurityTrustResourceUrl(urlimage + '/api/uploads/getImageByIdFile/' + image.id)"
+            style="height: 65vh; width: 90vh;"
+            frameborder="1">
+          </iframe>
+          <!-- <p>{{urlimage + '/api/uploads/getImageByIdFile/' + image.id}}</p> -->
+        </div>
       </div>
-
     </div>
   </div>
-
 </div>
 <app-footer></app-footer>
+
+

@@ -19,6 +19,7 @@ export class NavComponent implements OnInit {
   demandeur!: DemandeurDto;
 
   token!: string;
+showPassword: any;
   constructor(private router: Router, private demandeurService: DemandeurService) {
   }
 
@@ -27,7 +28,7 @@ export class NavComponent implements OnInit {
     if (localStorage.getItem("token")){
       this.loIn = true
     }
-    if (localStorage.getItem("profile")=="admin"){
+    if (localStorage.getItem("profile")=="admin" || localStorage.getItem("profile")=="traitant"){
       this.isAdmin = true
     }
     if (localStorage.getItem("fullName")){
@@ -38,7 +39,8 @@ export class NavComponent implements OnInit {
 
   onlogout() {
     localStorage.clear();
-    this.router.navigate(['connexion'])
+    this.router.navigate(['connexion']);
+    window.location.reload();
   }
 
   listDemande() {

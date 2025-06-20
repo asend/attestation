@@ -384,4 +384,23 @@ export class DemandeService extends BaseService {
     );
   }
 
+
+  // private apiUrl = "http://localhost:8080/api/demande";
+
+  private apiUrl = "https://api.demarche.mfprsp.com/api/demande";
+
+
+  updateMotifRejet(id: number, motifRejet: string): Observable<number> {
+    const payload = { motifrejet: motifRejet };
+    const url = `${this.apiUrl}/update/${id}`;
+
+    console.log("URL de la requête :", url); // Vérifie l'URL générée
+    console.log("Payload envoyé :", payload); // Vérifie les données envoyées
+
+    return this.http.put<number>(url, payload);
+  }
+
+
+  
+
 }

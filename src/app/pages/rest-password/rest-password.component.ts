@@ -46,8 +46,6 @@ export class RestPasswordComponent implements OnInit {
             timer: 6000
           }).then(() => {
             window.location.reload();
-            // this.router.navigate(['/connexion']);
-
           });
         }
       }

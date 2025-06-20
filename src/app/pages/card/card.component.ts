@@ -5,8 +5,10 @@ export interface InfoStatistique{
   title?: string;
   nombre?: number;
   slug?: string;
-  infoStyle?: 'bg-primary' | 'bg-success' | 'bg-warning' | 'bg-danger' | "bg-info";
-  textcolor?: 'white' | '' | '' | '' |'';
+  infoStyle?: 'bg-primary' | 'bg-success' | 'bg-warning' | 'bg-danger' | 'bg-info';
+  textcolor?: 'clwhite' | 'clred' | 'clgreen' | 'clyellow';
+  statuscolor?: 'encourblue' | 'approuedgreen' | 'rejectred';
+  icons?:'iconapprouved' | 'iconrejected' | 'iconencours' | 'icontout';
 }
 @Component({
   selector: 'app-card',
@@ -24,10 +26,12 @@ export class CardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
   emitInfo(slug: string | undefined){
     this.stringChange.emit(slug);
+    
   }
 
 }

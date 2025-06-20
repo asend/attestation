@@ -31,7 +31,7 @@ export class MailService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sendMailRejectInterne$Response(params: SendMailRejectInterne$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  sendMailRejectInterne$Response(params: SendMailRejectInterne$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
     return sendMailRejectInterne(this.http, this.rootUrl, params, context);
   }
 
@@ -41,9 +41,9 @@ export class MailService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sendMailRejectInterne(params: SendMailRejectInterne$Params, context?: HttpContext): Observable<string> {
+  sendMailRejectInterne(params: SendMailRejectInterne$Params, context?: HttpContext): Observable<number> {
     return this.sendMailRejectInterne$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 
@@ -56,7 +56,7 @@ export class MailService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sendMailRejectexterne$Response(params: SendMailRejectexterne$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  sendMailRejectexterne$Response(params: SendMailRejectexterne$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
     return sendMailRejectexterne(this.http, this.rootUrl, params, context);
   }
 
@@ -66,9 +66,9 @@ export class MailService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sendMailRejectexterne(params: SendMailRejectexterne$Params, context?: HttpContext): Observable<string> {
+  sendMailRejectexterne(params: SendMailRejectexterne$Params, context?: HttpContext): Observable<number> {
     return this.sendMailRejectexterne$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 
@@ -81,7 +81,7 @@ export class MailService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sendMailApprouve$Response(params: SendMailApprouve$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  sendMailApprouve$Response(params: SendMailApprouve$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
     return sendMailApprouve(this.http, this.rootUrl, params, context);
   }
 
@@ -91,9 +91,9 @@ export class MailService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sendMailApprouve(params: SendMailApprouve$Params, context?: HttpContext): Observable<string> {
+  sendMailApprouve(params: SendMailApprouve$Params, context?: HttpContext): Observable<number> {
     return this.sendMailApprouve$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 

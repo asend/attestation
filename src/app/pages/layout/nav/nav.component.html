@@ -1,3 +1,4 @@
+<section>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <!--a class="navbar-brand" href="#">Navbar</a-->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,27 +10,27 @@
       <div class="header-conntent">
 
         <div class="senegal-logo">
+          
           <!-- start logo -->
           <a href="#">
-            <img class="logo" src="https://fonctionpublique.gouv.sn/IMG/logo/logo-republique-du-senegal.png" alt="logo-republique-du-senegal">
+            <!-- <img class="logo" src="https://fonctionpublique.gouv.sn/IMG/logo/logo-republique-du-senegal.png" alt="logo-republique-du-senegal"> -->
+            <img class="logo l1" src="/assets/logo-drapeua-du-senegal.png" alt="logo-republique-du-senegal">
           </a>
           <!-- end logo -->
-          <p class="rds">République du Sénégal</p>
-          <p class="pbf"> Un peuple, Un but, Une foi </p>
+          <p class="rds"><b>République du Sénégal</b></p>
+          <p class="pbf"> <small>Un peuple, Un but, Une foi</small> </p>
 
         </div>
 
         <div class="navbar-header navbar-header-custom">
           <!-- start logo -->
           <a href="#" class="navbar-brand">
-            <img class="logo" src="https://fonctionpublique.gouv.sn/IMG/logo/ministe_re_de_la_fonction_publique_et_de_la_transformation_du_secteur_public.png" alt="Ministère de la Fonction Publique
-
-                                Et de la Réforme du Service public">
+            <!-- <img class="logo" src="https://fonctionpublique.gouv.sn/IMG/logo/ministe_re_de_la_fonction_publique_et_de_la_transformation_du_secteur_public.png" alt="Ministère de la Fonction Publique Et de la Réforme du Service public"> -->
+            <img class="logo l2" src="/assets/logominister.png" alt="Ministère de la Fonction Publique Et de la Réforme du Service public">
           </a>
           <!-- end logo -->
           <p class="text">
-            <a href="#" class="navbar-brand mfpnom">  Ministère de la Fonction Publique <br> Et de la Réforme du Service public
-            </a>
+            <a href="#" class="navbar-brand mfpnom">  Ministère de la Fonction Publique <br> Et de la Réforme du Service public</a>
           </p>
         </div>
         <div class="attr-nav align-items-lg-center vac">
@@ -49,16 +50,24 @@
                 <a class="dropdown-item" *ngIf="!isAdmin" [routerLink]="['/update-demandeur']">Modifier profil</a>
                 <a class="dropdown-item" *ngIf="!isAdmin" (click)="listDemande()">Mes demandes</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javasript:void(0)" (click)="onlogout()" style="color: rgb(242, 96, 96);"><img src="assets/deconnexion.png" height="25px" width="25px">Déconnecter</a>
+                <a class="dropdown-item" href="javasript:void(0)" (click)="onlogout()" style="color: rgb(242, 96, 96);"><img src="assets/deconnexion.png" height="25px" width="25px">&nbsp;Déconnecter</a>
+                <!-- <a class="dropdown-item" href="javasript:void(0)" (click)="onlogout()" style="color: rgb(242, 96, 96);">Déconnecter</a> -->
+
               </div>
             </li>
           </ul>
-          <button *ngIf="!loIn" class="btn btn-success" [routerLink]="['/connexion']"><img src="/assets/connexion.png"  height="20px" width="20px">Connecter</button>
+          <button *ngIf="!loIn" class="btn btn1 btn-success" [routerLink]="['/connexion']" style="font-size: 15px; border-radius: 10px;">
+            <!-- <img src="/assets/connexion.png"  height="20px" width="20px"> -->
+ <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-search'" style="font-size: 15px;"></i></button>
+ <!-- Se connecter -->
+          <!-- <button *ngIf="!loIn" class="btn btn-success" [routerLink]="['/connexion']">Connecter</button> -->
+
         </div>
       </div>
     </div>
   </div>
 </nav>
 <div class="row justify-content-center banner">
-  <div class="col-12">PLATEFORME DE DEMANDE D'ATTESTATION DE NON APPARTENENCE A LA FONCTION PUBLIQUE</div>
+  <div class="col-12">PLATEFORME DE DEMANDE D'ATTESTATION DE NON APPARTENANCE A LA FONCTION PUBLIQUE</div>
 </div>
+</section>

@@ -18,10 +18,20 @@ export class RegisterComponent implements OnInit {
   err: any;
   loading: boolean = false;
 
-  errMessage: any;
-  siteKey: string = "6Lec8i0qAAAAANuNhPztaDG503ffz16BHQWcaCYY";
+  // showPassword: boolean = false;
+  showPassword: boolean = false;
+showConfirmPassword: boolean = false;
 
-  constructor(private formBuilder : FormBuilder, private auth: UtilisateurService, private router: Router) { }
+
+
+
+  errMessage: any;
+  //  siteKey: string = "6LebTfcqAAAAAOiPWmhJlgY7AobxInjIwjRJRZPE"; //invisible
+  siteKey: string = "6Lec8i0qAAAAANuNhPztaDG503ffz16BHQWcaCYY"; //localhost
+  // siteKey: string = "6LfnCrMqAAAAAKKxyPShRaSmee-vReyGi4vV_qcI"; //api
+
+  constructor(private formBuilder: FormBuilder, private auth: UtilisateurService, private router: Router) { }
+  
 
   ngOnInit(): void {
     this.myForm = this.formBuilder.group(
@@ -33,13 +43,23 @@ export class RegisterComponent implements OnInit {
         confirmemail : ['', [Validators.required, Validators.email, this.noWhiteSpaceValidator]],
         password : ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword : ['', [Validators.required]],
-        recaptcha : ['', [Validators.required]]
+         recaptcha : ['',[Validators.required]]
       },
       {
         validators: [this.matchValidator('password', 'confirmPassword'), this.matchValidator('email','confirmemail')]
       }
     )
   }
+
+  togglePasswordVisibility(field: string) {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else if (field === 'confirmPassword') {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
+
+ 
 
   onRegister() {
     this.loading = true;
@@ -49,9 +69,9 @@ export class RegisterComponent implements OnInit {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Inscription réussie, veillez vous connecter avec vos identifiants pré-remplis",
+          title: "Inscription réussie<br> Veillez vous connecter avec vos identifiants.",
           showConfirmButton: false,
-          timer: 2000
+          timer: 3000
         }).then(() => {
           this.router.navigate(['connexion']);
         });
@@ -63,7 +83,9 @@ export class RegisterComponent implements OnInit {
             position: "center",
             icon: 'error',
             title: 'Inscription',
-            text: 'Cet email existe deja',
+            text: 'Vous avez déjá un compte avec cet email',
+          }).then(()=>{
+            window.location.reload();
           })
         }
         if (err.error.errorMessage==='NIN_EXIST') {
@@ -71,7 +93,9 @@ export class RegisterComponent implements OnInit {
             position: "center",
             icon: 'error',
             title: 'Inscription',
-            text: 'Ce numéro d"identification existe deja',
+            text: 'Vous avez déjá un compte avec ce numero  identité.'
+          }).then(()=>{
+            window.location.reload();
           })
         }
         if (err.error.errorMessage==='EMAIL_NIN_EXIST') {
@@ -79,9 +103,8 @@ export class RegisterComponent implements OnInit {
             position: "center",
             icon: 'error',
             title: 'Inscription',
-            text: 'Email et identifiant existe deja',
+            text: 'Vous avez deja un compte, merci de vous connectez avec vos identifiants.',
           }).then(() => {
-            this.router.navigate(['inscription']);
             window.location.reload();                
           });
         }
@@ -123,6 +146,9 @@ export class RegisterComponent implements OnInit {
   }
   myFunction() {
     confirm("Press a button!");
+  }
+  onFieldClick(fieldName: string): void {
+    this.myForm.controls[fieldName].markAsTouched();
   }
  
 

@@ -16,4 +16,9 @@ export interface DemandeDto {
   statut?: string;
   urlattestation?: string;
   validite?: boolean;
+  motifrejet?: string;
+
+  
 }
+
+

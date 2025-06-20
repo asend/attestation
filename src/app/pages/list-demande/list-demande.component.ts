@@ -20,6 +20,7 @@ export class ListDemandeComponent implements OnInit {
   fileStatus = { status: '', requestType: '', percent: 0 };
   filenames: string[] = [];
   id!: number;
+  loading: boolean = false;
 
   dec!: DemandeDto[];
   dr!: DemandeDto[];
@@ -38,6 +39,7 @@ export class ListDemandeComponent implements OnInit {
     this.eligible();
   }
 
+  
   getDemandes(id:number){
     this.demandeService.findByDemandeurId({"id": id}).subscribe({
       next:(data)=>{
@@ -45,7 +47,6 @@ export class ListDemandeComponent implements OnInit {
       }
     })
   }
-
   getDemandeTab(id:number){
     this.demandeService.getbyTab({"id": id}).subscribe({
       next:(data)=>{
@@ -56,11 +57,9 @@ export class ListDemandeComponent implements OnInit {
       }
     })
   }
-
   upload(id: number | undefined) {
     this.router.navigate(['visualiser', id]);
   }
-
   private resportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
     switch(httpEvent.type) {
       case HttpEventType.UploadProgress:
@@ -90,17 +89,16 @@ export class ListDemandeComponent implements OnInit {
 
     }
   }
-
   private updateStatus(loaded: number, total: number, requestType: string): void {
     this.fileStatus.status = 'progress';
     this.fileStatus.requestType = requestType;
     this.fileStatus.percent = Math.round(100 * loaded / total);
   }
-  
-
   onMakeDemande(event: any) {
+    this.loading = true;
     this.demandeService.demander({"id": this.ac.snapshot.params['id']}).subscribe({
       next:(data)=>{
+        this.loading = false;
         Swal.fire({
           position: "center",
           icon: "success",
@@ -117,8 +115,6 @@ export class ListDemandeComponent implements OnInit {
       }
     })
   }
-
-
   eligible(){
     this.demandeService.eligible({id: this.ac.snapshot.params['id']}).subscribe({
       next:(data)=>{
@@ -126,7 +122,6 @@ export class ListDemandeComponent implements OnInit {
       }
     })
   }
-
   onDelete(id: number| undefined) {
     const btn = document.getElementById('btn') as HTMLButtonElement | null
     btn?.removeAttribute('disabled')
@@ -142,18 +137,19 @@ export class ListDemandeComponent implements OnInit {
           timer: 2000
         })
         this.visible = true;
+        // this.demandes = this.demandes.filter(demande => demande.id !== id);
         this.getDemandeTab(this.ac.snapshot.params['id']);
       }
     })
     //this.getDemandeTab(id)
   }
-
-  clickMethod(id: number) {
+  clickMethod(demande: DemandeDto) {
     const message = "Souhaitez-vous supprimée votre demande en cours de traitement ? "; 
     if (confirm(message)) {
-      this.onDelete(id);
+      this.onDelete(demande.id);
     } else {
       this.router.navigate(['mes-demandes']);
     }
   }
+  
 }

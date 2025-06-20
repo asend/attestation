@@ -6,6 +6,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {ApiConfiguration} from "../../services/api-configuration";
 import {ImageService} from "../../auth/service/image.service";
 import Swal from "sweetalert2";
+import { RegionDepartementService } from 'src/app/services/services/region-departement.service';
 
 @Component({
   selector: 'app-update-demandeur',
@@ -14,101 +15,143 @@ import Swal from "sweetalert2";
 })
 export class UpdateDemandeurComponent implements OnInit {
 
-  currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: ""}
-  urlSafe: any;
+  currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: "", region: "", departement: ""}
+  // urlSafe: any;
   loading: boolean = false;
 
   myImage!: string;
   uploadedImage!: File;
   isImageUpdated: Boolean=false;
 
+
+  regions: any[] = [];
+  departements: any[] = [];
+  isSelect: boolean = false;
+
+  uploadedImages!: File[];
+
+  // urlimage: string = "http://localhost:8080";
+  urlimage: string = 'https://api.demarche.mfprsp.com';
+
+
   constructor(private demandeurService: DemandeurService, private ac: ActivatedRoute,
-              private santizer: DomSanitizer, private apiUrl: ApiConfiguration, private imageService: ImageService, private router: Router) { }
+              public santizer: DomSanitizer, private apiUrl: ApiConfiguration, private imageService: ImageService, private router: Router,
+              private regionDepartementService: RegionDepartementService
+              ) { }
 
   ngOnInit(): void {
     this.demandeurService.getByNin1({nin: localStorage.getItem("nin") as string}).subscribe({
       next:(data)=>{
         this.currentDemandeur = data;
-        this.urlSafe = this.santizer.bypassSecurityTrustResourceUrl(this.apiUrl.rootUrl+"/api/uploads/loadfromFS/"+this.currentDemandeur.id);
-        console.log(data)
+        // this.urlSafe = this.santizer.bypassSecurityTrustResourceUrl(this.apiUrl.rootUrl+"/api/uploads/loadfromFS/"+this.currentDemandeur.id);
+        console.log(data);
       }
+      
     })
+    this.loadRegions();
 
+
+    
   }
 
   onUpdate() {
     this.loading = true;
-    console.log("image "+this.uploadedImage)
-      //console.log(this.currentDemandeur)
-      this.demandeurService.updateDemandeur({body: this.currentDemandeur}).subscribe({
-        next:(data)=>{
-          this.loading = false;
-          if (this.uploadedImage!=undefined){
-            console.log("size "+this.uploadedImage.size)
-            this.imageService.uploadImageFS(this.uploadedImage,Number(this.currentDemandeur.id)).subscribe({
-              next:(response)=>{
-                this.router.navigate(['mes-demandes', this.currentDemandeur.id])
+    console.log("image " + this.uploadedImage);
+    this.demandeurService.updateDemandeur({ body: this.currentDemandeur }).subscribe({
+      next: (data) => {
+        this.loading = false;
+        if (this.uploadedImage != undefined) {
+          console.log("size " + this.uploadedImage.size);
+          for (let index = 0; index < this.uploadedImages.length; index++) {
+            // Si vous n'avez pas besoin de base64, passez une chaîne vide
+            this.imageService.uploadImageDemandeur(this.uploadedImages[index], "", Number(data)).subscribe({
+              next: (response) => {
+                this.router.navigate(['mes-demandes', this.currentDemandeur.id]);
               },
-              error:(err:any)=>{
-                this.router.navigate(['mes-demandes', this.currentDemandeur.id])
+              error: (err: any) => {
+                this.router.navigate(['mes-demandes', this.currentDemandeur.id]);
               }
-            })
+            });
           }
-          this.router.navigate(['mes-demandes', this.currentDemandeur.id])
-        },
-        error:(err:any)=>{
-          this.router.navigate(['mes-demandes', this.currentDemandeur.id])
         }
-      })
-
+        this.router.navigate(['mes-demandes', this.currentDemandeur.id]);
+      },
+      error: (err: any) => {
+        this.router.navigate(['mes-demandes', this.currentDemandeur.id]);
+      }
+    });
   }
+  
+
   annuler(){
     this.router.navigate(['mes-demandes', this.currentDemandeur.id])
   }
 
-  onImageUpload($event: Event) {
-    // @ts-ignore
-    if(event.target.files && event.target.files.length) {
-      // @ts-ignore
-      this.uploadedImage = event.target.files[0];
-      // @ts-ignore
-      if (this.uploadedImage.size>2000000){
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Veuillez choisir un fichier de moins de 2Mo.",
-          showConfirmButton: false,
-          timer: 6000
-        })
 
-        // @ts-ignore
-        document.getElementById("file").value= null;
-        // @ts-ignore
-        document.getElementById("fonction").value= null;
-      }
-      else if(!this.uploadedImage.type.includes("application/pdf") && !this.uploadedImage.type.includes("image/")){
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Veuillez choisir un fichier image ou pdf.",
-          showConfirmButton: false,
-          timer: 6000
-        })
 
-        // @ts-ignore
-        document.getElementById("file").value= null;
-        // @ts-ignore
-        document.getElementById("fonction").value= null;
+  listDemande() {
+    this.demandeurService.getByNin1({nin: localStorage.getItem("nin") as string}).subscribe({
+      next:(data)=>{
+        this.router.navigate(['/mes-demandes', data.id])
       }
-      else{
-        this.isImageUpdated =true;
+    })
+  }
+
+
+
+  onImageUploads($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    if (target.files && target.files.length) {
+      this.uploadedImages = Array.from(target.files); // Conversion en tableau
+      console.log("Nombre de fichiers sélectionnés :", this.uploadedImages.length);
+  
+      // Assurez-vous que `uploadedImages` contient au moins un fichier
+      if (this.uploadedImages.length > 0) {
+        this.uploadedImage = this.uploadedImages[0]; // Premier fichier sélectionné
+  
+        // Aperçu de l'image
+        this.isImageUpdated = true;
         const reader = new FileReader();
         reader.readAsDataURL(this.uploadedImage);
         reader.onload = () => {
           this.myImage = reader.result as string;
         };
+  
+        console.log("Fichier prêt à être uploadé :", this.uploadedImage.name);
       }
-
+    } else {
+      console.warn("Aucun fichier sélectionné");
     }
   }
+
+  loadRegions() {
+    this.regionDepartementService.getAllRegions().subscribe(
+      (data) => {
+        this.regions = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des régions', error);
+      }
+    );
+  }
+
+  onRegionSelected(event: any) {
+    const regionId = event.target.value;
+    if (regionId) {
+      this.isSelect = true;
+      this.regionDepartementService.getDepartementsByRegionId(regionId).subscribe(
+        (data) => {
+          this.departements = data;
+        },
+        (error) => {
+          console.error('Erreur lors du chargement des départements', error);
+        }
+      );
+    } else {
+      this.isSelect = false;
+      this.departements = [];
+    }
+  }
+  
+
 }

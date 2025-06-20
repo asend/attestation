@@ -1,0 +1,111 @@
+<app-nav></app-nav>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+</head>
+<body>
+    <div class="container">
+   
+    	<div class="row">
+            <div class="col-lg col-md ml-auto mr-auto">
+            <h2>Liste des Traitants</h2>
+                <div class="responsive">
+                    <button type="button" rel="tooltip" class="btn b1 btn-success" data-original-title="" title="">
+                        <a routerLink="/add-admin" class="aaa bb">Ajouter</a>
+                    </button>
+                    <!-- <button  type="button" rel="tooltip" class="btn b2 btn-success" data-original-title="" title="">
+                        <a routerLink="/add-titre" class="aa bb">Ajouter Un Titre</a>
+                </button> -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Télephone</th>
+                            <th>Email</th>
+                            <th>NIN</th>
+                            <th>Titre</th>
+                            <th>Signature</th>
+                            <th class="float-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let users of utilisateurDto">
+                            <td>{{users.prenom}}</td>
+                            <td>{{users.nom}}</td>
+                            <td>{{users.telephone}}</td>
+                            <td>{{users.email}}</td>
+                            <td>{{users.nin}}</td>
+                            <td>{{users.titre}}</td>
+                             <td class="float-center">
+                                <img src= "{{urlimage+'/api/uploads/loadImageTraitant/'+users.id}}"  width='80%' height='100px' alt="">
+                             </td>
+                            <td class="td">
+                                <img  [routerLink]="['/update-admin',users.id]"src="/assets/editer (3).png" width="40px" height="45px" alt="">
+                                <img *ngIf="users.id" (click)="deleteTraitant(users.id)" src="/assets/supprimer.png" width="30px" height="30px" alt="">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+
+
+
+                <section>
+                    <div>
+                        <div class="row container">
+                            <!-- col-1 -->
+                            <div class="col-sm-4 offset-1">
+                              <div class="">
+                                    <form (ngSubmit)="saveTitre()">
+                                        <label class="form-label" for="titre"><h4>Ajouter un titre</h4></label>
+                                        <input id="titre" [(ngModel)]="titre.titre"  class="form-control" name="titre" placeholder="saisir le titre" required />
+                                        <button type="submit" class="btn b1 btn-primary" style="color: white;">Ajouter</button>
+                                        <!-- <button class="btn b1 btn-warning"><a (click)="retour()">retour</a></button> -->
+                                      </form>
+                              </div>
+                            </div>
+                    
+                    
+                            <!-- col-2 -->
+                            <div class="col-sm-6 offset-1">
+                                <h2>Les titres</h2>
+                                <div class="card">
+                                  <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th>#</th>
+                                        <th>Titre</th>
+                                        <th>action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let titre of titreDTO">
+                                        <td >{{titre.id}}</td>
+                                        <td>{{titre.titre}}</td>
+                                        <td>
+                                          <img *ngIf="titre.id" (click)="deleteTitre(titre.id)" src="/assets/supprimer.png" width="25px" height="25px" alt="">
+                    
+                                          <!-- <button *ngIf="titre.id" class="btn b2 btn-danger" (click)="deleteTitre(titre.id)" >Supprimer</button> -->
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                          </div>
+                    
+                      </div>
+                </section>
+</body>
+<app-footer></app-footer>

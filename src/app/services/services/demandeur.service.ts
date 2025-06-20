@@ -206,4 +206,20 @@ export class DemandeurService extends BaseService {
     );
   }
 
+
+  private baseUrl = 'http://localhost:8080'; // Adaptez l'URL si besoin
+
+
+  updateMatriculeSolde(id: number, matriculeSolde: string): Observable<number> {
+    const payload = { matriculeSolde: matriculeSolde };
+    const url = `${this.baseUrl}/api/demandeur/update-matricule-solde/${id}`;
+  
+    console.log("URL de la requête :", url);
+    console.log("Payload envoyé :", payload);
+  
+    return this.http.put<number>(url, payload);
+  }
+  
+
+
 }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import { HttpClient, HttpContext } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -41,6 +41,16 @@ export class AttestationService extends BaseService {
     return this.generate$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
+  }
+
+  generatePdfRejet(idUser: number, idDemandeur: number, idDemande: number, idStructure: number): Observable<number> {
+    const params = new HttpParams()
+      .set('idUser', idUser.toString())
+      .set('idDemandeur', idDemandeur.toString())
+      .set('idDemande', idDemande.toString())
+      .set('idStructure', idStructure.toString());
+
+    return this.http.get<number>(`${this.rootUrl}/api/attestation/pdf_rejet`, { params });
   }
 
 }

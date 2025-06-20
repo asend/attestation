@@ -8,5 +8,7 @@ export interface RegistrationRequest {
   passePort?: string;
   password: string;
   prenom: string;
+  signature?: string;
   status?: string;
+  titre?: string;
 }

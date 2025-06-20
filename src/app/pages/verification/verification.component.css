@@ -5,5 +5,65 @@
   padding: 0px;
 }
 table{
-  background-color: #f2f2f2f2;
+  /* background-color: #f6f3f3f2; */
+  padding: 30px;
+}
+.bbt{
+  border: none;
+  background: transparent;
+}
+th{
+  font-size: 18px;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); 
+  width: 35%;
+  height: auto; 
+  padding: 60px;
+}
+
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  /* color: #aaa; */
+  color: black;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal .btn-danger{
+  margin: 20px;
+}
+.modal textarea{
+  margin: 25px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+input{
+  padding: 25px;
 }

@@ -13,6 +13,8 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class QrCodeComponent implements OnInit {
 
   currentDemande: DemandeDto={};
+  datexpiration: any;
+  validate = true;
 
   urlSafe: any
   constructor(
@@ -26,9 +28,15 @@ export class QrCodeComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.ac.snapshot.params['code'])
     console.log(this.ac.snapshot.params['code'])
+    let currentDate = new Date();
     this.demandeService.getByQrCode({code: this.ac.snapshot.params['code']}).subscribe({
       next:(data)=>{
         this.currentDemande = data
+        this.datexpiration = data.dateexpiration
+        if(data > this.datexpiration){
+          this.validate = true
+        }
+        this.validate = false
         
       }
     })

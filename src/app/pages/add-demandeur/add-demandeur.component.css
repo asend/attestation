@@ -1,30 +1,34 @@
-fieldset {
+/* fieldset {
   margin-top: 25px;
   margin-bottom: 25px;
 }
-fieldset > legend {
-  background-color: #f2f2f2!important;
+legend {
+  color: black;
+  padding: 3px 6px;
+  font-size: 17px;
 }
-
 .row > button {
   margin-right: 20px;
 }
+
 form{
-  background-color: #f2f2f2;
-  padding: 60px;
-  border-radius: 20px 20px 20px 20px;
-  box-shadow: 20px 20px 40px 8px rgba(80, 80, 82, 0.8);
+  padding: 20px;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 0px 5px 5px 5px #bdbfbe;
   border: 1.5rem solid white;
 }
+
 h3{
-  text-align: center;
-  background-color: rgb(255, 255, 255);
   text-transform: uppercase;
-  padding: 10px;
-  margin-bottom: 20px;
-  font-size: 20px;
-  letter-spacing: 2px;
-  border: 1px solid rgb(227, 225, 225);
+  margin-bottom: 40px;
+  text-align: center;
+  font-weight: 300;
+  background-color: #495057;
+  padding: 2px;
+   border-radius: 5px 5px 5px 5px;
+   color: white;
+   font-size: 20px;
+   border:  1px solid #fcebb6;
 }
 h5{
   margin-bottom: 50px;
@@ -35,3 +39,257 @@ h5{
   color: #545353;
 
 }
+
+
+
+.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+
+
+
+
+
+.file-previews-container {
+  display: flex;
+  flex-wrap: nowrap; 
+  gap: 10px; 
+  overflow-x: auto; 
+  padding: 10px 0;
+}
+
+
+.file-preview iframe {
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+  object-fit: cover; 
+}
+
+ */
+
+
+
+
+/* 
+ .reservation-form {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+ }
+ 
+ 
+ .reservation-form .heading {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+ }
+ 
+ 
+ .reservation-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+ }
+ 
+ 
+ .reservation-form .controls {
+  position: relative;
+ }
+ 
+ 
+ .reservation-form .controls input,
+ .reservation-form .controls textarea {
+  width: 100%;
+  padding: 12px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: none;
+  outline: none;
+ }
+ 
+ 
+ .reservation-form .controls input:focus,
+ .reservation-form .controls textarea:focus {
+  border-color: #007bff;
+ }
+ 
+ 
+ .reservation-form .controls input:focus + label,
+ .reservation-form .controls input:not(:placeholder-shown) + label,
+ .reservation-form .controls textarea:focus + label,
+ .reservation-form .controls textarea:not(:placeholder-shown) + label {
+  top: -10px;
+  left: 8px;
+  font-size: 12px;
+  background: white;
+  padding: 0 4px;
+  color: #007bff;
+ }
+ 
+ 
+ .reservation-form .controls textarea {
+  resize: vertical;
+ }
+ 
+ 
+ .reservation-form .controls label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #777;
+  transition: 0.2s;
+  pointer-events: none;
+  background: white;
+ }
+ 
+ 
+ .reservation-form button {
+  padding: 12px;
+  font-size: 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ }
+ 
+ 
+ .reservation-form button:hover {
+  background: #0056b3;
+ }
+  */
+
+
+
+  /* === Flottant Label Style === */
+.floating-form {
+  /* max-width: 800px; */
+  margin: auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.floating-form h3 {
+  margin-bottom: 1rem;
+}
+
+.floating-form .form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-form .form-group input,
+.floating-form .form-group select,
+.floating-form .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: none;
+  outline: none;
+}
+
+.floating-form .form-group textarea {
+  resize: vertical;
+}
+
+.floating-form .form-group label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #777;
+  background: white;
+  padding: 0 4px;
+  transition: 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.floating-form .form-group input:focus + label,
+.floating-form .form-group input:not(:placeholder-shown) + label,
+.floating-form .form-group textarea:focus + label,
+.floating-form .form-group textarea:not(:placeholder-shown) + label,
+.floating-form .form-group select:focus + label,
+.floating-form .form-group select:not([value=""]) + label {
+  top: -10px;
+  left: 8px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+.floating-form .btn {
+  /* padding: 12px; */
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.floating-form .btn-success {
+  background-color: green;
+  border: none;
+  color: white;
+}
+
+.floating-form .btn-success:hover {
+  background-color: green;
+}
+
+
+
+
+
+
+.form-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.form-sections fieldset {
+  flex: 1;
+  min-width: 300px;
+  border: 1px solid #ccc;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.form-sections legend {
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0 8px;
+  margin-left: 1rem;
+  color: #007bff;
+}
+
+h5{
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: -10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+input[readonly] {
+  background-color: #e9ecef!important; /* gris clair */
+  cursor: not-allowed;       /* icône interdite */
+  border-color: #ced4da;     /* bordure discrète */
+}
+
+
+
+
+.container {
+  background-image: url('/assets/images/form-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+

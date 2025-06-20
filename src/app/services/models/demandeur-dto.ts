@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Demande } from '../models/demande';
+import { FileUpload } from '../models/file-upload';
 import { UtilisateurDto } from '../models/utilisateur-dto';
 export interface DemandeurDto {
   adresse: string;
@@ -9,6 +10,7 @@ export interface DemandeurDto {
   demandeDTO?: Demande;
   displayPicture?: Array<string>;
   email?: string;
+  fieluploads?: Array<FileUpload>;
   fonction?: string;
   fullName?: string;
   id?: number;
@@ -23,4 +25,7 @@ export interface DemandeurDto {
   type?: string;
   userId?: number;
   utilisateurDTO?: UtilisateurDto;
+  region?: string;
+  departement?: string;
+  matriculeSolde?: string;
 }

@@ -6,6 +6,9 @@ export class User {
   email!: string;
   username!: string;
   password!: string;
+  titre!: string;
+  signature!: string;
+  telephone!:string;
   roles!: string[]
 
 }

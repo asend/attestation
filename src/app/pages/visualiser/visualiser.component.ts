@@ -19,9 +19,6 @@ export class VisualiserComponent implements OnInit {
 
   ngOnInit(): void {
     this.urlSafe = this.santizer.bypassSecurityTrustResourceUrl(  this.apiUrl.rootUrl +"/api/uploads/loadAttestation/"+this.ac.snapshot.params['id']);
- 
-
-    
 
 
   }
