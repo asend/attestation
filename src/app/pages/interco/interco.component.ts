@@ -22,7 +22,10 @@ export class IntercoComponent implements OnInit {
   file!: File;
   id!: number;
   allData: any;
-  idDemandeur: DemandeurDto = {adresse: '', lieudenaissance: '', sexe: '', telephone: ''};
+  idDemandeur: DemandeurDto = {
+    adresse: '', lieudenaissance: '', sexe: '', telephone: '',
+    datedenaissance: ''
+  };
   loading: boolean = false;
 
   intercoDTO: IntercoDto = {prenom:"", nom:"", email:"", nin:"", telephone:"", datedenaissance:"", lieudenaissance:"", adresse:"", sexe:"", fonction:"", password:"", scannernin:"", confirmemail:""};

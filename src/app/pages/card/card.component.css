@@ -88,7 +88,7 @@ a {
   padding: 10px;
   border-radius: 10px;
   color: gray;
-  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 1px, grey 0px 10px 4px -1px, green 0px 1px 0px inset;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 1px, grey 0px 5px 2px -1px, green 0px 1px 0px inset;
 }
 .clred :hover {
   animation: pulse 1.5s infinite;
@@ -102,7 +102,7 @@ a {
   color: orange;
   padding: 10px;
   border-radius: 10px;
-  box-shadow: orange 0px 0px 0px 1px, orange 0px 8px 4px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  box-shadow: orange 0px 0px 0px 1px, orange 0px 5px 2px  -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 .clgreen :hover {
   animation: pulse 1.5s infinite;
@@ -115,7 +115,7 @@ a {
   padding: 10px;
   color: green;
   border-radius: 10px;
-  box-shadow: green 0px 0px 0px 1px, green 0px 8px 4px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  box-shadow: green 0px 0px 0px 1px, green 0px 5px 2px  -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 
 }
 .clwhite :hover {
@@ -129,7 +129,7 @@ a {
   padding: 10px;
   color: red;
   border-radius: 10px;
-  box-shadow: red 0px 0px 0px 1px, red 0px 8px 4px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  box-shadow: red 0px 0px 0px 1px, red 0px 5px 2px  -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 
 }
 .clyellow :hover {

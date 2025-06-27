@@ -15,7 +15,10 @@ import { RegionDepartementService } from 'src/app/services/services/region-depar
 })
 export class UpdateDemandeurComponent implements OnInit {
 
-  currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: "", region: "", departement: ""}
+  currentDemandeur: DemandeurDto = {
+    adresse: "", lieudenaissance: "", sexe: "", telephone: "", region: "", departement: "",
+    datedenaissance: ''
+  }
   // urlSafe: any;
   loading: boolean = false;
 

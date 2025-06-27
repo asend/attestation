@@ -9,6 +9,7 @@ export interface InfoStatistique{
   textcolor?: 'clwhite' | 'clred' | 'clgreen' | 'clyellow';
   statuscolor?: 'encourblue' | 'approuedgreen' | 'rejectred';
   icons?:'iconapprouved' | 'iconrejected' | 'iconencours' | 'icontout';
+  icon?: 'fas fa-layer-group text-dark' | 'fas fa-spinner fa-spin text-primary' | 'fas fa-check-circle text-success' | 'fas fa-times-circle text-danger' ;
 }
 @Component({
   selector: 'app-card',

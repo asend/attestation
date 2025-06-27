@@ -71,7 +71,9 @@ import { IntercoComponent } from './pages/interco/interco.component';
         UpdateTitreComponent,
         FilterPipe,
         CapitalizePipe,
-        IntercoComponent
+        IntercoComponent,
+
+        
     ],
     imports: [
         BrowserModule,
@@ -96,7 +98,6 @@ import { IntercoComponent } from './pages/interco/interco.component';
       }
     ],
     exports: [
-
     ],
     bootstrap: [AppComponent]
 })

@@ -5,6 +5,7 @@ import { ApiConfiguration } from 'src/app/services/api-configuration';
 import { TitreDto, UtilisateurDto } from 'src/app/services/models';
 import { ProfileService, TitreService } from 'src/app/services/services';
 import { UtilisateurService } from 'src/app/services/services/utilisateur.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-superamdin',
@@ -18,7 +19,8 @@ export class SuperamdinComponent implements OnInit {
   valid: boolean = true;
   currentUtilisteur: UtilisateurDto={};
   // urlimage: string = "http://localhost:8080";
-  urlimage: string = 'https://api.demarche.mfprsp.com';
+  // urlimage: string = 'https://api.demarche.mfprsp.com';
+  urlimage: string = environment.apiUrl;
   
 
   titre: TitreDto = {titre: ""};

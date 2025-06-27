@@ -24,7 +24,10 @@ export class AddDemandeurComponent implements OnInit {
   
 [x: string]: any;
 
-  demandeurDto: DemandeurDto = { adresse: "", lieudenaissance: "", sexe: "", telephone: "" };
+  demandeurDto: DemandeurDto = {
+    adresse: "", lieudenaissance: "", sexe: "", telephone: "",
+    datedenaissance: ''
+  };
   demandeurForm!: FormGroup;
   user: UtilisateurDto = {};
   myImage!: string;
@@ -139,55 +142,121 @@ getUtilsateut(id: number) {
     });
   }
  
+  formatDateToDDMMYYYY(dateStr: string): string {
+    const date = new Date(dateStr);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`; // format attendu par Spring Boot
+  }
+  
+  
 
+  async onCreate() {
+    if (this.demandeurForm.invalid) {
+      this.demandeurForm.markAllAsTouched();
+      return;
+    }
+  
+    if (!this.uploadedImages || this.uploadedImages.length === 0) {
+      Swal.fire({ icon: "error", title: "Veuillez ajouter un fichier." });
+      return;
+    }
+  
+    const firstFile = this.uploadedImages[0];
+    if (firstFile.size > 4000000) {
+      Swal.fire({ icon: "error", title: "Fichier trop volumineux (max 4Mo)." });
+      return;
+    }
+  
+    if (!firstFile.type.includes("application/pdf") && !firstFile.type.includes("image/")) {
+      Swal.fire({ icon: "error", title: "Fichier non supporté." });
+      return;
+    }
+  
+    this.loading = true;
+  
+    const rawValue = this.demandeurForm.value;
+  
+    // 🟠 Formater la date vers "dd-MM-yyyy"
+    const formattedDate = this.formatDateToDDMMYYYY(rawValue.datedenaissance);
+  
+    const demandeur: DemandeurDto = {
+      ...rawValue,
+      datedenaissance: formattedDate,
+      nin: localStorage.getItem("nin")!,
+    };
+  
+    console.log('Payload envoyé au backend :', demandeur);
+  
+    this.demandeurService.incription({ body: demandeur }).subscribe({
+      next: (data) => {
+        this.loading = false;
+  
+        for (let i = 0; i < this.uploadedImages.length; i++) {
+          const file = this.uploadedImages[i];
+          this.imageService.uploadImageDemandeur(file, '', Number(data)).subscribe();
+        }
+  
+        Swal.fire({ icon: "success", title: "Informations enregistrées." }).then(() => {
+          this.router.navigate(['mes-demandes', data]);
+        });
+      },
+      error: () => {
+        this.loading = false;
+        Swal.fire({ icon: "error", title: "Échec lors de l'enregistrement." });
+      }
+    });
+  }
+  
   
 
 
 
-async onCreate() {
-  if (this.demandeurForm.invalid) {
-    this.demandeurForm.markAllAsTouched();
-    return;
-  }
+// async onCreate() {
+//   if (this.demandeurForm.invalid) {
+//     this.demandeurForm.markAllAsTouched();
+//     return;
+//   }
 
-  if (!this.uploadedImages || this.uploadedImages.length === 0) {
-    Swal.fire({ icon: "error", title: "Veuillez ajouter un fichier." });
-    return;
-  }
+//   if (!this.uploadedImages || this.uploadedImages.length === 0) {
+//     Swal.fire({ icon: "error", title: "Veuillez ajouter un fichier." });
+//     return;
+//   }
 
-  const firstFile = this.uploadedImages[0];
-  if (firstFile.size > 4000000) {
-    Swal.fire({ icon: "error", title: "Fichier trop volumineux (max 4Mo)." });
-    return;
-  }
+//   const firstFile = this.uploadedImages[0];
+//   if (firstFile.size > 4000000) {
+//     Swal.fire({ icon: "error", title: "Fichier trop volumineux (max 4Mo)." });
+//     return;
+//   }
 
-  if (!firstFile.type.includes("application/pdf") && !firstFile.type.includes("image/")) {
-    Swal.fire({ icon: "error", title: "Fichier non supporté." });
-    return;
-  }
+//   if (!firstFile.type.includes("application/pdf") && !firstFile.type.includes("image/")) {
+//     Swal.fire({ icon: "error", title: "Fichier non supporté." });
+//     return;
+//   }
 
-  this.demandeurDto.nin = localStorage.getItem("nin")!;
-  this.loading = true;
+//   this.demandeurDto.nin = localStorage.getItem("nin")!;
+//   this.loading = true;
 
-  this.demandeurService.incription({ body: this.demandeurDto }).subscribe({
-    next: (data) => {
-      this.loading = false;
+//   this.demandeurService.incription({ body: this.demandeurDto }).subscribe({
+//     next: (data) => {
+//       this.loading = false;
 
-      for (let i = 0; i < this.uploadedImages.length; i++) {
-        const file = this.uploadedImages[i];
-        this.imageService.uploadImageDemandeur(file, '', Number(data)).subscribe();
-      }
+//       for (let i = 0; i < this.uploadedImages.length; i++) {
+//         const file = this.uploadedImages[i];
+//         this.imageService.uploadImageDemandeur(file, '', Number(data)).subscribe();
+//       }
 
-      Swal.fire({ icon: "success", title: "Informations enregistrées." }).then(() => {
-        this.router.navigate(['mes-demandes', data]);
-      });
-    },
-    error: () => {
-      this.loading = false;
-      Swal.fire({ icon: "error", title: "Échec lors de l'enregistrement." });
-    }
-  });
-}
+//       Swal.fire({ icon: "success", title: "Informations enregistrées." }).then(() => {
+//         this.router.navigate(['mes-demandes', data]);
+//       });
+//     },
+//     error: () => {
+//       this.loading = false;
+//       Swal.fire({ icon: "error", title: "Échec lors de l'enregistrement." });
+//     }
+//   });
+// }
 
 
 convertToBase64(file: File): Promise<string> {

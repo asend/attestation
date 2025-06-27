@@ -17,7 +17,8 @@ export interface DemandeDto {
   urlattestation?: string;
   validite?: boolean;
   motifrejet?: string;
-
+  startTime?: string;
+  tempsEcoule?: string;
   
 }
 

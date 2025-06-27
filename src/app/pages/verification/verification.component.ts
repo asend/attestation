@@ -38,12 +38,15 @@ export class VerificationComponent implements OnInit {
     adresse: '',
     lieudenaissance: '',
     sexe: '',
-    telephone: ''
+    telephone: '',
   };
 
 
   // currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: ""}
-  currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: ""}
+  currentDemandeur: DemandeurDto = {
+    adresse: "", lieudenaissance: "", sexe: "", telephone: "",
+    datedenaissance: ''
+  }
 
   urlSafe: any;
   images: any[] = [];
@@ -61,6 +64,8 @@ export class VerificationComponent implements OnInit {
   loadingMatriculeSolde: boolean = false;
 
   uploadedImages!: File[];
+
+  
 
 
   // isIframeVisible: number | null = null;
@@ -94,12 +99,22 @@ export class VerificationComponent implements OnInit {
         this.currentDemande = data;
         this.demandeId = data.id; 
         // alert("this.currentDemande.demandeurDTO?.utilisateurDTO?.id! " + this.currentDemande.demandeurDTO?.id );
-
+        
         console.log("currentDemande " + data.demandeurDTO?.id);
         
       }
     })
   }
+
+  formatDateToDDMMYYYY(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+  
 
 
   openModal() {
@@ -446,6 +461,29 @@ export class VerificationComponent implements OnInit {
      }
     })
   }
+
+  clickToRejetPdf() {
+    Swal.fire({
+      title: 'Souhaitez-vous Rejeter cette demande ?',
+      showDenyButton: true,
+      showCancelButton: false,  // Disable the Cancel button
+      confirmButtonText: 'oui',
+      denyButtonText: 'non',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onRejectDemande();
+      } else {
+        this.router.navigate(['/verification', this.id]);
+      }
+    });
+  }
+  
+  
 
 
   RejectDefinitif() {
