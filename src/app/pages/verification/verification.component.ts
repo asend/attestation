@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SendMailService} from "../../services/services/send-mail.service";
 import {AttestationService} from "../../services/services/attestation.service";
@@ -13,6 +13,7 @@ import { DemandeurService, UtilisateurService } from 'src/app/services/services'
 import { DemandeurDto } from 'src/app/services/models/demandeur-dto';
 import { UtilisateurDto } from 'src/app/services/models';
 import { environment } from 'src/environments/environment';
+import { TimerComponent } from '../timer/timer.component';
 
 @Component({
   selector: 'app-verification',
@@ -20,6 +21,9 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./verification.component.css']
 })
 export class VerificationComponent implements OnInit {
+
+  @ViewChild(TimerComponent)
+  timerComponent!: TimerComponent;
 
   isModalOpen: boolean = false;
   isModalMatriculeOpen: boolean = false;
@@ -38,12 +42,15 @@ export class VerificationComponent implements OnInit {
     adresse: '',
     lieudenaissance: '',
     sexe: '',
-    telephone: ''
+    telephone: '',
   };
 
 
   // currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: ""}
-  currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: ""}
+  currentDemandeur: DemandeurDto = {
+    adresse: "", lieudenaissance: "", sexe: "", telephone: "",
+    datedenaissance: ''
+  }
 
   urlSafe: any;
   images: any[] = [];
@@ -61,6 +68,8 @@ export class VerificationComponent implements OnInit {
   loadingMatriculeSolde: boolean = false;
 
   uploadedImages!: File[];
+
+  
 
 
   // isIframeVisible: number | null = null;
@@ -94,12 +103,22 @@ export class VerificationComponent implements OnInit {
         this.currentDemande = data;
         this.demandeId = data.id; 
         // alert("this.currentDemande.demandeurDTO?.utilisateurDTO?.id! " + this.currentDemande.demandeurDTO?.id );
-
+        
         console.log("currentDemande " + data.demandeurDTO?.id);
         
       }
     })
   }
+
+  formatDateToDDMMYYYY(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+  
 
 
   openModal() {
@@ -145,16 +164,6 @@ export class VerificationComponent implements OnInit {
     });
   }
   
-  
-  //clickRejet() {
-    // const message = "Souhaitez-vous rejeter cette demande? "; 
-    // if (confirm(message)) {
-    //   this.onRejected();
-    // } else {
-    //   window.location.reload();
-    //   this.router.navigate(['/verification',this.id]);
-    // }
-  //}
 
   clickApprouve() {
     Swal.fire({
@@ -170,6 +179,7 @@ export class VerificationComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
+        
         this.onApproved();
       } else {
         this.router.navigate(['/verification', this.id]);
@@ -263,10 +273,6 @@ export class VerificationComponent implements OnInit {
     this.isIframeVisible[imageId] = !this.isIframeVisible[imageId];
   }
 
-
-
-
-
   onUpdate() {
     this.loading = true;
       this.demandeurService.updateDemandeur({body: this.currentDemandeur}).subscribe({
@@ -280,63 +286,6 @@ export class VerificationComponent implements OnInit {
       })
   }
 
-
-  // updateMotifRejet() {
-  //   this.loadingMotifReject = true;
-  //   this.demandeService.updateMotifRejet(this.currentDemande.id as number, this.currentDemande.motifrejet as string).subscribe({
-  //     next: (response) => {
-  //       this.loadingMotifReject = false;
-  //       console.log('Mise à jour réussie, ID:', response);
-  //       this.router.navigate(['verification/', this.currentDemande.id]);
-  //     },
-  //     error: (error) => {
-  //       this.loadingMotifReject = false;
-  //       console.error('Erreur lors de la mise à jour', error);
-  //     }
-  //   });
-  // }
-
-
-  // onMotifRejet() {
-  //   this.loadingMotifReject = true;
-  //   this.demandeService.updateMotifRejet(this.currentDemande.id as number, this.currentDemande.motifrejet as string).subscribe({
-  //     next: (response) => {
-  //       this.loadingMotifReject = false;
-  //       console.log('Mise à jour réussie, ID:', response);
-  //       Swal.fire({
-  //         title: 'Souhaitez-vous rejeter cette demande ?',
-  //         showDenyButton: true, 
-  //         showCancelButton: false,
-  //         confirmButtonText: 'oui', 
-  //         denyButtonText: 'non', 
-  //         customClass: {
-  //           actions: 'my-actions',
-  //           confirmButton: 'order-2', 
-  //           denyButton: 'order-3',  
-  //         },
-  //       }).then(() => {
-  //         this.rejectInternet(this.currentDemande);  
-  //         this.router.navigate(['/traitant/dashboard']);
-  //       });
-  //     },
-  //     error: (error) => {
-  //       this.loadingMotifReject = false;
-  //       console.error('Erreur lors de la mise à jour', error);
-        
-        
-  //       Swal.fire({
-  //         position: 'center',
-  //         icon: 'error',
-  //         title: 'Motif rejet non envoyé.',
-  //         showConfirmButton: true, 
-          
-  //       }).then(()=>{
-  //         this.closeModal();
-  //         this.router.navigate(['/traitant/dashboard']);
-  //       });
-  //     }
-  //   });
-  // }
 
   onMotifRejet() {
     Swal.fire({
@@ -391,9 +340,6 @@ export class VerificationComponent implements OnInit {
     });
   }
   
-
-
-
   onUpdateMatriculeSolde() {
     this.loadingMatriculeSolde = true;
   
@@ -447,6 +393,27 @@ export class VerificationComponent implements OnInit {
     })
   }
 
+  clickToRejetPdf() {
+    Swal.fire({
+      title: 'Souhaitez-vous Rejeter cette demande ?',
+      showDenyButton: true,
+      showCancelButton: false,  // Disable the Cancel button
+      confirmButtonText: 'oui',
+      denyButtonText: 'non',
+      customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onRejectDemande();
+      } else {
+        this.router.navigate(['/verification', this.id]);
+      }
+    });
+  }
+  
 
   RejectDefinitif() {
     const matricule = this.currentDemandeur.matriculeSolde?.trim();
@@ -482,7 +449,21 @@ export class VerificationComponent implements OnInit {
   }
   
   
+  UpdateTempsEcouler() {
+    this.demandeService.updateTempsEcoule(this.currentDemande.id as number,this.currentDemande.tempsEcoule as string
+    ).subscribe({
+      next: (response) => {
+        console.log(response);
+        console.log("temps ecoulee" + this.currentDemande.tempsEcoule);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du motif de rejet', err);
+      }
+    });
+  }
 
+
+  
 
 
 }

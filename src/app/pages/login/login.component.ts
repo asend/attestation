@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
 
   // }
 
+  
   onLoggedin() {
     this.loading = true;
     console.log(this.user);
@@ -72,7 +73,11 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['traitant/dashboard']);
           }else if(decodedToken.profile ==='admin'){
             this.router.navigate(['admin/dashboard']);
-          }else{
+          }else if(decodedToken.profile ==='consultant'){
+            this.router.navigate(['statistiques']);
+
+          }
+          else{
             this.router.navigate(['access-denied']);
           }
       },

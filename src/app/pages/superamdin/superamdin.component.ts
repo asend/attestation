@@ -5,6 +5,7 @@ import { ApiConfiguration } from 'src/app/services/api-configuration';
 import { TitreDto, UtilisateurDto } from 'src/app/services/models';
 import { ProfileService, TitreService } from 'src/app/services/services';
 import { UtilisateurService } from 'src/app/services/services/utilisateur.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-superamdin',
@@ -14,11 +15,13 @@ import { UtilisateurService } from 'src/app/services/services/utilisateur.servic
 export class SuperamdinComponent implements OnInit {
 
   utilisateurDto: UtilisateurDto[] = [];
+  utilisateurDtoConsultant: UtilisateurDto[] = []; 
   urlSafe: any;
   valid: boolean = true;
   currentUtilisteur: UtilisateurDto={};
   // urlimage: string = "http://localhost:8080";
-  urlimage: string = 'https://api.demarche.mfprsp.com';
+  // urlimage: string = 'https://api.demarche.mfprsp.com';
+  urlimage: string = environment.apiUrl;
   
 
   titre: TitreDto = {titre: ""};
@@ -48,6 +51,7 @@ export class SuperamdinComponent implements OnInit {
     this.getUtilisateurByProfile();
     this.getUrl();
     this.getAllTitre();
+    this.getUtilisateurConsultant();
 
   }
 
@@ -55,6 +59,16 @@ getUtilisateurByProfile() {
   this.auth.getByProfileCode({code: 'traitant'}).subscribe({
     next: (data: UtilisateurDto[]) => {
       this.utilisateurDto = data; 
+    },
+  
+  });
+}
+
+
+getUtilisateurConsultant() {
+  this.auth.getByProfileCode({code: 'consultant'}).subscribe({
+    next: (data: UtilisateurDto[]) => {
+      this.utilisateurDtoConsultant = data; 
     },
   
   });

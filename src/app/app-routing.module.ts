@@ -26,6 +26,15 @@ import { AddProfileComponent } from './pages/administrateur/add-profile/add-prof
 import { ListeTraitantComponent } from './pages/administrateur/liste-traitant/liste-traitant.component';
 import { AddTitreComponent } from './pages/add-titre/add-titre.component';
 import { IntercoComponent } from './pages/interco/interco.component';
+import { VionnageComponent } from './pages/vionnage/vionnage.component';
+import { ConsultantComponent } from './pages/consultant/consultant.component';
+import { ConsultantListComponent } from './pages/consultant-list/consultant-list.component';
+import { StatistiqueComponent } from './pages/statistique/statistique.component';
+import { StatistiqueDepartmentComponent } from './pages/statistique-department/statistique-department.component';
+import { TimerComponent } from './pages/timer/timer.component';
+import { SlideMenuComponent } from './pages/slide-menu/slide-menu.component';
+import { SideBarComponent } from './pages/side-bar/side-bar.component';
+// import { StatistiqueMapComponent } from './pages/statistique-map/statistique-map.component';
 
 const routes: Routes = [
   // {path: 'connexion', component:LoginComponent,canActivate:[AccessGuard]},
@@ -48,6 +57,16 @@ const routes: Routes = [
   {path: 'add-admin', component:AddadminComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
   {path: 'update-admin/:id', component:UpdateadminComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
   {path: 'add-titre', component:AddTitreComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
+  {path: 'consultant', component: ConsultantComponent},
+  {path: 'list-consultant', component: ConsultantListComponent},
+  {path: 'statistiques', component: StatistiqueComponent},
+  {path: 'menu', component: SideBarComponent},
+
+
+  {path: 'statistiques-department', component: StatistiqueDepartmentComponent},
+  {path: 'timer', component: TimerComponent},
+
+
 
   // {path: 'add-profile', component:AddProfileComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},
   // {path: 'update-profile/:id', component:UpdateProfileComponent, canActivate:[TokenGuardGuard,AdminGuardGuard]},

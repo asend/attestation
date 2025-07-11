@@ -37,6 +37,7 @@ import { ResetPasswordRequest$Params } from '../fn/utilisateur/reset-password-re
 import { updateTraitant } from '../fn/utilisateur/update-traitant';
 import { UpdateTraitant$Params } from '../fn/utilisateur/update-traitant';
 import { UtilisateurDto } from '../models/utilisateur-dto';
+import { RegistrationRequest } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class UtilisateurService extends BaseService {
@@ -371,6 +372,10 @@ export class UtilisateurService extends BaseService {
 
   updateMatriculeSolde(id: number, utilisateur: UtilisateurDto): Observable<number> {
     return this.http.put<number>(`${this.rootUrl}/api/utilisateur/update-matricule/${id}`, utilisateur);
+  }
+
+  registerVisionnaire(request: RegistrationRequest): Observable<number> {
+    return this.http.post<number>( `${this.rootUrl}/api/utilisateur/register/visionnaire`, request);
   }
 
 }

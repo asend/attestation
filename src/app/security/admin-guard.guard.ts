@@ -50,7 +50,7 @@ export class AdminGuardGuard implements CanActivate {
       const decodedToken = jwtHelper.decodeToken(token);
   
       // Check if the profile is either 'traitant' or 'admin'
-      if (decodedToken.profile === 'traitant' || decodedToken.profile === 'admin') {
+      if (decodedToken.profile === 'traitant' || decodedToken.profile === 'admin' || decodedToken.profile === 'consultant') {
         return true;
       } else {
         this.router.navigate(['access-denied']);

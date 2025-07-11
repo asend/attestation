@@ -1,0 +1,8 @@
+datedispos= datedemade+24
+disponibledand = datedispos - curenndatetime
+disponibledand = datedemade+24 - curenndatetime
+
+
+if datedemande v + 72
+s = 48h
+

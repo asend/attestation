@@ -1,0 +1,590 @@
+<!-- <app-nav></app-nav>
+
+<button class="btn btn-success m-3">
+    <a routerLink="/statistiques" style="color: white;">statistiques</a>
+</button>
+
+
+<div class="container my-5">
+    <div class="row">
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION DAKAR
+                <select class="form-select w-auto" [(ngModel)]="selectedChartType">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts" [options]="getChartOptionsByTypeDakar(selectedChartType)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION Dakar
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeDiourbel">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeDiourbel(selectedChartTypeDiourbel)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION FATICK
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeFatick">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeFatick(selectedChartTypeFatick)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION Kaffrine
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKaffrine">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeKaffrine(selectedChartTypeKaffrine)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+
+    <div class="row">
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION KAOLACK
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKaolack">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeKaolack(selectedChartTypeKaolack)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION KEDOUGOU
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKedougou">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeKedougou(selectedChartTypeKedougou)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+    </div>
+        <br><br>
+
+
+        <div class="row">
+
+            <div class="col-6">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    LA REGION KOLDA
+                    <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKolda">
+                        <option value="bar">Bar</option>
+                        <option value="pie">Pie</option>
+                        <option value="line">Line</option>
+                    </select>
+                </div>
+                <div class="card shadow rounded" style="height: 65vh;">
+                    <highcharts-chart [Highcharts]="Highcharts"
+                        [options]="getChartOptionsByTypeKolda(selectedChartTypeKolda)"
+                        style="width: 100%; height: 500px; display: block;">
+                    </highcharts-chart>
+                </div>
+            </div>
+    
+            <div class="col-6">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    LA REGION LOUGA
+                    <select class="form-select w-auto" [(ngModel)]="selectedChartTypeLouga">
+                        <option value="bar">Bar</option>
+                        <option value="pie">Pie</option>
+                        <option value="line">Line</option>
+                    </select>
+                </div>
+                <div class="card shadow rounded" style="height: 65vh;">
+                    <highcharts-chart [Highcharts]="Highcharts"
+                        [options]="getChartOptionsByTypeLouga(selectedChartTypeLouga)"
+                        style="width: 100%; height: 500px; display: block;">
+                    </highcharts-chart>
+                </div>
+            </div>
+    
+            <br><br>
+
+    </div>
+
+    <br><br>
+
+
+    <div class="row">
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION MATAM
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeMatam">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeMatam(selectedChartTypeMatam)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                LA REGION SAINT-LOUIS
+                <select class="form-select w-auto" [(ngModel)]="selectedChartTypeSaintLouis">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </div>
+            <div class="card shadow rounded" style="height: 65vh;">
+                <highcharts-chart [Highcharts]="Highcharts"
+                    [options]="getChartOptionsByTypeSaintLouis(selectedChartTypeSaintLouis)"
+                    style="width: 100%; height: 500px; display: block;">
+                </highcharts-chart>
+            </div>
+        </div>
+    </div>
+        <br><br>
+        <div class="row">
+
+            <div class="col-6">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    LA REGION SEDHIOU
+                    <select class="form-select w-auto" [(ngModel)]="selectedChartTypeSedhiou">
+                        <option value="bar">Bar</option>
+                        <option value="pie">Pie</option>
+                        <option value="line">Line</option>
+                    </select>
+                </div>
+                <div class="card shadow rounded" style="height: 65vh;">
+                    <highcharts-chart [Highcharts]="Highcharts"
+                        [options]="getChartOptionsByTypeSedhiou(selectedChartTypeSedhiou)"
+                        style="width: 100%; height: 500px; display: block;">
+                    </highcharts-chart>
+                </div>
+            </div>
+    
+            <div class="col-6">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    LA REGION TAMBACOUNDA
+                    <select class="form-select w-auto" [(ngModel)]="selectedChartTypeTambacounda">
+                        <option value="bar">Bar</option>
+                        <option value="pie">Pie</option>
+                        <option value="line">Line</option>
+                    </select>
+                </div>
+                <div class="card shadow rounded" style="height: 65vh;">
+                    <highcharts-chart [Highcharts]="Highcharts"
+                        [options]="getChartOptionsByTypeTambacounda(selectedChartTypeTambacounda)"
+                        style="width: 100%; height: 500px; display: block;">
+                    </highcharts-chart>
+                </div>
+            </div>
+        </div>
+            <br><br>
+            <div class="row">
+
+                <div class="col-6">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        LA REGION THIES
+                        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeThies">
+                            <option value="bar">Bar</option>
+                            <option value="pie">Pie</option>
+                            <option value="line">Line</option>
+                        </select>
+                    </div>
+                    <div class="card shadow rounded" style="height: 65vh;">
+                        <highcharts-chart [Highcharts]="Highcharts"
+                            [options]="getChartOptionsByTypeThies(selectedChartTypeThies)"
+                            style="width: 100%; height: 500px; display: block;">
+                        </highcharts-chart>
+                    </div>
+                </div>
+        
+                <div class="col-6">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        LA REGION ZIGUINCHOR
+                        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeZiguinchor">
+                            <option value="bar">Bar</option>
+                            <option value="pie">Pie</option>
+                            <option value="line">Line</option>
+                        </select>
+                    </div>
+                    <div class="card shadow rounded" style="height: 65vh;">
+                        <highcharts-chart [Highcharts]="Highcharts"
+                            [options]="getChartOptionsByTypeZiguinchor(selectedChartTypeZiguinchor)"
+                            style="width: 100%; height: 500px; display: block;">
+                        </highcharts-chart>
+                    </div>
+                </div>
+            </div>
+                <br><br>
+
+</div>
+
+    <app-footer></app-footer> -->
+
+
+    <app-nav></app-nav>
+
+<button class="btn btn-success m-3">
+  <a routerLink="/statistiques" style="color: white;">statistiques</a>
+</button>
+
+<div class="container my-5">
+
+  <!-- Selecteur Global -->
+  <div class="row my-4">
+    <div class="col-12">
+      <label for="regionSelect" class="form-label fw-bold">Choisir une région :</label>
+      <select class="form-select w-auto" id="regionSelect" [(ngModel)]="selectedRegion">
+        <option *ngFor="let region of regions" [ngValue]="region">{{ region }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- DAKAR -->
+<div class="row" *ngIf="selectedRegion === 'Dakar'">
+  <div class="col-12">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      LA RÉGION DAKAR
+      <select class="form-select w-auto" [(ngModel)]="selectedChartType">
+        <option value="bar">Bar</option>
+        <option value="pie">Pie</option>
+        <option value="line">Line</option>
+      </select>
+    </div>
+    <div class="card shadow rounded">
+      <highcharts-chart 
+        [Highcharts]="Highcharts"
+        [options]="getChartOptionsByTypeDakar(selectedChartType)"
+        [update]="updateFlag"
+        style="width: 100%; height: 500px; display: block;">
+      </highcharts-chart>
+    </div>
+  </div>
+</div>
+
+  <!-- DIOURBEL -->
+  <div class="row" *ngIf="selectedRegion === 'Diourbel'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION DIOURBEL
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeDiourbel">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeDiourbel(selectedChartTypeDiourbel)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- FATICK -->
+  <div class="row" *ngIf="selectedRegion === 'Fatick'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION FATICK
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeFatick">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeFatick(selectedChartTypeFatick)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- KAFFRINE -->
+  <div class="row" *ngIf="selectedRegion === 'Kaffrine'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION KAFFRINE
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKaffrine">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeKaffrine(selectedChartTypeKaffrine)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- KAOLACK -->
+  <div class="row" *ngIf="selectedRegion === 'Kaolack'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION KAOLACK
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKaolack">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+      <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeKaolack(selectedChartTypeKaolack)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- KÉDOUGOU -->
+  <div class="row" *ngIf="selectedRegion === 'Kédougou'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION KÉDOUGOU
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKedougou">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="getChartOptionsByTypeKedougou(selectedChartTypeKedougou)"
+          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+  <!-- KOLDA -->
+  <div class="row" *ngIf="selectedRegion === 'Kolda'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION KOLDA
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeKolda">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeKolda(selectedChartTypeKolda)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOUGA -->
+  <div class="row" *ngIf="selectedRegion === 'Louga'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION LOUGA
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeLouga">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeLouga(selectedChartTypeLouga)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATAM -->
+  <div class="row" *ngIf="selectedRegion === 'Matam'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION MATAM
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeMatam">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+       <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeMatam(selectedChartTypeMatam)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart> 
+      </div> 
+    </div>
+  </div>
+
+  <!-- SAINT-LOUIS -->
+  <div class="row" *ngIf="selectedRegion === 'Saint-Louis'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION SAINT-LOUIS
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeSaintLouis">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeSaintLouis(selectedChartTypeSaintLouis)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- SÉDHIOU -->
+  <div class="row" *ngIf="selectedRegion === 'Sédhiou'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION SÉDHIOU
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeSedhiou">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeSedhiou(selectedChartTypeSedhiou)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAMBACOUNDA -->
+  <div class="row" *ngIf="selectedRegion === 'Tambacounda'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION TAMBACOUNDA
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeTambacounda">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeTambacounda(selectedChartTypeTambacounda)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- THIÈS -->
+  <div class="row" *ngIf="selectedRegion === 'Thiès'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION THIÈS
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeThies">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="getChartOptionsByTypeThies(selectedChartTypeThies)"
+          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+  <!-- ZIGUINCHOR -->
+  <div class="row" *ngIf="selectedRegion === 'Ziguinchor'">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LA RÉGION ZIGUINCHOR
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeZiguinchor">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+                          [options]="getChartOptionsByTypeZiguinchor(selectedChartTypeZiguinchor)"
+                          style="width: 100%; height: 500px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

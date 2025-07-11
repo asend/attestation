@@ -27,8 +27,8 @@ showConfirmPassword: boolean = false;
 
   errMessage: any;
   //  siteKey: string = "6LebTfcqAAAAAOiPWmhJlgY7AobxInjIwjRJRZPE"; //invisible
-  siteKey: string = "6Lec8i0qAAAAANuNhPztaDG503ffz16BHQWcaCYY"; //localhost
-  // siteKey: string = "6LfnCrMqAAAAAKKxyPShRaSmee-vReyGi4vV_qcI"; //api
+  // siteKey: string = "6Lec8i0qAAAAANuNhPztaDG503ffz16BHQWcaCYY"; //localhost
+  siteKey: string = "6LfnCrMqAAAAAKKxyPShRaSmee-vReyGi4vV_qcI"; //api
 
   constructor(private formBuilder: FormBuilder, private auth: UtilisateurService, private router: Router) { }
   

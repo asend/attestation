@@ -6,6 +6,8 @@ import {FileuploadService} from "../../services/services/fileupload.service";
 import {HttpEvent, HttpEventType} from "@angular/common/http";
 import {saveAs} from "file-saver";
 import Swal from "sweetalert2";
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/websocket.service';
 
 //import saveAs from 'file-saver';
 
@@ -15,6 +17,12 @@ import Swal from "sweetalert2";
   styleUrls: ['./list-demande.component.css']
 })
 export class ListDemandeComponent implements OnInit {
+
+  
+
+  message = '';
+  messages: string[] = [];
+  private messageSub!: Subscription;
 
   demandes: DemandeDto[]=[];
   fileStatus = { status: '', requestType: '', percent: 0 };
@@ -28,7 +36,7 @@ export class ListDemandeComponent implements OnInit {
 
   visible!: boolean;
   url!: string;
-  constructor(private demandeService: DemandeService, private ac: ActivatedRoute, private router: Router ) { }
+  constructor(private demandeService: DemandeService, private ac: ActivatedRoute, private router: Router, private socketService: WebsocketService ) { }
 
   ngOnInit(): void {
     this.id = this.ac.snapshot.params['id'];
@@ -37,6 +45,22 @@ export class ListDemandeComponent implements OnInit {
     console.log(this.getDemandeTab(this.id));
     
     this.eligible();
+
+    this.messageSub = this.socketService.onMessage().subscribe((msg) => {
+      console.log(msg);
+      
+      this.messages.push(msg);
+    });
+
+  }
+
+  send() {
+    this.message = "demande envoye"
+    if (this.message.trim()) {
+      this.socketService.sendMessage(this.message);
+            console.log();
+      this.message = '';
+    }
   }
 
   
@@ -94,7 +118,7 @@ export class ListDemandeComponent implements OnInit {
     this.fileStatus.requestType = requestType;
     this.fileStatus.percent = Math.round(100 * loaded / total);
   }
-  onMakeDemande(event: any) {
+   onMakeDemande(event: any) {
     this.loading = true;
     this.demandeService.demander({"id": this.ac.snapshot.params['id']}).subscribe({
       next:(data)=>{
@@ -106,7 +130,8 @@ export class ListDemandeComponent implements OnInit {
           showConfirmButton: false,
           timer: 2000
         }).then(() => {
-          window.location.reload();                
+          this.send();
+          // window.location.reload();                
         });
         this.getDemandes(this.id);
         this.getDemandeTab(this.ac.snapshot.params['id']);

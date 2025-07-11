@@ -36,6 +36,10 @@ import { getbyTab } from '../fn/demande/getby-tab';
 import { GetbyTab$Params } from '../fn/demande/getby-tab';
 import { parstatut } from '../fn/demande/parstatut';
 import { Parstatut$Params } from '../fn/demande/parstatut';
+import { Demande } from '../models';
+import { environment } from 'src/environments/environment';
+import { HttpParams } from '@angular/common/http';
+
 
 @Injectable({ providedIn: 'root' })
 export class DemandeService extends BaseService {
@@ -273,16 +277,16 @@ export class DemandeService extends BaseService {
    * This method doesn't expect any request body.
    */
   getbyTab(params: GetbyTab$Params, context?: HttpContext): Observable<{
-[key: string]: Array<DemandeDto>;
-}> {
-    return this.getbyTab$Response(params, context).pipe(
-      map((r: StrictHttpResponse<{
-[key: string]: Array<DemandeDto>;
-}>): {
-[key: string]: Array<DemandeDto>;
-} => r.body)
-    );
-  }
+    [key: string]: Array<DemandeDto>;
+    }> {
+        return this.getbyTab$Response(params, context).pipe(
+          map((r: StrictHttpResponse<{
+    [key: string]: Array<DemandeDto>;
+    }>): {
+    [key: string]: Array<DemandeDto>;
+    } => r.body)
+        );
+      }
 
   /** Path part for operation `getById2()` */
   static readonly GetById2Path = '/api/demande/demandeDetails/{id}';
@@ -387,20 +391,74 @@ export class DemandeService extends BaseService {
 
   // private apiUrl = "http://localhost:8080/api/demande";
 
-  private apiUrl = "https://api.demarche.mfprsp.com/api/demande";
+  private apiUrl = environment.apiUrl;
 
 
   updateMotifRejet(id: number, motifRejet: string): Observable<number> {
     const payload = { motifrejet: motifRejet };
-    const url = `${this.apiUrl}/update/${id}`;
+    const url = `${this.apiUrl}/api/demande/update/${id}`;
 
     console.log("URL de la requête :", url); // Vérifie l'URL générée
     console.log("Payload envoyé :", payload); // Vérifie les données envoyées
 
     return this.http.put<number>(url, payload);
   }
+  
+  updateTempsEcoule(id: number, tempsEcoule: string): Observable<number> {
+    const payload = { tempsEcoule: tempsEcoule };
+    const url = `${this.apiUrl}/api/demande/updateTempsEcoule/${id}`;
 
+    console.log("URL de la requête :", url); 
+    console.log("Payload envoyé :", payload); 
+
+    return this.http.put<number>(url, payload);
+  }
+
+  getDemandeBySexe(sexe: string): Observable<number>{
+    return this.http.get<number>(`${this.apiUrl}/api/demande/getDemandesParSexe/${sexe}`);
+
+  }
+
+  getNombreDemandesParRegion(regionId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/api/demande/par-region/${regionId}`);
+  }
+
+  getNombreDemandesParDepartement(departementId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/api/demande/par-departement/${departementId}`);
+  }
+  getDemandesByDatedemande(date: string): Observable<Demande[]> {
+    const params = new HttpParams().set('date', date);
+    return this.http.get<Demande[]>(`${this.apiUrl}/api/demande/by-date`, { params });
+  }
+
+  getStatutDemandesParDate(date: string): Observable<Record<string, number>> {
+    const params = new HttpParams().set('date', date);
+    return this.http.get<Record<string, number>>(`${this.apiUrl}/api/demande/statut-par-date`, { params });
+  }
+
+  getDemandesParSexe(): Observable<Array<{ [key: string]: any }>> {
+    return this.http.get<Array<{ [key: string]: any }>>(`${this.apiUrl}/api/demande/demandes-par-sexe`);
+  }
+  
+  getStatistiquesDemandes(): Observable<{ totalGlobal: number, parStatut: { statut: string, total: number }[] }> {
+    return this.http.get<{ totalGlobal: number, parStatut: { statut: string, total: number }[] }>(
+      `${this.apiUrl}/api/demande/statuts-avec-nombre-demandes`
+    );
+  }
 
   
 
+  getDemandesParRegionAvecNom(): Observable<Array<{ [key: string]: any }>> {
+    return this.http.get<Array<{ [key: string]: any }>>(`${this.apiUrl}/api/demande/demandes-par-region`);
+  }
+
+  getDemandesParRegionEtDepartement(): Observable<Array<{ [key: string]: any }>> {
+    return this.http.get<Array<{ [key: string]: any }>>(`${this.apiUrl}/api/demande/demandes-par-region-departement`);
+  }
+
+  getStatutDemandesSur7Jours(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/api/demande/demandes/statut-sur-7-jours`);
+  }
+
+ 
 }

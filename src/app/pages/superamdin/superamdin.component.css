@@ -272,32 +272,7 @@ small{
 .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #f9f9f9 !important;
 }
-footer{
-    width: 100%;
-    margin-top:200px;
-    color: #555;
-    background: #fff;
-    padding: 25px;
-    font-weight: 300;
-    display: block;
-    position: absolute;
-    float: left;
-    vertical-align: middle;
-}
-    
 
-.footer p{
-    margin-bottom: 0;
-}
-footer p a{
-    color: #555;
-    font-weight: 400;
-}
-
-footer p a:hover{
-    color: #9f26aa;
-    text-decoration: none;
-}
 
 a{
     color: white;
@@ -307,10 +282,6 @@ a{
 section form button{
     margin: 5px;
 }
-/* section .b1{
-    margin-top: 40px;
-    margin-left: 45px;
-} */
 h1{
     text-align: center;
     margin: 20px;

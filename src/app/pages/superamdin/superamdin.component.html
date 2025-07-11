@@ -15,14 +15,13 @@
    
     	<div class="row">
             <div class="col-lg col-md ml-auto mr-auto">
-            <h2>Liste des Traitants</h2>
                 <div class="responsive">
                     <button type="button" rel="tooltip" class="btn b1 btn-success" data-original-title="" title="">
-                        <a routerLink="/add-admin" class="aaa bb">Ajouter</a>
-                    </button>
-                    <!-- <button  type="button" rel="tooltip" class="btn b2 btn-success" data-original-title="" title="">
-                        <a routerLink="/add-titre" class="aa bb">Ajouter Un Titre</a>
-                </button> -->
+                        <a routerLink="/add-admin" class="aaa bb">Ajouter un Traitant</a> <br>
+                    </button>  <br> <br> <br> <br> <br>
+                  
+                  
+                <h2>Liste des Traitants</h2>
                 <table class="table">
                     <thead>
                         <tr>
@@ -53,11 +52,42 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table>  <br> <br> <br> <br>
                 </div>
                 </div>
                 </div>
                 </div>
+
+                <section class="container">
+                  <button type="button" rel="tooltip" class="btn b1 btn-warning" data-original-title="" title="">
+                    <a routerLink="/consultant" class="aaa bb">Ajouter un Consultant</a>
+                </button>  <br> <br> <br> <br> <br> 
+                  <h2>Liste des Consultants</h2>
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>Prénom</th>
+                              <th>Nom</th>
+                              <th>Télephone</th>
+                              <th>Email</th>
+                              <th>NIN</th>
+                              <th class="float-center">Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let user of utilisateurDtoConsultant">
+                              <td>{{user.prenom}}</td>
+                              <td>{{user.nom}}</td>
+                              <td>{{user.telephone}}</td>
+                              <td>{{user.email}}</td>
+                              <td>{{user.nin}}</td>
+                              <td class="td">
+                                  <img *ngIf="user.id" (click)="deleteTraitant(user.id)" src="/assets/supprimer.png" width="30px" height="30px" alt="">
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </section>
 
 
 

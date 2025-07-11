@@ -38,6 +38,16 @@ import { UpdateTitreComponent } from './pages/update-titre/update-titre.componen
 import { FilterPipe } from './filter.pipe';
 import { CapitalizePipe } from './capitalize.pipe';
 import { IntercoComponent } from './pages/interco/interco.component';
+import { VionnageComponent } from './pages/vionnage/vionnage.component';
+import { ConsultantComponent } from './pages/consultant/consultant.component';
+import { ConsultantListComponent } from './pages/consultant-list/consultant-list.component';
+import { StatistiqueComponent } from './pages/statistique/statistique.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { SideBarComponent } from './pages/side-bar/side-bar.component';
+import { StatistiqueDepartmentComponent } from './pages/statistique-department/statistique-department.component';
+import { TimerComponent } from './pages/timer/timer.component';
+import { SlideMenuComponent } from './pages/slide-menu/slide-menu.component';
+
 
 
 @NgModule({
@@ -71,7 +81,17 @@ import { IntercoComponent } from './pages/interco/interco.component';
         UpdateTitreComponent,
         FilterPipe,
         CapitalizePipe,
-        IntercoComponent
+        IntercoComponent,
+        VionnageComponent,
+        ConsultantComponent,
+        ConsultantListComponent,
+        StatistiqueComponent,
+        SideBarComponent,
+        StatistiqueDepartmentComponent,
+        TimerComponent,
+        SlideMenuComponent,
+
+        
     ],
     imports: [
         BrowserModule,
@@ -80,7 +100,10 @@ import { IntercoComponent } from './pages/interco/interco.component';
         FormsModule,
         ReactiveFormsModule,
         NgxPaginationModule,
-        NgxCaptchaModule
+        NgxCaptchaModule,
+        HighchartsChartModule,
+        
+        
 
 
     ],
@@ -96,7 +119,6 @@ import { IntercoComponent } from './pages/interco/interco.component';
       }
     ],
     exports: [
-
     ],
     bootstrap: [AppComponent]
 })

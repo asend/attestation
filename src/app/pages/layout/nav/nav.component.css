@@ -102,11 +102,11 @@ ul {
   list-style: none;
 }
 
-app-footer {
+/* app-footer {
   position: relative;
   bottom: 0px;
   width: 100%;
-}
+} */
 
 .banner {
   /* background-color: #f2f2f2; */

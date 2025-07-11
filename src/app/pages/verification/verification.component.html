@@ -1,6 +1,7 @@
 <app-nav></app-nav>
 <div class="container">
-  <div class="row boutton mt-5">
+
+  <div class="row boutton" style="margin-top: 200px;">
     <button class="btn btn-warning" (click)="onBack()">Annuler</button>
    
     <button *ngIf="verifierClicked &&  loading==false" id="approuved" class="btn btn-success" (click)="clickApprouve()" >Approuver</button>
@@ -14,39 +15,13 @@
     </button>
     <div class="dropdown navbar navbar-expand-lg navbar-light bg-light">
       <!-- <button id="myBtn" class="btn btn-danger" (click)="openModal()">Rejeter</button>  -->
-      <button id="myBtn" *ngIf="onRejet==false" class="btn btn-danger" (click)="onRejectDemande()">Rejetez</button> 
+      <button id="myBtn" *ngIf="onRejet==false" class="btn btn-danger" (click)="clickToRejetPdf()">Rejetez</button> 
       <div *ngIf="onRejet==true" class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
           <span class="sr-only">loading</span>
         </div>
       </div>
-      <!-- debut pupup add motif rejet -->
-      <!-- <div id="myModal" class="modal" *ngIf="isModalOpen">
-        <div class="modal-content">
-          <span class="close" (click)="closeModal()">&times;</span> 
-          <textarea 
-            cols="30" 
-            rows="10" 
-            [(ngModel)]="currentDemande.motifrejet" 
-            placeholder="Saisir le motif rejet ..."
-          ></textarea>
-          <button 
-            id="myBtn" 
-            (click)="onRejectDefinitif()" 
-            class="btn btn-danger"
-          >
-            Envoyer Motif Rejet
-          </button>
-
-          <div *ngIf="loadingMotifReject" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading ...</span>
-            </div>
-          </div>
-        </div>
-      </div> -->
-    <!-- fin  pupup add motif rejet -->
-    <!-- debut pupup add Matricule Solde -->
+     
     <div id="myModal" class="modal" *ngIf="isModalMatriculeOpen">
       <div class="modal-content">
         <span class="close" (click)="closeModalMatricule()">&times;</span> 
@@ -77,7 +52,9 @@
         </tr>
         <tr>
           <td>Date de naissance:</td>
-          <th>{{currentDemande.demandeurDTO?.datedenaissance | date: 'dd-MM-yyyy'}}</th>
+          <!-- <th>{{ formatDateToDDMMYYYY(currentDemande.demandeurDTO?.datedenaissance!) }}</th> -->
+          <!-- <th>{{currentDemande.demandeurDTO?.datedenaissance | date: 'dd-MM-yyyy'}}</th> -->
+          <th>{{currentDemande.demandeurDTO?.datedenaissance }}</th>
         </tr>
         <tr>
           <td>Lieu de naissance:</td>
@@ -113,7 +90,7 @@
         <div *ngFor="let image of currentDemande.demandeurDTO?.fieluploads" class="mb-3">
           <iframe
             [src]="santizer.bypassSecurityTrustResourceUrl(urlimage + '/api/uploads/getImageByIdFile/' + image.id)"
-            style="height: 65vh; width: 90vh;"
+            style="height: 65vh; width: 75vh;"
             frameborder="1">
           </iframe>
           <!-- <p>{{urlimage + '/api/uploads/getImageByIdFile/' + image.id}}</p> -->

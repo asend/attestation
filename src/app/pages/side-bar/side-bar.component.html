@@ -1,0 +1,61 @@
+<div class="container my-4">
+
+  <!-- Sélecteur du type de graphique pour régions -->
+  <div class="mb-3">
+    <label for="chartTypeRegion" class="form-label fw-bold">Choisir un type de graphique pour les régions :</label>
+    <select id="chartTypeRegion" class="form-select w-auto" [(ngModel)]="selectedChartTypeRegion">
+      <option value="bar">Bar</option>
+      <option value="pie">Pie</option>
+      <option value="line">Line</option>
+    </select>
+  </div>
+
+  <!-- Graphique des régions -->
+  <div class="card shadow rounded mb-4" style="height: 450px;">
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="getChartOptionsTypeRegion(selectedChartTypeRegion)"
+      [update]="updateFlag"
+      (chartInstance)="onChartInstance($event)"
+      style="width: 100%; height: 100%; display: block;">
+    </highcharts-chart>
+  </div>
+
+  <!-- Popup modal des départements d'une région -->
+  <div *ngIf="isDepartementPopupVisible" class="popup-backdrop">
+    <div class="popup-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Graphique des départements - Région : {{ selectedRegionPopup }}</h5>
+        <button type="button" class="btn btn-danger btn-sm" (click)="closeDepartementPopup()">Fermer ×</button>
+      </div>
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [options]="getChartOptionsByType(selectedRegionPopup, selectedChartTypePopup)"
+        [update]="true"
+        style="width: 100%; height: 400px; display: block;">
+      </highcharts-chart>
+    </div>
+  </div>
+
+</div>
+
+<!-- Styles popup -->
+<style>
+  .popup-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+  .popup-content {
+    background: white;
+    padding: 20px;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+</style>

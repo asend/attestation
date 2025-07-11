@@ -1,0 +1,183 @@
+<app-nav></app-nav>
+<!-- <app-slide-menu></app-slide-menu> -->
+
+<div class="container">
+  <!-- <button>
+    <a routerLink="/menu">menu</a>
+  </button> -->
+  <!-- Par jour et Genre -->
+  <div class="row">
+    <div class="col-6">
+      <div class="card shadow rounded" style="height: 65vh;">
+        <div class="card-header bg-primary text-white">
+          Statistique de la journée
+        </div>
+        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptionsBarDays"
+          style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+
+
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card shadow rounded" style="height: 65vh;">
+        <div class="card-header bg-primary text-white">
+          Répartition par genre
+        </div>
+        <highcharts-chart 
+  [Highcharts]="Highcharts" 
+  [options]="chartOptionsBarBySexe"
+  [(update)]="updateFlag"
+  style="width: 100%; height: 400px; display: block;">
+</highcharts-chart>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- atll-demande -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        TOUTES LES DEMANDES
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeAllDemande">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded">
+        <highcharts-chart [Highcharts]="Highcharts"
+          [options]="getChartOptionsTypeAllDemande(selectedChartTypeAllDemande)"
+          style="width: 90%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- regions -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        LES REGIONS
+        <select class="form-select w-auto" [(ngModel)]="selectedChartTypeRegion">
+          <option value="bar">Bar</option>
+          <option value="pie">Pie</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="card shadow rounded" style="height: 65vh;">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="getChartOptionsTypeRegion(selectedChartTypeRegion)"
+          style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-3">
+      <div class="col-12">
+        <div class="card shadow rounded" style="height: 65vh;">
+          <div class="card-header bg-primary text-white">
+            Diagramme Par semaine (statuts + total)
+          </div>
+          <highcharts-chart
+  [Highcharts]="Highcharts"
+  [options]="chartOptionsBarWeek"
+  [update]="updateFlag"
+  style="width: 100%; height: 400px; display: block;"
+></highcharts-chart>
+
+          <!-- <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="chartOptionsBarWeek"
+            style="width: 100%; height: 400px; display: block;">
+          </highcharts-chart> -->
+        </div>
+    </div>
+    
+
+    <!-- <div class="col-12">
+      <div class="card shadow rounded" style="height: 65vh;">
+        <div class="card-header bg-primary text-white">
+          Diagramme Par week
+        </div>
+        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptionsBarWeek"
+          style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+
+
+      </div>
+    </div> -->
+
+
+
+    <!-- Affichage debug -->
+
+  </div>
+
+  <br><br>
+
+ 
+
+  <br><br>
+
+
+
+
+  <br><br>
+  <div class="row">
+
+
+    
+  </div>
+
+  <br><br>
+
+  <!-- <div class="row">
+
+
+
+    <div class="col-6">
+      <div class="card shadow rounded" style="height: 65vh;">
+        <div class="card-header bg-primary text-white">
+          Les Régions Test
+        </div>
+        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptionsTest"
+          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card shadow rounded" style="height: 65vh;">
+        <div class="card-header bg-primary text-white">
+          Les test Test test
+        </div>
+
+        <div class="buttons">
+          <button *ngFor="let loc of locations" (click)="updateChart(loc.year)"
+            [class.active]="currentYear === loc.year">
+            {{ loc.year }}
+          </button>
+        </div>
+
+        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<app-footer></app-footer>

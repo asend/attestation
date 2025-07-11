@@ -55,84 +55,76 @@ ngOnInit(): void {
   }
   
 
-  onUpdate() {
-    this.loading = true;
-    console.log("image " + this.uploadedImage);
 
-    this.demandeurService.updateDemandeur({ body: this.currentDemandeur }).subscribe({
-        next: (data) => {
-            this.loading = false;
-            
-            if (this.uploadedImage) {  // Vérifie si une image est bien sélectionnée
-                console.log("size " + this.uploadedImage.size);
-                this.imageService.uploadImageFS(this.uploadedImage, Number(this.currentDemandeur.id)).subscribe({
-                    next: (response) => {
-                        Swal.fire({
-                            title: 'Mise à jour réussie !',
-                            text: 'Super, Modification réussie',
-                            icon: 'success',
-                            confirmButtonText: 'OK'  // Uniquement un bouton "OK"
-                        });
-                    },
-                    error: (err: any) => {
-                        Swal.fire({
-                            title: 'Erreur de modification !',
-                            text: 'Veuillez réessayer.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            } else {
-                Swal.fire({
-                    title: 'Mise à jour réussie !',
-                    text: 'Les informations ont été mises à jour avec succès.',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            }
-        },
-        error: (err: any) => {
-            this.loading = false;
-            Swal.fire({
-                title: 'Erreur lors de la mise à jour',
-                text: 'Veuillez réessayer.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-    });
+formatDateToDDMMYYYY(dateStr: string): string {
+  const date = new Date(dateStr);
+  const day = ('0' + date.getDate()).slice(-2);
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
 }
 
 
-  //   onUpdate() {
-  //   this.loading = true;
-  //   console.log("image "+this.uploadedImage)
-  //     //console.log(this.currentDemandeur)
-  //     this.demandeurService.updateDemandeur({body: this.currentDemandeur}).subscribe({
-  //       next:(data)=>{
-  //         this.loading = false;
-  //         if (this.uploadedImage!=undefined){
-  //           console.log("size "+this.uploadedImage.size)
-  //           this.imageService.uploadImageFS(this.uploadedImage,Number(this.currentDemandeur.id)).subscribe({
-  //             next:(response)=>{
-  //               // this.router.navigate(['verification/', this.currentDemande.id])
-  //             },
-  //             error:(err:any)=>{
-  //               // this.router.navigate(['verification/', this.currentDemande.id])
-  //             }
-  //           })
-  //         }
-  //         // this.router.navigate(['verification/', this.currentDemande.id])
-  //       },
-  //       error:(err:any)=>{
-  //         // this.router.navigate(['verification/', this.currentDemande.id])
-  //       }
-  //     })
-  // }
+onUpdate() {
+  this.loading = true;
+
+  // ✅ Formatage de la date
+  if (this.currentDemandeur.datedenaissance) {
+    this.currentDemandeur.datedenaissance = this.formatDateToDDMMYYYY(this.currentDemandeur.datedenaissance);
+  }
+
+  console.log("Image sélectionnée :", this.uploadedImage);
+  console.log("Payload mis à jour :", this.currentDemandeur);
+
+  this.demandeurService.updateDemandeur({ body: this.currentDemandeur }).subscribe({
+    next: (data) => {
+      this.loading = false;
+
+      if (this.uploadedImage) {
+        console.log("Taille fichier image : " + this.uploadedImage.size);
+        this.imageService.uploadImageFS(this.uploadedImage, Number(this.currentDemandeur.id)).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Mise à jour réussie !',
+              text: 'Super, Modification réussie',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            });
+          },
+          error: () => {
+            Swal.fire({
+              title: 'Erreur de modification !',
+              text: 'Veuillez réessayer.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Mise à jour réussie !',
+          text: 'Les informations ont été mises à jour avec succès.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      }
+    },
+    error: () => {
+      this.loading = false;
+      Swal.fire({
+        title: 'Erreur lors de la mise à jour',
+        text: 'Veuillez réessayer.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  });
+}
+
+
 
   annuler(){
-      this.router.navigate(['verification/', this.ac.snapshot.params['id']])
+      this.router.navigate(['verification', this.currentDemande.id])
   }
 
   onImageUpload($event: Event) {

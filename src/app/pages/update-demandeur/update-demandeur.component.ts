@@ -15,7 +15,10 @@ import { RegionDepartementService } from 'src/app/services/services/region-depar
 })
 export class UpdateDemandeurComponent implements OnInit {
 
-  currentDemandeur: DemandeurDto = {adresse: "", lieudenaissance: "", sexe: "", telephone: "", region: "", departement: ""}
+  currentDemandeur: DemandeurDto = {
+    adresse: "", lieudenaissance: "", sexe: "", telephone: "", region: "", departement: "",
+    datedenaissance: ''
+  }
   // urlSafe: any;
   loading: boolean = false;
 
@@ -43,7 +46,6 @@ export class UpdateDemandeurComponent implements OnInit {
     this.demandeurService.getByNin1({nin: localStorage.getItem("nin") as string}).subscribe({
       next:(data)=>{
         this.currentDemandeur = data;
-        // this.urlSafe = this.santizer.bypassSecurityTrustResourceUrl(this.apiUrl.rootUrl+"/api/uploads/loadfromFS/"+this.currentDemandeur.id);
         console.log(data);
       }
       

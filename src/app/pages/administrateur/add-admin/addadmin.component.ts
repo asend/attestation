@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'src/app/auth/model/user';
 import { ImageService } from 'src/app/auth/service/image.service';
 import { ApiConfiguration } from 'src/app/services/api-configuration';
 import { DemandeurDto, Utilisateur, UtilisateurDto } from 'src/app/services/models';
 import { TitreDto } from 'src/app/services/models/titre-dto';
 import { DemandeurService, UtilisateurService, FileuploadService, TitreService } from 'src/app/services/services';
 import Swal from 'sweetalert2';
+import { User } from 'src/app/auth/model/user';
+
 
 @Component({
   selector: 'app-addadmin',
