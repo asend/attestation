@@ -46,7 +46,6 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { SideBarComponent } from './pages/side-bar/side-bar.component';
 import { StatistiqueDepartmentComponent } from './pages/statistique-department/statistique-department.component';
 import { TimerComponent } from './pages/timer/timer.component';
-import { SlideMenuComponent } from './pages/slide-menu/slide-menu.component';
 
 
 
@@ -89,7 +88,6 @@ import { SlideMenuComponent } from './pages/slide-menu/slide-menu.component';
         SideBarComponent,
         StatistiqueDepartmentComponent,
         TimerComponent,
-        SlideMenuComponent,
 
         
     ],

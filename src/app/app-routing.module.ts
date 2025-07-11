@@ -32,7 +32,6 @@ import { ConsultantListComponent } from './pages/consultant-list/consultant-list
 import { StatistiqueComponent } from './pages/statistique/statistique.component';
 import { StatistiqueDepartmentComponent } from './pages/statistique-department/statistique-department.component';
 import { TimerComponent } from './pages/timer/timer.component';
-import { SlideMenuComponent } from './pages/slide-menu/slide-menu.component';
 import { SideBarComponent } from './pages/side-bar/side-bar.component';
 // import { StatistiqueMapComponent } from './pages/statistique-map/statistique-map.component';
 
