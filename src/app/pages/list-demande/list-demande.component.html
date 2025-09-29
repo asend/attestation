@@ -1,16 +1,11 @@
-<app-nav></app-nav>
-
-
-
-
-
+<!-- <app-nav></app-nav>
 
 <div class="content-wrapper">
 
 <div  class="container">
   
-  <div class="row justify-content-center">
-    <div *ngIf="!visible" class="alert alert-danger" id="banner" role="alert">
+  <div class="row justify-content-center" *ngFor="let demande">
+    <div *ngIf="!visible || demande.statut=='2cad843e-b6fd-4b85-815d-4bc2a499972d' || demande.statut=='approuvee'" class="alert alert-danger" id="banner" role="alert">
       Vous avez une attestation en cours de validité ou une demande en cours, <br> par contre vous ne pouvez pas éffectuer une nouvelle  demande pour le moment.
     </div>
   </div>
@@ -36,21 +31,24 @@
         <tr>
           <th scope="col">Date demande</th>
           <th scope="col" class="hide-sm">Téléphone</th>
-          <!-- <th scope="col" class="hide-sm">Etat</th> -->
           <th scope="col">Télécharger</th>
+          <th>Status Demande</th>
           <th scope="col" style="color: red;">Date d'expiration</th>
         </tr>
         </thead>
         <tbody>
-        <tr  [ngClass]="demande.statut=='approuvee' ? 'colortr' : '' " *ngFor="let demande of da">
+        <tr  [ngClass]="demande.statut=='4d08a09a-405a-4e67-bdb7-243f661e56cd' ? 'colortr' : '' " *ngFor="let demande of da">
           <th scope="row">{{demande.datedemande}}</th>
           <td class="hide-sm">{{demande.demandeurDTO?.telephone}}</td>
-          <td class="hide-sm" *ngIf="demande.statut=='cours'">En cours de traitement</td>
-          <td class="hide-sm" *ngIf="demande.statut=='approuvee'">Demande approuvée</td>
-          <td class="hide-sm" *ngIf="demande.statut=='rejetee'">Demande rejetée</td>
-          <td><a [ngClass]="demande.statut!='approuvee' ? 'inactiveLink' : '' " [routerLink]="['/visualiser', demande.id]" target="_blank">    <!--button (click)="upload(demande.id)"--><i class="fa fa-eye" aria-hidden="true"></i></a><!--/button--></td>
+          <td><a [ngClass]="demande.statut!='4d08a09a-405a-4e67-bdb7-243f661e56cd' ? 'inactiveLink' : '' " [routerLink]="['/visualiser', demande.id]" target="_blank">    <i class="fa fa-eye" aria-hidden="true"></i></a></td>
+          <td class="hide-sm" *ngIf="demande.statut=='2cad843e-b6fd-4b85-815d-4bc2a499972d'">En cours de traitement</td>
+          <td class="hide-sm" *ngIf="demande.statut=='4d08a09a-405a-4e67-bdb7-243f661e56cd'">Demande approuvée</td>
+          <td class="hide-sm" *ngIf="demande.statut=='933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1'">Demande rejetée</td>
           <td>{{demande.dateexpiration}}</td>
-          <!-- <a  [routerLink]="'/visualiser/'+demande.id" style="cursor: pointer"></a>visualiser -->
+          <button class="btn btn-danger m-3 ">
+            <a  [routerLink]="['/update-demandeur',demande.demandeurDTO?.id]" style="cursor: pointer; color: white;">Modifier</a>
+
+          </button>
         </tr>
         </tbody>
       </table>
@@ -71,10 +69,17 @@
       <tr  [ngClass]="demande.statut=='approuvee' ? 'colortr' : '' " *ngFor="let demande of dec">
         <th scope="row">{{demande.datedemande}}</th>
         <td>{{demande.demandeurDTO?.telephone}}</td>
-        <td *ngIf="demande.statut=='cours'"  class="hide-sm">En cours de traitement</td>
+        <td *ngIf="demande.statut=='2cad843e-b6fd-4b85-815d-4bc2a499972d'"  class="hide-sm">En cours de traitement</td>
         <td *ngIf="demande.statut=='approuvee'"  class="hide-sm">Demande approuvée</td>
         <td *ngIf="demande.statut=='rejetee'"  class="hide-sm">Demande rejetée</td>
-        <td><a (click)="clickMethod(demande)" style="color: red;">Annuler</a></td>
+        <td>
+          <button class="btn btn-danger m-3 ">
+            <a (click)="clickMethod(demande)" style="color: white;">Annuler</a>
+          </button>
+          <button class="btn btn-info m-3 ">
+            <a  [routerLink]="['/update-demandeur-utilisateur',demande.demandeurDTO?.id]" style="cursor: pointer; color: white;">Modifier</a>
+
+          </button>
       </tr>
       </tbody>
     </table>
@@ -93,11 +98,10 @@
       <tr  [ngClass]="demande.statut=='approuvee' ? 'colortr' : '' " *ngFor="let demande of dr">
         <th scope="row">{{demande.datedemande}}</th>
         <td>{{demande.demandeurDTO?.telephone}}</td>
-        <td *ngIf="demande.statut=='cours'">En cours de traitement</td>
+        <td *ngIf="demande.statut=='2cad843e-b6fd-4b85-815d-4bc2a499972d'">En cours de traitement</td>
         <td *ngIf="demande.statut=='approuvee'">Demande approuvée</td>
         <td *ngIf="demande.statut=='rejetee'">Demande rejetée</td>
-        <td [hidden]="demande.statut == 'cours' || demande.statut == 'approuvee'"><a  style="color: red;" [routerLink]="['/update-demandeur']">Corriger</a></td>
-        <!--<a  [routerLink]="'/visualiser/'+demande.id" style="cursor: pointer"></a>visualiser-->
+        <td [hidden]="demande.statut == '2cad843e-b6fd-4b85-815d-4bc2a499972d' || demande.statut == 'approuvee'"><a  style="color: red;" [routerLink]="['/update-demandeur']">Corriger</a></td>
       </tr>
       </tbody>
        
@@ -106,6 +110,128 @@
 
 </div>
 
+</div>
+
+<app-footer></app-footer> -->
+<app-nav></app-nav>
+
+<div class="content-wrapper">
+  <div class="container">
+
+    <!-- Message d'alerte -->
+    <div class="row justify-content-center" *ngFor="let demande">
+      <div *ngIf="!visible || demande.statut == '2cad843e-b6fd-4b85-815d-4bc2a499972d' || demande.statut=='4d08a09a-405a-4e67-bdb7-243f661e56cd'" 
+           class="alert alert-danger w-75 text-center" id="banner" role="alert">
+        Vous avez une attestation en cours de validité ou une demande en cours. <br>
+        Vous ne pouvez pas effectuer une nouvelle demande pour le moment.
+      </div>
+    </div>
+
+    <!-- Bouton + loader -->
+    <div class="row justify-content-end">
+      <button [disabled]="loading || !visible"
+        class="btn btn-success mb-3"
+        (click)="onMakeDemande($event)"
+        id="btn"
+        title="Vous avez une demande en cours ou une attestation en cours de validité">
+  <i class="fa fa-plus-circle"></i> Effectuer une demande
+</button>
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <div class="spinner-border text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+    </div>
+
+
+
+
+
+<!-- Demandes approuvées -->
+<div *ngIf="da.length > 0" class="row">
+  <div class="col-md-5 mb-4" *ngFor="let demande of da">
+    <div class="card shadow-lg border-0 rounded-3 h-100">
+      <div class="card-header text-white bg-success">
+        ✅ <small class="fw-bold" style="font-size: 20px;">Demande approuvée</small>
+      </div>
+      <div class="card-body">
+        <p><b>Date Demande :</b> {{ demande.datedemande }}</p>
+        <p><b>Téléphone :</b> {{ demande.demandeurDTO?.telephone }}</p>
+        <p class="text-danger">
+          <b>Expiration :</b> <strong>{{ demande.dateexpiration }}</strong>
+        </p>
+      </div>
+      <div class="card-footer bg-light d-flex justify-content-between">
+        <a [routerLink]="['/visualiser', demande.id]" target="_blank"
+           class="btn btn-outline-primary btn-sm">
+          <i class="fa fa-eye"></i> visualiser
+        </a>
+        <a [routerLink]="['/update-demandeur', demande.demandeurDTO?.id]"
+           class="btn btn-danger btn-sm">
+          <i class="fa fa-edit"></i> Modifier
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Demandes en cours -->
+<div *ngIf="dec.length > 0" class="row">
+  <div class="col-md-5 mb-4" *ngFor="let demande of dec">
+    <div class="card shadow-lg border-0 rounded-3 h-100">
+      <div class="card-header text-white bg-primary">
+        ⏳ <small class="fw-bold" style="font-size: 20px;">Demande en cours</small>
+      </div>
+      <div class="card-body">
+        <p><b>Date Demande :</b> {{ demande.datedemande }}</p>
+        <p><b>Téléphone :</b> {{ demande.demandeurDTO?.telephone }}</p>
+      </div>
+      <div class="card-footer bg-light d-flex justify-content-between">
+        <button class="btn btn-danger btn-sm" (click)="clickMethod(demande)">
+          <i class="fa fa-times"></i> Annuler
+        </button>
+        <a [routerLink]="['/update-demandeur-utilisateur', demande.demandeurDTO?.id]"
+           class="btn btn-info btn-sm">
+          <i class="fa fa-edit"></i> Modifier
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Demandes rejetées -->
+<div *ngIf="dr.length > 0" class="row">
+  <div class="col-md-5 mb-4" *ngFor="let demande of dr">
+    <div class="card shadow-lg border-0 rounded-3 h-100">
+      <div class="card-header text-white bg-danger">
+        ❌ <small class="fw-bold"  style="font-size: 20px;">Demande rejetée</small>
+      </div>
+      <div class="card-body">
+        <p><b>Date Demande :</b> {{ demande.datedemande }}</p>
+        <p><b>Téléphone :</b> {{ demande.demandeurDTO?.telephone }}</p>
+      </div>
+      <div class="card-footer bg-light d-flex justify-content-between">
+        <a [routerLink]="['/update-demandeur']"
+           class="btn btn-outline-danger btn-sm">
+          <i class="fa fa-wrench"></i> Corriger
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  </div>
 </div>
 
 <app-footer></app-footer>

@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
   timers: { [id: number]: any } = {};
 displayTimes: { [id: number]: string } = {};
 startTimestamps: { [id: number]: number } = {};
-
+loading = false;
 
   timerStartTimes: { [id: number]: number } = {};
 elapsedTimes: { [id: number]: string } = {};
@@ -76,7 +76,11 @@ elapsedTimes: { [id: number]: string } = {};
  
  message = '';
  messages: string[] = [];
- private sub!: Subscription;
+  sub!: Subscription;
+
+
+
+intervals: { [id: number]: any } = {};
 
  
 
@@ -88,70 +92,30 @@ elapsedTimes: { [id: number]: string } = {};
                      private socketService: WebsocketService) { }
 
   ngOnInit(): void {
-    // setInterval(() => {
-    //   window.location.reload();
-    // }, 180000);
+    setInterval(() => {
+      window.location.reload();
+    }, 180000);
   
-    // this.getAllDemande();
-    this.getAllDemande();   
     this.sub = this.socketService.onMessage().subscribe(msg => {
       console.log("msg" + msg);
-      
-      this.getAllDemande();
-      
     });
-     
+    this.getAllDemande();
+    this.initialize();  
   }
 
-  getAllDemande() {
-    this.isLoading = true;
-    this.demandeService.findAllDemande({ statut: 'cours' }).subscribe({
-      next: (data) => {
-        const newDemandes = data;
-  
-        const existingIds = Object.keys(this.timers).map(Number);
-  
-        const currentIds = newDemandes
-          .map(d => d.id)
-          .filter((id): id is number => typeof id === 'number'); // ✅ Filtrage
-  
-        // Démarrer les timers pour les nouvelles demandes
-        currentIds.forEach(id => {
-          if (!this.timers[id]) {
-            const savedStart = localStorage.getItem(`start_${id}`);
-            if (savedStart) {
-              this.startTimestamps[id] = Number(savedStart);
-            } else {
-              this.startTimestamps[id] = Date.now();
-              localStorage.setItem(`start_${id}`, `${this.startTimestamps[id]}`);
-            }
-            this.startTimerForDemande(id);
-          }
-        });
-  
-        // Arrêter les timers pour les demandes qui ne sont plus présentes
-        existingIds.forEach(id => {
-          if (!currentIds.includes(id)) {
-            this.stopTimerForDemande(id);
-          }
-        });
-  
-        this.demandes = newDemandes;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-      }
-    });
-  }
-  
- 
   // getAllDemande() {
   //   this.isLoading = true;
-  //   this.initialize();
-  //   this.demandeService.findAllDemande({ statut: 'cours' }).subscribe({
+  //   this.demandeService.findAllDemande({ statut: '2cad843e-b6fd-4b85-815d-4bc2a499972d' }).subscribe({
   //     next: (data) => {
-  //       this.demandes = data;
+  //       console.log("Données récupérées :", data);
+  
+  //       // Tri par date et heure décroissante (les plus récentes en premier)
+  //       this.demandes = data.sort((a, b) => {
+  //         const dateA = new Date(a.datedemande!); // suppose que le champ s'appelle 'date'
+  //         const dateB = new Date(b.datedemande!);
+  //         return dateB.getTime() - dateA.getTime(); // décroissant
+  //       });
+  
   //       this.isLoading = false;
   //     },
   //     error: () => {
@@ -160,15 +124,52 @@ elapsedTimes: { [id: number]: string } = {};
   //   });
   // }
   
+ 
+  getAllDemande() {
+      this.isLoading = true;
+    this.demandeService.findAllDemande({ statut: '2cad843e-b6fd-4b85-815d-4bc2a499972d' }).subscribe({
+      next: (data) => {
+        console.log("Données récupérées :", data);  // <-- Affiche toutes les données dans la console
 
+        this.demandes = data;
+        this.isLoading = false;
+        
+      },
+      error: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+  
   private async initialize() {
     this.isLoadingCard = true;
   
     try {
-      this.naDemande = await lastValueFrom(this.dashbordService.getAppouved());
-      this.neDemande = await lastValueFrom(this.dashbordService.getCours());
-      this.ntDemande = await lastValueFrom(this.dashbordService.getCount());
-      this.nrDemande = await lastValueFrom(this.dashbordService.getRejected());
+      const stats = await lastValueFrom(this.demandeService.getStatistiquesDemandes());
+  
+      this.ntDemande = stats.totalGlobal;
+  
+      // Réinitialiser
+      this.naDemande = 0;
+      this.neDemande = 0;
+      this.nrDemande = 0;
+  
+      for (const item of stats.parStatut) {
+        const statut = item.statut.trim().toLowerCase();
+        console.log('Statut reçu :', statut);
+  
+        switch (statut) {
+          case '4d08a09a-405a-4e67-bdb7-243f661e56cd':
+            this.naDemande = item.total;
+            break;
+          case '2cad843e-b6fd-4b85-815d-4bc2a499972d':
+            this.neDemande = item.total;
+            break;
+          case '933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1':
+            this.nrDemande = item.total;
+            break;
+        }
+      }
   
       this.statisques = [
         {
@@ -176,12 +177,12 @@ elapsedTimes: { [id: number]: string } = {};
           nombre: this.ntDemande,
           slug: "all",
           textcolor: "clred",
-          icons:"icontout"
+          icons: "icontout"
         },
         {
           title: "Demandes en cours",
           nombre: this.neDemande,
-          slug: "cours",
+          slug: "2cad843e-b6fd-4b85-815d-4bc2a499972d",
           textcolor: "clgreen",
           statuscolor: "encourblue",
           icons: "iconencours"
@@ -189,74 +190,71 @@ elapsedTimes: { [id: number]: string } = {};
         {
           title: "Demandes approuvées",
           nombre: this.naDemande,
-          slug: "approuvée",
+          slug: "4d08a09a-405a-4e67-bdb7-243f661e56cd",
           textcolor: "clwhite",
           statuscolor: "approuedgreen",
-          icons:"iconapprouved"
+          icons: "iconapprouved"
         },
         {
           title: "Demandes rejetées",
           nombre: this.nrDemande,
-          slug: "rejetée",
+          slug: "933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1",
           textcolor: "clyellow",
           statuscolor: "rejectred",
-          icons:"iconrejected"
+          icons: "iconrejected"
         }
       ];
+  
     } catch (error) {
+      console.error("Erreur lors du chargement des statistiques", error);
     } finally {
       this.isLoadingCard = false;
     }
   }
-
-
-
-onStatut(val: string) {
-  this.isLoading = true;
+  onStatut(val: string) {
+    this.isLoading = true;
   
-  if (val === "all") {
-    this.titre = "La liste des demandes";
-    this.currentStatutColor = "text-dark";
-    this.demandeService.findDemandeActif().subscribe({
-      next: (response: any) => {
-        this.demandes = response;
-        this.isLoading = false;
-      },
-      error: () => { this.isLoading = false; }
-    });
-  } else {
-    this.titre = "La liste des demandes " + val;
-
-    // Définition couleur selon statut
-    switch (val.toLowerCase()) {
-      case "cours":
-        this.currentStatutColor = "text-primary";  // bleu
-        break;
-      case "approuvée":
-        this.currentStatutColor = "text-success";  // vert
-        break;
-      case "rejetée":
-        this.currentStatutColor = "text-danger";   // rouge
-        break;
-      default:
-        this.currentStatutColor = "text-secondary"; // gris
+    if (val === "all") {
+      this.titre = "La liste des demandes";
+      this.currentStatutColor = "text-dark";
+      this.demandeService.findDemandeActif().subscribe({
+        next: (response: any) => {
+          this.demandes = response;
+          this.isLoading = false;
+        },
+        error: () => { this.isLoading = false; }
+      });
+    } else {
+      // ⚡ Ici on appelle le traducteur
+      this.titre = "La liste des demandes " + this.getStatutTitre(val);
+  
+      // Définition couleur selon statut
+      switch (val.toLowerCase()) {
+        case "2cad843e-b6fd-4b85-815d-4bc2a499972d":
+          this.currentStatutColor = "text-primary";  // bleu
+          break;
+        case "4d08a09a-405a-4e67-bdb7-243f661e56cd":
+          this.currentStatutColor = "text-success";  // vert
+          break;
+        case "933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1":
+          this.currentStatutColor = "text-danger";   // rouge
+          break;
+        default:
+          this.currentStatutColor = "text-secondary";
+      }
+  
+      this.demandeService.findAllDemande({ statut: val }).subscribe({
+        next: (response: any) => {
+          this.demandes = response;
+          this.isLoading = false;
+        },
+        error: () => { this.isLoading = false; }
+      });
     }
-
-    this.demandeService.findAllDemande({ statut: val }).subscribe({
-      next: (response: any) => {
-        this.demandes = response;
-        this.isLoading = false;
-
-        
-      },
-      error: () => { this.isLoading = false; }
-    });
-
-    console.log(val);
   }
-}
+  
 
- 
+  
   refresh(){
     window.location.reload();
   }
@@ -288,19 +286,32 @@ onStatut(val: string) {
     }
   }
 
+  getStatutTitre(statut: string): string {
+    switch (statut) {
+      case '2cad843e-b6fd-4b85-815d-4bc2a499972d':
+        return 'en cours';
+      case '4d08a09a-405a-4e67-bdb7-243f661e56cd':
+        return 'Approuvées';
+      case '933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1':
+        return 'Rejetées';
+      default:
+        return statut;
+    }
+  }
+
+
   getStatutLabel(statut: string): string {
     switch (statut) {
-      case 'cours':
+      case '2cad843e-b6fd-4b85-815d-4bc2a499972d':
         return 'en cours';
-      case 'approuvée':
+      case '4d08a09a-405a-4e67-bdb7-243f661e56cd':
         return 'Approuvée';
-      case 'rejetée':
+      case '933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1':
         return 'Rejetée';
       default:
         return statut;
     }
   }
-  
 
   UpdateTempsEcouler(id: number) {
     this.demandeService.updateTempsEcoule(id ,this.currentDemande.tempsEcoule as string).subscribe({
@@ -313,61 +324,8 @@ onStatut(val: string) {
       }
     });
   }
-
-  // startTimerForDemande(id: number) {
-  //   if (this.timers[id]) return;
   
-  //   this.timers[id] = setInterval(() => {
-  //     const now = Date.now();
-  //     const elapsedSeconds = Math.floor((now - this.startTimestamps[id]) / 1000);
-  //     this.displayTimes[id] = this.formatTime(elapsedSeconds);
-  //   }, 1000);
-  // }
-
-  stopTimerForDemande(id: number) {
-    if (this.timers[id]) {
-      clearInterval(this.timers[id]);
-      delete this.timers[id];
-    }
-  
-    const now = Date.now();
-    const elapsedSeconds = Math.floor((now - this.startTimestamps[id]) / 1000);
-    delete this.startTimestamps[id];
-    localStorage.removeItem(`start_${id}`);
-  
-    const baseDate = new Date(0);
-    baseDate.setSeconds(elapsedSeconds);
-    const localDatetime = this.toDatetimeLocal(baseDate);
-  
-    this.currentDemande.tempsEcoule = localDatetime;
-  
-    this.UpdateTempsEcouler(id);
-  }
-  startTimerForDemande(id: number | undefined) {
-    if (typeof id !== 'number') return; // ⚠ sécurité
-  
-    if (this.timers[id]) return;
-  
-    this.timers[id] = setInterval(() => {
-      const now = Date.now();
-      const elapsedSeconds = Math.floor((now - this.startTimestamps[id]) / 1000);
-      this.displayTimes[id] = this.formatTime(elapsedSeconds);
-    }, 1000);
-  }
-  
-  // startTimerForDemande(id: number) {
-  //   if (this.timers[id]) return; // ✅ Ne démarre pas si déjà en cours
-  
-  //   this.timers[id] = setInterval(() => {
-  //     const now = Date.now();
-  //     const elapsedSeconds = Math.floor((now - this.startTimestamps[id]) / 1000);
-  //     this.displayTimes[id] = this.formatTime(elapsedSeconds);
-  //   }, 1000);
-  // }
-  
-  
-  
-    toDatetimeLocal(date: Date): string {
+  toDatetimeLocal(date: Date): string {
     const pad = (n: number) => n.toString().padStart(2, '0');
     const yyyy = date.getFullYear();
     const MM = pad(date.getMonth() + 1);
@@ -380,42 +338,61 @@ onStatut(val: string) {
     
 
 
-  updateDisplay() {
-    if (!this.startTimestamp) {
-      this.displayTime = '00:00:00';
-      return;
+    mettreEnCours(demandeId: number): void {
+      this.demandeService.mettreEnCours(demandeId).subscribe({
+        next: (res) => {
+          // Mettre à jour directement la demande dans le tableau
+          const index = this.demandes.findIndex(d => d.id === demandeId);
+          if (index !== -1) {
+            this.demandes[index] = {
+              ...this.demandes[index],
+              statut: 'en cours',
+              attestaionName: '',
+              motifrejet: ''
+            };
+          }
+          alert("✅ Demande mise en cours avec succès");
+            window.location.reload();
+
+          this.getAllDemande();
+    
+          console.log(`✅ ${res}`); // affiche le texte renvoyé par le backend
+        },
+        error: (err) => {
+          console.error('Erreur inattendue', err);
+        }
+      });
     }
-    const now = Date.now();
-    const elapsedSeconds = Math.floor((now - this.startTimestamp) / 1000);
-    this.displayTime = this.formatTime(elapsedSeconds);
-  }
+    
+
+    // mettreEnCours(demandeId: number): void {
+    //   this.demandeService.mettreEnCours(demandeId).subscribe({
+    //     next: (res) => {
+    //       // Mettre à jour directement la demande dans le tableau
+    //       const index = this.demandes.findIndex(d => d.id === demandeId);
+    //       if (index !== -1) {
+    //         this.demandes[index] = {
+    //           ...this.demandes[index],
+    //           statut: 'en cours',
+    //           attestaionName: '',
+    //           motifrejet: ''
+    //         };
+    //       }
+    
+    //       // Affichage non bloquant (optionnel)
+    //       console.log(`✅ Demande ${demandeId} mise en cours avec succès !`);
+    //       // ou utiliser un toast Angular à la place de alert
+    //     },
+    //     error: (err) => {
+    //       console.error(`❌ Erreur lors de la mise en cours de la demande ${demandeId}`, err);
+    //     }
+    //   });
+    // }
+    
 
 
 
-  formatTime(totalSeconds: number): string {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
 
-    return [hours, minutes, seconds]
-      .map(v => v.toString().padStart(2, '0'))
-      .join(':');
-  }
-
-  // ngOnDestroy() {
-  //   if (this.intervalId) {
-  //     clearInterval(this.intervalId);
-  //   }
-  // }
-
-
-  traite(id: number){
-    this.stopTimerForDemande(id);
-    this.UpdateTempsEcouler(id);
-    this.router.navigate(['/verification', id]);
-
-  }
-  
 
   
   }

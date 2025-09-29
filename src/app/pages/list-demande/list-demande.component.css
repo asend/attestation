@@ -44,3 +44,8 @@ app-footer {
   bottom: 0;
   width: 100%;
 }
+
+.vuea:hover{
+    size: 30px;
+    color: green;
+  }

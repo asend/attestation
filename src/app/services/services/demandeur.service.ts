@@ -24,6 +24,8 @@ import { register } from '../fn/demandeur/register';
 import { Register$Params } from '../fn/demandeur/register';
 import { updateDemandeur } from '../fn/demandeur/update-demandeur';
 import { UpdateDemandeur$Params } from '../fn/demandeur/update-demandeur';
+import { environment } from 'src/environments/environment';
+import { Demandeur } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class DemandeurService extends BaseService {
@@ -207,7 +209,7 @@ export class DemandeurService extends BaseService {
   }
 
 
-  private baseUrl = 'http://localhost:8080'; // Adaptez l'URL si besoin
+  private baseUrl = environment.apiUrl; // Adaptez l'URL si besoin
 
 
   updateMatriculeSolde(id: number, matriculeSolde: string): Observable<number> {
@@ -221,5 +223,24 @@ export class DemandeurService extends BaseService {
   }
   
 
+  // updateDemandeurAndUtilisateur(id: number, data: any): Observable<any> {
+  //   return this.http.put(`${this.baseUrl}/api/demandeur/updateDemandeurAndUtilisateur/${id}`, data);
+  // }
+  // getDemandeurById(id: number): Observable<any> {
+  //   return this.http.get(`${this.baseUrl}/api/demandeur/demandeurId/${id}`);
+  // }
+
+
+  getDemandeurById(id: number): Observable<Demandeur> {
+    return this.http.get<Demandeur>(`${this.baseUrl}/api/demandeur/demandeurs/${id}`);
+  }
+  updateDemandeurAndUtilisateur(id: number, demandeur: Demandeur): Observable<Demandeur> {
+    return this.http.put<Demandeur>(`${this.baseUrl}/api/demandeur/updateDemandeurAndUtilisateur/${id}`, demandeur);
+  }
+  
+
+  updateDemandeurUser(demandeurDTO: DemandeurDto): Observable<number> {
+    return this.http.put<number>(`${this.baseUrl}/api/demandeur/updateDemandeurUser`, demandeurDTO);
+  }
 
 }

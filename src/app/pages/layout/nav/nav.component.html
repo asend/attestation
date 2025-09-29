@@ -30,7 +30,7 @@
           </a>
           <!-- end logo -->
           <p class="text">
-            <a href="#" class="navbar-brand mfpnom">  Ministère de la Fonction Publique <br> Et de la Réforme du Service public</a>
+            <a href="#" class="navbar-brand mfpnom">  Ministère de la Fonction Publique, du Travail <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Et de la Réforme du Service public</a>
           </p>
         </div>
         <div class="attr-nav align-items-lg-center vac">
@@ -47,7 +47,9 @@
 
               <div class="dropdown-menu">
                 <a class="dropdown-item" [routerLink]="['/change-password']">Changer mot de passe</a>
-                <a class="dropdown-item" *ngIf="!isAdmin" [routerLink]="['/update-demandeur']">Modifier profil</a>
+                <!-- <a class="dropdown-item" *ngIf="!isAdmin" [routerLink]="['/update-demandeur-utilisateur' , this.userId]">Modifier profil</a> -->
+
+                <!-- <a class="dropdown-item" *ngIf="!isAdmin" [routerLink]="['/update-demandeur', userId]">Modifier profil</a> -->
                 <a class="dropdown-item" *ngIf="!isAdmin" (click)="listDemande()">Mes demandes</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javasript:void(0)" (click)="onlogout()" style="color: rgb(242, 96, 96);"><img src="assets/deconnexion.png" height="25px" width="25px">&nbsp;Déconnecter</a>

@@ -460,5 +460,32 @@ export class DemandeService extends BaseService {
     return this.http.get<any[]>(`${this.apiUrl}/api/demande/demandes/statut-sur-7-jours`);
   }
 
+
+  verifierDateDemande(id: number): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/demande/verifier-date/${id}`, { responseType: 'text' });
+  }
+
+  // getDureeTraitement(id: number): Observable<string> {
+  //   return this.http.get<string>(`${this.apiUrl}/api/demande/duree-traitement/${id}`);
+  // }
+
+  getDureeTraitement(id: number): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}/api/demande/duree-traitement/${id}`);
+  }
+ 
+  // mettreEnCours(id: number): Observable<any> {
+  //   return this.http.put(`${this.apiUrl}/api/demande/en-cours/${id}`, {});
+  // }
+
+  // mettreEnCours(id: number): Observable<any> {
+  //   return this.http.put(`${this.apiUrl}/api/demande/en-cours/${id}`, {}, { responseType: 'text' });
+  // }
+
+  mettreEnCours(demandeId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/demande/en-cours/${demandeId}`, {}, { responseType: 'text' });
+  }
+  
+
+  
  
 }

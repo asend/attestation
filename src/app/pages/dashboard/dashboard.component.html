@@ -3,103 +3,118 @@
   <section class="content">
     <div *ngIf="isLoadingCard" class="text-center my-4 spinner-container" style="margin-bottom: -139px;">
       <div class="dot-loader m-2">
-        <p [ngClass]="currentStatutColor"><small>Chargement des statistiques <span></span><span></span><span></span></small></p>
+        <p [ngClass]="currentStatutColor"><small>Chargement des statistiques
+            <span></span><span></span><span></span></small></p>
       </div>
-     
+
     </div>
-    
+
     <div *ngIf="!isLoadingCard" class="row mt-5">
       <app-card class="col-lg-3 col-6" *ngFor="let s of statisques" [infoStatistique]="s"
-                (stringChange)="onStatut($event)">
+        (stringChange)="onStatut($event)">
       </app-card>
     </div>
   </section>
   <section class="content mt-5 lg-section">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <input type="search" style="width: 50%; float: right;" id="form1" [(ngModel)]="searchtext" class="form-control" placeholder="Recherche..." aria-label="search"/> 
-              <h4 class="card-title"><b>{{titre}}</b></h4>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <input type="search" style="width: 50%; float: right;" id="form1" [(ngModel)]="searchtext"
+              class="form-control" placeholder="Recherche..." aria-label="search" />
+            <h4 class="card-title"><b>{{titre}}</b></h4>
+          </div>
+          <!-- /.card-header -->
+          <div class="">
+
+
+            <div *ngIf="isLoading" class="text-center my-4">
+              <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+              <p [ngClass]="currentStatutColor"><small>Chargement de {{titre}}</small></p>
             </div>
-            <!-- /.card-header -->
-            <div class="">
-            
 
-              <div *ngIf="isLoading" class="text-center my-4">
-                <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
-                <p [ngClass]="currentStatutColor"><small>Chargement de {{titre}}</small></p>
-              </div>
-              
-              <!-- Si pas de données et pas en cours de chargement -->
-              <div *ngIf="!isLoading && demandes.length === 0" class="text-center my-4">
-                <p style="color: rgb(92, 92, 221);">Efficace pas de demandes en cours ... </p>
-              </div>
-              <div *ngIf="!isLoading && demandes.length > 0">   
-                 <table class="table">
+            <!-- Si pas de données et pas en cours de chargement -->
+            <div *ngIf="!isLoading && demandes.length === 0" class="text-center my-4">
+              <p style="color: rgb(92, 92, 221);">Efficace pas de demandes en cours ... </p>
+            </div>
+            <div *ngIf="!isLoading && demandes.length > 0">
+              <table class="table"  style="font-size: 13px;">
                 <thead class="thead">
-                <tr>
-                  <th>Prénom</th>
-                  <th>Nom</th>
+                  <tr>
+                    <th>Date</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
 
-                  <th>Date de naissance</th>
-                  <th>Lieu de naissance</th>
+                    <th>Date de naissance</th>
+                    <th>Lieu de naissance</th>
 
-                  <th>NIN</th>
-                  <!-- <th>Durée</th> -->
-                  <th>Statut</th>
-                  <th>Action</th>
-                </tr>
+                    <th>NIN</th>
+                    <!-- <th>Durée</th> -->
+                    <th>Statut</th>
+                    <th>Action</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let demande of demandes  | filter:searchtext | paginate: {itemsPerPage: itemsPerPage, currentPage: p}">
-                  <td>{{demande.demandeurDTO?.prenom | capitalize }}</td>
-                  <td>{{demande.demandeurDTO?.nom | capitalize }}</td>
-                  <td>{{ demande.demandeurDTO?.datedenaissance  }}</td>
-                  <td>{{ demande.demandeurDTO?.lieudenaissance }} </td>
+                  <tr
+                    *ngFor="let demande of demandes  | filter:searchtext | paginate: {itemsPerPage: itemsPerPage, currentPage: p}">
+                    <td >{{demande.datedemande}}</td>
 
-                  <td>{{demande.demandeurDTO?.nin}}</td>
-                  
-                  <!-- <td>
-                      <h1 style="font-size: 15px;">{{ displayTimes[demande.id] || '00:00:00' }}</h1>
-                      <div class="form-group" hidden>
-                        <input type="datetime-local" class="form-control"  [(ngModel)]="currentDemande.tempsEcoule " placeholder="Entrer le matricule"/>
-                      </div>
-                      <button class="btn btn-primary mt-2" (click)="UpdateTempsEcouler(demande.id)" hidden>
-                      </button>
+                    <td>{{demande.demandeurDTO?.prenom | capitalize }}</td>
+                    <td>{{demande.demandeurDTO?.nom | capitalize }}</td>
+                    <td>{{ demande.demandeurDTO?.datedenaissance }}</td>
+                    <td>{{ demande.demandeurDTO?.lieudenaissance }} </td>
+                    <td>{{demande.demandeurDTO?.nin}}</td>
+                    <!-- <td>
+                      <ng-container [ngSwitch]="demande.statut">
+                        <span *ngSwitchCase="'4d08a09a-405a-4e67-bdb7-243f661e56cd'">{{ demande.dureeTraitement }}</span>
+                        <span *ngSwitchCase="'933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1'">{{ demande.dureeTraitement }}</span>
+                        <span *ngSwitchDefault>{{ demande.datedemande?.split(' ')[1]?.split('.')[0] }}</span>
+                      </ng-container>
+                    </td> -->
+                    
+                    <!-- <td>{{ demande.datedemande?.split(' ')[1]?.split('.')[0] }}</td> -->
+                    <td style="font-size: 13px;" class="statut" [ngClass]="{
+                'status-encours': demande.statut === '2cad843e-b6fd-4b85-815d-4bc2a499972d',
+                'status-approuve': demande.statut === '4d08a09a-405a-4e67-bdb7-243f661e56cd',
+                'status-rejete': demande.statut === '933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1'}">
+                      {{ getStatutLabel(demande.statut) }}
+                      <ng-container [ngSwitch]="demande.statut">
+                        <i *ngSwitchCase="'4d08a09a-405a-4e67-bdb7-243f661e56cd'" class="fas fa-check-circle text-success me-1"
+                          style="font-size: 10px;"></i>
+                        <i *ngSwitchCase="'933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1'" class="fas fa-times-circle text-danger me-1"
+                          style="font-size: 10px;"></i>
+                      </ng-container>
+                    </td>
+                    <td>
+                      <a [routerLink]="['/verification', demande.id]" style="color: goldenrod;">traiter</a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <!-- <a (click)="traite(demande.id)" style="color: goldenrod;">traiter</a> &nbsp;&nbsp;&nbsp;&nbsp; -->
+                      <a [ngClass]="demande.statut!='4d08a09a-405a-4e67-bdb7-243f661e56cd' ? 'inactiveLink' : '' "
+                        [routerLink]="['/visualiser', demande.id]" target="_blank" [hidden]="demande.statut == '2cad843e-b6fd-4b85-815d-4bc2a499972d'">
+                        <i class="bi bi-eye text-dark"></i>
+                      </a> &nbsp;
+                      <a (click)="clickMethod(demande.id)" style="color: red;">
+                        <i class="bi bi-trash3"></i>
+                      </a> &nbsp;
+                      <!-- Icône ou Spinner -->
+                      <a *ngIf="demande.statut === '4d08a09a-405a-4e67-bdb7-243f661e56cd' || demande.statut === '933ae9b3-c8b8-4d6f-ba5f-b5c47e0efbb1'" (click)="mettreEnCours(demande.id)">
+                        <i
+                          class="bi bi-arrow-clockwise text-primary"
+                          style="cursor: pointer;"
+                          >
+                        </i></a>
+
                       
-                  </td>             -->
-                 
-              <td class="statut" [ngClass]="{
-                'status-encours': demande.statut === 'cours',
-                'status-approuve': demande.statut === 'approuvée',
-                'status-rejete': demande.statut === 'rejetée'
-              }">
-               {{ getStatutLabel(demande.statut) }}
-              <ng-container [ngSwitch]="demande.statut">
-                <i *ngSwitchCase="'approuvée'" class="fas fa-check-circle text-success me-1" style="font-size: 10px;"></i>
-                <i *ngSwitchCase="'rejetée'" class="fas fa-times-circle text-danger me-1" style="font-size: 10px;"></i>
-              </ng-container>
-            </td>
-                  <td>
-                    <a [routerLink]="['/verification', demande.id]" style="color: goldenrod;">traiter</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                    <!-- <a (click)="traite(demande.id)" style="color: goldenrod;">traiter</a> &nbsp;&nbsp;&nbsp;&nbsp; -->
-                    <a [ngClass]="demande.statut!='approuvée' ? 'inactiveLink' : '' " [routerLink]="['/visualiser', demande.id]" target="_blank"  [hidden]="demande.statut == 'cours'">
-                      <i class="bi bi-eye text-dark"></i>
-                    </a> &nbsp;
-                    <a (click)="clickMethod(demande.id)" style="color: red;">
-                      <i class="bi bi-trash3"></i>
-                    </a>
                   </td>
-                </tr>
+                  </tr>
                 </tbody>
-                
+
               </table>
-            </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
     <div class="row">
       <div *ngIf="demandes.length > 10" class="py-4 flex justify-center item-center page  mt-3">
         <pagination-controls (pageChange)="p =$event"></pagination-controls>
@@ -108,4 +123,3 @@
   </section>
 </div>
 <app-footer></app-footer>
-

@@ -607,9 +607,6 @@ export class StatistiqueDepartmentComponent implements OnInit {
     }]
   };
 
-
- 
-  
   getChartOptionsByTypeDakar(type: string): Highcharts.Options {
     switch (type) {
       case 'pie':
@@ -1385,8 +1382,6 @@ export class StatistiqueDepartmentComponent implements OnInit {
   }
             
   // -- La region de Matam
-
-
 chartOptionsBarDepartmentMatam: Highcharts.Options = {
   chart: { type: 'column' },
   title: { text: 'Les Départements de Matam' },
@@ -1631,7 +1626,6 @@ getChartOptionsByTypeSaintLouis(type: string): Highcharts.Options {
 
 // La region de sedhiou
 // --- REGION DE SEDHIOU ---
-
 chartOptionsBarDepartmentSedhiou: Highcharts.Options = {
   chart: { type: 'column' },
   title: { text: 'Les Départements' },
@@ -2129,8 +2123,6 @@ getChartOptionsByTypeZiguinchor(type: string): Highcharts.Options {
 }
 
 
-
-  
 
 
 

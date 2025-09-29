@@ -19,6 +19,7 @@ export interface DemandeDto {
   motifrejet?: string;
   startTime?: string;
   tempsEcoule?: string;
+  dureeTraitement?: String;
   
 }
 

@@ -21,5 +21,6 @@ export interface Demande {
   valide?: boolean;
   validite?: boolean;
   motifrejet?: string;
+  dureeTraitement?: String;
 
 }

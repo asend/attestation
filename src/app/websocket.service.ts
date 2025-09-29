@@ -10,7 +10,11 @@ export class WebsocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000'); // Remplace par l'URL de ton backend Socket.IO
+    this.socket = io('https://pgde-sn.mfprsp.com:3000', {
+      path: '/socket.io',
+      transports: ['websocket'], // évite polling bloqué
+    });
+    
   }
 
   // Exemple d'envoi d'événement

@@ -48,11 +48,11 @@ export class ListDemandeComponent implements OnInit {
 
     this.messageSub = this.socketService.onMessage().subscribe((msg) => {
       console.log(msg);
-      
       this.messages.push(msg);
     });
 
   }
+  
 
   send() {
     this.message = "demande envoye"
@@ -77,7 +77,6 @@ export class ListDemandeComponent implements OnInit {
         this.dec = data["DEC"];
         this.da = data["DA"];
         this.dr = data["DR"];
-        //console.log(this.da)
       }
     })
   }
@@ -131,7 +130,7 @@ export class ListDemandeComponent implements OnInit {
           timer: 2000
         }).then(() => {
           this.send();
-          // window.location.reload();                
+          window.location.reload();                
         });
         this.getDemandes(this.id);
         this.getDemandeTab(this.ac.snapshot.params['id']);
@@ -176,5 +175,7 @@ export class ListDemandeComponent implements OnInit {
       this.router.navigate(['mes-demandes']);
     }
   }
+
+ 
   
 }

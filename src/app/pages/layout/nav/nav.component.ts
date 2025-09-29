@@ -16,6 +16,7 @@ export class NavComponent implements OnInit {
   isAdmin = false;
 
   fullName!: string;
+  userId!: number;
   demandeur!: DemandeurDto;
 
   token!: string;
@@ -35,6 +36,10 @@ showPassword: any;
       // @ts-ignore
       this.fullName = localStorage.getItem("fullName")
     }
+    if (localStorage.getItem("userId")){
+      // @ts-ignore
+      this.userId = localStorage.getItem("userId")
+    }
   }
 
   onlogout() {
@@ -50,5 +55,26 @@ showPassword: any;
       }
     })
   }
+
+  getCurrentUserId(): void {
+    const profile = localStorage.getItem("profile");
+  
+    if (profile === "USER") {
+      const nin = localStorage.getItem("nin");
+      if (nin) {
+        this.demandeurService.getByNin1({ nin }).subscribe({
+          next: (data) => {
+            console.log("ID du demandeur connecté :", data.id);
+            // Ici tu peux retourner l'ID ou le stocker localement
+            this.demandeur = data; // ou this.demandeurId = data.id;
+          },
+          error: (err) => {
+            console.error("Erreur récupération demandeur :", err);
+          }
+        });
+      }
+    }
+  }
+  
 
 }

@@ -6,6 +6,7 @@ import { InfoStatistique } from '../card/card.component';
 import { DemandeDto } from 'src/app/services/models/demande-dto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import * as Highcharts from 'highcharts';
+import { Router } from '@angular/router';
 
 
 
@@ -17,12 +18,37 @@ import * as Highcharts from 'highcharts';
 })
 export class StatistiqueComponent implements OnInit {
 
+
   selectedRegionFromGraph: string | null = null;
   showModal: boolean = false;
   selectedChartTypeRegion: string = 'bar';
   selectedChartTypeAllDemande: string = 'bar';
 
-currentYear = 2020;
+  regions: string[] = [
+    'Dakar', 'Diourbel', 'Fatick', 'Kaffrine', 'Kaolack', 'Kédougou', 'Kolda',
+    'Louga', 'Matam', 'Saint-Louis', 'Sédhiou', 'Tambacounda', 'Thiès', 'Ziguinchor'
+  ];
+
+
+  isModalOpen: boolean = false;
+  selectedRegion: string = '';
+
+  selectedChartType: string = 'bar';
+  selectedChartTypeDiourbel: string = 'pie';
+  selectedChartTypeFatick: string = 'bar'; 
+  selectedChartTypeKaffrine: string = 'line'; 
+  selectedChartTypeKaolack: string = 'bar'; 
+  selectedChartTypeKedougou: string = 'line';  
+  selectedChartTypeKolda: string = 'line';  
+  selectedChartTypeLouga: string = 'bar';  
+  selectedChartTypeMatam: string = 'libarne';  
+  selectedChartTypeSaintLouis: string = 'line';  
+  selectedChartTypeSedhiou: string = 'line';  
+  selectedChartTypeTambacounda: string = 'bar';  
+  selectedChartTypeThies: string = 'line';  
+  selectedChartTypeZiguinchor: string = 'bar';  
+
+
 
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -60,8 +86,12 @@ currentYear = 2020;
   erreurMessage!: string;
   nombreDemandesParStatut: any = {};
 
-  
-  constructor(private dashbordService: DashbordService, private demandeService: DemandeService,private cdr: ChangeDetectorRef) {
+  regionCategories: string[] = [];
+
+  constructor(private dashbordService: DashbordService, 
+    private demandeService: DemandeService,
+    private cdr: ChangeDetectorRef,
+    private router: Router) {
    }
 
 
@@ -79,6 +109,7 @@ currentYear = 2020;
     this.loadChartDataStatistiques();
     this.loadDemandesParRegion();
     this.loadStatistiquesParSemaine();
+    this.loadDepartmentStats();
 
 
 
@@ -89,87 +120,87 @@ currentYear = 2020;
 
   
   
-  chartOptionsCercle: Highcharts.Options = {
-    chart: {
-      type: 'pie',
-      events: {
-        render() {
-          const chart = this;
-          const series = chart.series[0];
+  // chartOptionsCercle: Highcharts.Options = {
+  //   chart: {
+  //     type: 'pie',
+  //     events: {
+  //       render() {
+  //         const chart = this;
+  //         const series = chart.series[0];
   
-          if (!(chart as any).customLabel) {
-            const total = series.data.reduce((acc, p) => acc + (p.y as number), 0);
-            (chart as any).customLabel = chart.renderer.label(
-              `Total<br/><strong>${total}</strong>`,
-              series.center[0] + chart.plotLeft,
-              series.center[1] + chart.plotTop,
-              'rect',
-              0, 0,
-              true
-            )
-              .css({
-                color: 'var(--highcharts-neutral-color-100, #000)',
-                textAnchor: 'middle'
-              })
-              .add();
-          }
+  //         if (!(chart as any).customLabel) {
+  //           const total = series.data.reduce((acc, p) => acc + (p.y as number), 0);
+  //           (chart as any).customLabel = chart.renderer.label(
+  //             `Total<br/><strong>${total}</strong>`,
+  //             series.center[0] + chart.plotLeft,
+  //             series.center[1] + chart.plotTop,
+  //             'rect',
+  //             0, 0,
+  //             true
+  //           )
+  //             .css({
+  //               color: 'var(--highcharts-neutral-color-100, #000)',
+  //               textAnchor: 'middle'
+  //             })
+  //             .add();
+  //         }
   
-          const label = (chart as any).customLabel;
-          label.attr({
-            x: series.center[0] + chart.plotLeft,
-            y: series.center[1] + chart.plotTop - (label.getBBox().height / 2)
-          });
+  //         const label = (chart as any).customLabel;
+  //         label.attr({
+  //           x: series.center[0] + chart.plotLeft,
+  //           y: series.center[1] + chart.plotTop - (label.getBBox().height / 2)
+  //         });
   
-          label.css({
-            fontSize: `${series.center[2] / 12}px`
-          });
-        }
-      }
-    },
-    accessibility: {
-      point: { valueSuffix: '%' }
-    },
-    title: {
-      text: 'Demandes par statut'
-    },
-    tooltip: {
-      pointFormat: '{series.name}: <b>{point.y}</b>'
-    },
-    legend: {
-      enabled: false
-    },
-    plotOptions: {
-      pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        innerSize: '75%',
-        dataLabels: {
-          enabled: true,
-          useHTML: true,
-          formatter: function (this: Highcharts.Point) {
-            return `
-              <div style="text-align:center; line-height:1.4;">
-                <strong>${this.name}</strong><br/>
-                ${this.y} <br/>
-                ${Highcharts.numberFormat(this.percentage || 0, 0)}%
-              </div>
-            `;
-          },
-          style: {
-            fontSize: '11px',
-            color: '#000'
-          }
-        }
-      }
-    },
-    series: [{
-      type: 'pie',
-      name: 'Demandes',
-      colorByPoint: true,
-      innerSize: '75%',
-      data: [] // rempli dynamiquement dans ngOnInit
-    } as any]
-  };
+  //         label.css({
+  //           fontSize: `${series.center[2] / 12}px`
+  //         });
+  //       }
+  //     }
+  //   },
+  //   accessibility: {
+  //     point: { valueSuffix: '%' }
+  //   },
+  //   title: {
+  //     text: 'Demandes par statut'
+  //   },
+  //   tooltip: {
+  //     pointFormat: '{series.name}: <b>{point.y}</b>'
+  //   },
+  //   legend: {
+  //     enabled: false
+  //   },
+  //   plotOptions: {
+  //     pie: {
+  //       allowPointSelect: true,
+  //       cursor: 'pointer',
+  //       innerSize: '75%',
+  //       dataLabels: {
+  //         enabled: true,
+  //         useHTML: true,
+  //         formatter: function (this: Highcharts.Point) {
+  //           return `
+  //             <div style="text-align:center; line-height:1.4;">
+  //               <strong>${this.name}</strong><br/>
+  //               ${this.y} <br/>
+  //               ${Highcharts.numberFormat(this.percentage || 0, 0)}%
+  //             </div>
+  //           `;
+  //         },
+  //         style: {
+  //           fontSize: '11px',
+  //           color: '#000'
+  //         }
+  //       }
+  //     }
+  //   },
+  //   series: [{
+  //     type: 'pie',
+  //     name: 'Demandes',
+  //     colorByPoint: true,
+  //     innerSize: '75%',
+  //     data: [] // rempli dynamiquement dans ngOnInit
+  //   } as any]
+  // };
   
 
 // Par jour
@@ -192,6 +223,7 @@ currentYear = 2020;
           }
         }]
       };
+      
       console.log(this.chartOptionsBarDays.series);
       
     });
@@ -214,234 +246,39 @@ currentYear = 2020;
       }
     }]
   };
-  
 
-  chartOptionsTest: Highcharts.Options = {
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: 'Historic World Population by Region'
-    },
-    subtitle: {
-      text: 'Source: <a href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population" target="_blank">Wikipedia.org</a>'
-    },
-    xAxis: {
-      categories: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'],  // ✅ Ajout de Vendredi
-      title: {
-        text: null
-      },
-      gridLineWidth: 1,
-      lineWidth: 0
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Population (millions)',
-        align: 'high'
-      },
-      labels: {
-        overflow: 'justify'
-      },
-      gridLineWidth: 0
-    },
-    tooltip: {
-      valueSuffix: ' millions'
-    },
-    plotOptions: {
-      column: {
-        borderRadius: 10,
-        dataLabels: {
-          enabled: true
-        },
-        groupPadding: 0.1
-      }
-    },
-    legend: {
-      layout: 'vertical',
-      align: 'right',
-      verticalAlign: 'top',
-      x: -40,
-      y: 80,
-      floating: true,
-      borderWidth: 1,
-      backgroundColor: 'var(--highcharts-background-color, #ffffff)',
-      shadow: true
-    },
-    credits: {
-      enabled: false
-    },
-    series: [
-      {
-        name: 'Year 1990',
-        data: [632, 727, 3202, 721, 500],  // ✅ Ajout d'une valeur pour Vendredi
-        type: 'column'
-      },
-      {
-        name: 'Year 2000',
-        data: [814, 841, 3714, 726, 610],  // ✅ Ajout d'une valeur pour Vendredi
-        type: 'column'
-      },
-      {
-        name: 'Year 2021',
-        data: [1393, 1031, 4695, 745, 880],  // ✅ Ajout d'une valeur pour Vendredi
-        type: 'column'
-      }
-    ]
-  };
+// getWeekDatesAvecJours(): { date: string, label: string }[] {
+//   const joursSemaine = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+//   const today = new Date();
+//   const dayOfWeek = today.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
+//   const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 
+//   const monday = new Date(today);
+//   monday.setDate(today.getDate() + diffToMonday);
 
-  countries: Record<string, { name: string, color: string, ucCode?: string }> = {
-    kr: { name: 'South Korea', color: '#FE2371' },
-    jp: { name: 'Japan', color: '#544FC5' },
-    au: { name: 'Australia', color: '#2CAFFE' },
-    de: { name: 'Germany', color: '#FE6A35' },
-    ru: { name: 'Russia', color: '#6B8ABC' },
-    cn: { name: 'China', color: '#1C74BD' },
-    gb: { name: 'Great Britain', color: '#00A6A6' },
-    us: { name: 'United States', color: '#D568FB' }
-  };
+//   const result: { date: string, label: string }[] = [];
 
-  locations = [
-    { city: 'Tokyo', year: 2020 },
-    { city: 'Rio', year: 2016 },
-    { city: 'London', year: 2012 },
-    { city: 'Beijing', year: 2008 },
-    { city: 'Athens', year: 2004 },
-    { city: 'Sydney', year: 2000 }
-  ];
+//   for (let i = 0; i < 7; i++) {
+//     const current = new Date(monday);
+//     current.setDate(monday.getDate() + i);
 
-   
+//     const dd = String(current.getDate()).padStart(2, '0');
+//     const mm = String(current.getMonth() + 1).padStart(2, '0');
+//     const yyyy = current.getFullYear();
+//     const jourNom = joursSemaine[current.getDay()];
+//     const dateStr = `${dd}-${mm}-${yyyy}`;
+//     const label = `${jourNom} (${dateStr})`;
 
-  dataPrev: Record<number, [string, number][]> = {
-    2020: [['kr', 9], ['jp', 12], ['au', 8], ['de', 17], ['ru', 19], ['cn', 26], ['gb', 27], ['us', 46]],
-    2016: [['kr', 13], ['jp', 7], ['au', 8], ['de', 11], ['ru', 20], ['cn', 38], ['gb', 29], ['us', 47]],
-    2012: [['kr', 13], ['jp', 9], ['au', 14], ['de', 16], ['ru', 24], ['cn', 48], ['gb', 19], ['us', 36]],
-    2008: [['kr', 9], ['jp', 17], ['au', 18], ['de', 13], ['ru', 29], ['cn', 33], ['gb', 9], ['us', 37]],
-    2004: [['kr', 8], ['jp', 5], ['au', 16], ['de', 13], ['ru', 32], ['cn', 28], ['gb', 11], ['us', 37]],
-    2000: [['kr', 7], ['jp', 3], ['au', 9], ['de', 20], ['ru', 26], ['cn', 16], ['gb', 1], ['us', 44]]
-  };
-  
-  data: Record<number, [string, number][]> = {
-    2020: [['kr', 6], ['jp', 27], ['au', 17], ['de', 10], ['ru', 20], ['cn', 38], ['gb', 22], ['us', 39]],
-    2016: [['kr', 9], ['jp', 12], ['au', 8], ['de', 17], ['ru', 19], ['cn', 26], ['gb', 27], ['us', 46]],
-    2012: [['kr', 13], ['jp', 7], ['au', 8], ['de', 11], ['ru', 20], ['cn', 38], ['gb', 29], ['us', 47]],
-    2008: [['kr', 13], ['jp', 9], ['au', 14], ['de', 16], ['ru', 24], ['cn', 48], ['gb', 19], ['us', 36]],
-    2004: [['kr', 9], ['jp', 17], ['au', 18], ['de', 13], ['ru', 29], ['cn', 33], ['gb', 9], ['us', 37]],
-    2000: [['kr', 8], ['jp', 5], ['au', 16], ['de', 13], ['ru', 32], ['cn', 28], ['gb', 11], ['us', 37]]
-  };
-  
-  getData(dataSet: [string, number][]) {
-    return dataSet.map(([code, value]) => ({
-      name: code,
-      y: value,
-      color: this.countries[code]?.color || '#ccc'
-    }));
-  }
+//     result.push({ date: dateStr, label });
+//   }
 
-  initChart(year: number): void {
-    if (!this.data[year] || !this.dataPrev[year]) return;
-
-    this.chartOptions = {
-      chart: { type: 'column' },
-      title: {
-        text: `Summer Olympics ${year} - Top 5 countries by Gold medals`,
-        align: 'left'
-      },
-      subtitle: {
-        text: `Comparing to results from ${year - 4}`,
-        align: 'left'
-      },
-      plotOptions: {
-        series: { borderWidth: 0 }
-      },
-      legend: { enabled: false },
-      tooltip: {
-        shared: true,
-        headerFormat: '<span style="font-size: 15px">{point.key}</span><br/>',
-        pointFormat:
-          '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y} medals</b><br/>'
-      },
-      xAxis: {
-        type: 'category',
-        max: 4
-      },
-      yAxis: {
-        title: { text: 'Gold medals' },
-        showFirstLabel: false
-      },
-      series: [
-        {
-          color: 'rgba(158, 159, 163, 0.5)',
-          pointPlacement: -0.2,
-          linkedTo: 'main',
-          type: 'column',
-          name: `${year - 4}`,
-          data: this.dataPrev[year].slice()
-        },
-        {
-          name: `${year}`,
-          id: 'main',
-          type: 'column',
-          dataSorting: {
-            enabled: true,
-            matchByName: true
-          },
-          dataLabels: {
-            enabled: true,
-            inside: true,
-            style: { fontSize: '16px' }
-          },
-          data: this.getData(this.data[year])
-        }
-      ]
-    };
-}
+//   return result;
+// }
 
 
 
 
-
-
-
-
-capitalizeFirstLetter(str: string): string {
-  if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-getWeekDatesAvecJours(): { date: string, label: string }[] {
-  const joursSemaine = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-  const today = new Date();
-  const dayOfWeek = today.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
-  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-
-  const monday = new Date(today);
-  monday.setDate(today.getDate() + diffToMonday);
-
-  const result: { date: string, label: string }[] = [];
-
-  for (let i = 0; i < 7; i++) {
-    const current = new Date(monday);
-    current.setDate(monday.getDate() + i);
-
-    const dd = String(current.getDate()).padStart(2, '0');
-    const mm = String(current.getMonth() + 1).padStart(2, '0');
-    const yyyy = current.getFullYear();
-    const jourNom = joursSemaine[current.getDay()];
-    const dateStr = `${dd}-${mm}-${yyyy}`;
-    const label = `${jourNom} (${dateStr})`;
-
-    result.push({ date: dateStr, label });
-  }
-
-  return result;
-}
-
-
-
-
-
-
+// Par sexe
 
 chartOptionsBarBySexe: Highcharts.Options = {
   chart: { type: 'column' },
@@ -484,7 +321,6 @@ chartOptionsBarBySexe: Highcharts.Options = {
     }
   }]
 };
-
 
 loadChartDataBySexe(): void {
   this.demandeService.getDemandesParSexe().subscribe((data: Array<{ [key: string]: any }>) => {
@@ -732,6 +568,8 @@ private capitalize(str: string): string {
   yAxis: { title: { text: 'Nombre de demandes' } },
   plotOptions: {
     column: {
+       allowPointSelect: true,
+        cursor: 'pointer',
       dataLabels: {
         enabled: true,
         style: {
@@ -743,7 +581,6 @@ private capitalize(str: string): string {
   },
   series: [{ type: 'column', name: 'Demandes', data: [], colorByPoint: true }]
 };
-
   getChartOptionsTypeRegion(type: string): Highcharts.Options {
     switch (type) { 
       case 'line':
@@ -774,16 +611,119 @@ private capitalize(str: string): string {
           ...this.chartOptionsPieRegion,
           series: [{ type: 'pie', name: 'Demandes', data: pieData }]
         };
-  
         this.chartOptionsBarRegion = {
           ...this.chartOptionsBarRegion,
           xAxis: { categories },
-          series: [{ type: 'column', name: 'Demandes', data: values, colorByPoint: true }]
-        };
+          legend: {
+            margin: 10,
+            itemStyle: {
+              color: 'red',
+              fontSize: '15px',
+            }
+          },
+          plotOptions: {
+            column: {
+              point: {
+                events: {
+                  click: (event: any) => {
+                    const regionName = event.point.category;
+                    this.selectedRegion = regionName;
+                    this.openModal(regionName);
+                  }
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'blue',
+                  textDecoration: 'underline', // ✅ ajoute le soulignement
+                  cursor: 'pointer'            // ✅ ajoute un curseur "main" pour effet lien
+                }
+              }
+            }
+          },
+          series: [{
+            type: 'column',
+            name: 'Total Demande',
+            data: values,
+            colorByPoint: true
+          }]
+        }; 
       },
       error: (err) => console.error('Erreur chargement demandes par région', err)
     });
   }
+
+
+
+
+
+
+  // getChartOptionsByRegion(regionName: string, chartType: string): Highcharts.Options {
+
+  //   // Exemples simplifiés, adapte selon tes données et besoins
+  //   switch (regionName) {
+  //     case 'Dakar':
+  //       return this.getChartOptionsDakar(chartType);
+  //     case 'Diourbel':
+  //       return this.getChartOptionsDiourbel(chartType);
+  //     case 'Fatick':
+  //       return this.getChartOptionsFatick(chartType);
+  //     // ... ajoute les autres régions ici
+  //     default:
+  //       return {};
+  //   }
+  // }
+  // getChartOptionsDakar(chartType: string): Highcharts.Options {
+  //   return {
+  //     chart: {
+  //       type: chartType as any
+  //     },
+  //     title: { text: 'Données de la région Dakar' },
+  //     xAxis: {
+  //       categories: ['Catégorie 1', 'Catégorie 2', 'Catégorie 3']
+  //     },
+  //     series: [{
+  //       name: 'Exemple',
+  //       type: chartType as any,
+  //       data: [10, 20, 30]
+  //     }]
+  //   };
+  // }
+  // getChartOptionsDiourbel(chartType: string): Highcharts.Options {
+  //   return {
+  //     chart: {
+  //       type: chartType as any
+  //     },
+  //     title: { text: 'Données de la région Diourbel' },
+  //     xAxis: {
+  //       categories: ['Catégorie A', 'Catégorie B', 'Catégorie C']
+  //     },
+  //     series: [{
+  //       name: 'Exemple',
+  //       type: chartType as any,
+  //       data: [15, 25, 35]
+  //     }]
+  //   };
+  // }
+  // getChartOptionsFatick(chartType: string): Highcharts.Options {
+  //   return {
+  //     chart: {
+  //       type: chartType as any
+  //     },
+  //     title: { text: 'Données de la région Fatick' },
+  //     xAxis: {
+  //       categories: ['X', 'Y', 'Z']
+  //     },
+  //     series: [{
+  //       name: 'Exemple',
+  //       type: chartType as any,
+  //       data: [5, 12, 18]
+  //     }]
+  //   };
+  // }
+
 
 
   // Par semaine
@@ -848,7 +788,6 @@ private capitalize(str: string): string {
       this.updateFlag = true;
     });
   }
-  
   chartOptionsBarWeek: Highcharts.Options = {
   chart: { type: 'column' },
   title: { text: 'Statistiques par jour' },
@@ -885,22 +824,2055 @@ private capitalize(str: string): string {
 
 
   
-  showDepartementPopup(region: string): void {
-    this.selectedRegionFromGraph = region;
-    this.showModal = true;
+  openModal(region: string) {
+    this.selectedRegion = region;
+    this.isModalOpen = true;
   }
-  
+  closeModal() {
+    this.isModalOpen = false; // Ferme la modale
+  } 
 
-  
+
+
+
+  // les departements les departments
+
+loadDepartmentStats(): void {
+  this.demandeService.getDemandesParRegionEtDepartement().subscribe((data: Array<{ [key: string]: any }>) => {
+    // --- Dakar ---
+    const dakar = data.find(region => region['region'] === 'Dakar');
+    if (dakar && dakar['departements']) {
+      const categoriesDakar = dakar['departements'].map((dep: any) => dep['departement']);
+      const valuesDakar = dakar['departements'].map((dep: any) => dep['totalDemandes']);
+      const pieDataDakar = dakar['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes']
+      }));
+
+      // Mise à jour pie chart Dakar
+      (this.chartOptionsPieDepartmentDakar.series![0] as Highcharts.SeriesPieOptions).data = pieDataDakar;
+
+      // Mise à jour line chart Dakar
+      this.chartOptionsLinepieDepartmentDakar.xAxis = { categories: categoriesDakar };
+      (this.chartOptionsLinepieDepartmentDakar.series![0] as Highcharts.SeriesLineOptions).data = valuesDakar;
+
+      // Mise à jour bar chart Dakar
+      this.chartOptionsBarDepartmentDakar.xAxis = { categories: categoriesDakar };
+      (this.chartOptionsBarDepartmentDakar.series![0] as Highcharts.SeriesColumnOptions).data = valuesDakar;
+
+      this.updateFlag = true;
+    }
+
+    // --- Diourbel ---
+    const diourbel = data.find(region => region['region'] === 'Diourbel');
+    if (diourbel && diourbel['departements']) {
+      const categoriesDiourbel = diourbel['departements'].map((dep: any) => dep['departement']);
+      const valuesDiourbel = diourbel['departements'].map((dep: any) => dep['totalDemandes']);
+      const pieDataDiourbel = diourbel['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes']
+      }));
+
+      // Mise à jour pie chart Diourbel
+      this.chartOptionsPieDepartmentDiourbel = {
+        ...this.chartOptionsPieDepartmentDiourbel,
+        series: [{
+          type: 'pie',
+          name: 'Demandes',
+          data: pieDataDiourbel
+        }]
+      };
+
+      // Mise à jour line chart Diourbel
+      this.chartOptionsLineDepartmentDiourbel = {
+        ...this.chartOptionsLineDepartmentDiourbel,
+        xAxis: { ...this.chartOptionsLineDepartmentDiourbel.xAxis, categories: categoriesDiourbel },
+        series: [{
+          name: 'Demandes',
+          type: 'line',
+          data: valuesDiourbel,
+          color: '#2caffe'
+        }]
+      };
+
+      // Mise à jour bar chart Diourbel
+      this.chartOptionsBarDepartmentDiourbel = {
+        ...this.chartOptionsBarDepartmentDiourbel,
+        xAxis: { ...this.chartOptionsBarDepartmentDiourbel.xAxis, categories: categoriesDiourbel },
+        series: [{
+          name: 'Demandes',
+          type: 'column',
+          data: valuesDiourbel
+        }]
+      };
+
+    }
+
+    // --- fatick ---
+    const fatick = data.find(region => region['region'] === 'Fatick');
+    if (fatick && fatick['departements']) {
+      const categoriesFatick = fatick['departements'].map((dep: any) => dep['departement']);
+
+      // Remplacer null ou undefined par 0 dans les valeurs
+      const valuesFatick = fatick['departements'].map((dep: any) => (dep['totalDemandes'] ?? 0));
+
+      const pieDataFatick = fatick['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      // Mise à jour des charts
+      (this.chartOptionsPieDepartmentFatick.series![0] as Highcharts.SeriesPieOptions).data = pieDataFatick;
+      this.chartOptionsLineDepartmentFatick.xAxis = { ...this.chartOptionsLineDepartmentFatick.xAxis, categories: categoriesFatick };
+      (this.chartOptionsLineDepartmentFatick.series![0] as Highcharts.SeriesLineOptions).data = valuesFatick;
+      this.chartOptionsBarDepartmentFatick.xAxis = { ...this.chartOptionsBarDepartmentFatick.xAxis, categories: categoriesFatick };
+      (this.chartOptionsBarDepartmentFatick.series![0] as Highcharts.SeriesColumnOptions).data = valuesFatick;
+
+      this.updateFlag = true;
+    }
+
+    // --- Kaffrine ---
+    const kaffrine = data.find(region => region['region'] === 'Kaffrine');
+    if (kaffrine && kaffrine['departements']) {
+      const categoriesKaffrine = kaffrine['departements'].map((dep: any) => dep['departement']);
+
+      const valuesKaffrine = kaffrine['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+
+      const pieDataKaffrine = kaffrine['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      // ✅ Mise à jour Pie chart Kaffrine
+      (this.chartOptionsPieDepartmentKaffrine.series![0] as Highcharts.SeriesPieOptions).data = pieDataKaffrine;
+
+      // ✅ Mise à jour Line chart Kaffrine
+      this.chartOptionsLineDepartmentKaffrine.xAxis = {
+        ...this.chartOptionsLineDepartmentKaffrine.xAxis,
+        categories: categoriesKaffrine
+      };
+      (this.chartOptionsLineDepartmentKaffrine.series![0] as Highcharts.SeriesLineOptions).data = valuesKaffrine;
+
+      // ✅ Mise à jour Bar chart Kaffrine
+      this.chartOptionsBarDepartmentKaffrine.xAxis = {
+        ...this.chartOptionsBarDepartmentKaffrine.xAxis,
+        categories: categoriesKaffrine
+      };
+      (this.chartOptionsBarDepartmentKaffrine.series![0] as Highcharts.SeriesColumnOptions).data = valuesKaffrine;
+
+      this.updateFlag = true;
+    }
+    // --- Kaolack ---
+    const kaolack = data.find(region => region['region'] === 'Kaolack');
+    if (kaolack && kaolack['departements']) {
+      const categoriesKaolack = kaolack['departements'].map((dep: any) => dep['departement']);
+      const valuesKaolack = kaolack['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+      const pieDataKaolack = kaolack['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      (this.chartOptionsPieDepartmentKaolack.series![0] as Highcharts.SeriesPieOptions).data = pieDataKaolack;
+
+      this.chartOptionsLineDepartmentKaolack.xAxis = {
+        ...this.chartOptionsLineDepartmentKaolack.xAxis,
+        categories: categoriesKaolack
+      };
+      (this.chartOptionsLineDepartmentKaolack.series![0] as Highcharts.SeriesLineOptions).data = valuesKaolack;
+
+      this.chartOptionsBarDepartmentKaolack.xAxis = {
+        ...this.chartOptionsBarDepartmentKaolack.xAxis,
+        categories: categoriesKaolack
+      };
+      (this.chartOptionsBarDepartmentKaolack.series![0] as Highcharts.SeriesColumnOptions).data = valuesKaolack;
+
+      this.updateFlag = true;
+    }
+
+  // -- kedougou --
+    const kedougou = data.find(region => region['region'] === 'Kédougou');
+    if (kedougou && kedougou['departements']) {
+      const categoriesKedougou = kedougou['departements'].map((dep: any) => dep['departement']);
+      const valuesKedougou = kedougou['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+      const pieDataKedougou = kedougou['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      (this.chartOptionsPieDepartmentKedougou.series![0] as Highcharts.SeriesPieOptions).data = pieDataKedougou;
+
+      this.chartOptionsLineDepartmentKedougou.xAxis = {
+        ...this.chartOptionsLineDepartmentKedougou.xAxis,
+        categories: categoriesKedougou
+      };
+      (this.chartOptionsLineDepartmentKedougou.series![0] as Highcharts.SeriesLineOptions).data = valuesKedougou;
+
+      this.chartOptionsBarDepartmentKedougou.xAxis = {
+        ...this.chartOptionsBarDepartmentKedougou.xAxis,
+        categories: categoriesKedougou
+      };
+      (this.chartOptionsBarDepartmentKedougou.series![0] as Highcharts.SeriesColumnOptions).data = valuesKedougou;
+
+      this.updateFlag = true;
+    }
+
+    // --- kolda --
+    const kolda = data.find(region => region['region'] === 'Kolda');
+    if (kolda && kolda['departements']) {
+      const categoriesKolda = kolda['departements'].map((dep: any) => dep['departement']);
+      const valuesKolda = kolda['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+      const pieDataKolda = kolda['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      (this.chartOptionsPieDepartmentkolda.series![0] as Highcharts.SeriesPieOptions).data = pieDataKolda;
+
+      this.chartOptionsLineDepartmentkolda.xAxis = {
+        ...this.chartOptionsLineDepartmentkolda.xAxis,
+        categories: categoriesKolda
+      };
+      (this.chartOptionsLineDepartmentkolda.series![0] as Highcharts.SeriesLineOptions).data = valuesKolda;
+
+      this.chartOptionsBarDepartmentkolda.xAxis = {
+        ...this.chartOptionsBarDepartmentkolda.xAxis,
+        categories: categoriesKolda
+      };
+      (this.chartOptionsBarDepartmentkolda.series![0] as Highcharts.SeriesColumnOptions).data = valuesKolda;
+
+      this.updateFlag = true;
+    }
+
+    // -- Louga --
+    const louga = data.find(region => region['region'] === 'Louga');
+    if (louga && louga['departements']) {
+      const categoriesLouga = louga['departements'].map((dep: any) => dep['departement']);
+      const valuesLouga = louga['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+      const pieDataLouga = louga['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      (this.chartOptionsPieDepartmentLouga.series![0] as Highcharts.SeriesPieOptions).data = pieDataLouga;
+
+      this.chartOptionsLineDepartmentLouga.xAxis = {
+        ...this.chartOptionsLineDepartmentLouga.xAxis,
+        categories: categoriesLouga
+      };
+      (this.chartOptionsLineDepartmentLouga.series![0] as Highcharts.SeriesLineOptions).data = valuesLouga;
+
+      this.chartOptionsBarDepartmentLouga.xAxis = {
+        ...this.chartOptionsBarDepartmentLouga.xAxis,
+        categories: categoriesLouga
+      };
+      (this.chartOptionsBarDepartmentLouga.series![0] as Highcharts.SeriesColumnOptions).data = valuesLouga;
+
+      this.updateFlag = true;
+    }
+
+    // -- Mata --
+    // --- Matam ---
+    const matam = data.find(region => region['region'] === 'Matam');
+    if (matam && matam['departements']) {
+      const categoriesMatam = matam['departements'].map((dep: any) => dep['departement']);
+      const valuesMatam = matam['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+      const pieDataMatam = matam['departements'].map((dep: any) => ({
+        name: dep['departement'],
+        y: dep['totalDemandes'] ?? 0
+      }));
+
+      // ✅ Mise à jour Pie chart Matam
+      (this.chartOptionsPieDepartmentMatam.series![0] as Highcharts.SeriesPieOptions).data = pieDataMatam;
+
+      // ✅ Mise à jour Line chart Matam
+      this.chartOptionsLineDepartmentMatam.xAxis = {
+        ...this.chartOptionsLineDepartmentMatam.xAxis,
+        categories: categoriesMatam
+      };
+      (this.chartOptionsLineDepartmentMatam.series![0] as Highcharts.SeriesLineOptions).data = valuesMatam;
+
+      // ✅ Mise à jour Bar chart Matam
+      this.chartOptionsBarDepartmentMatam.xAxis = {
+        ...this.chartOptionsBarDepartmentMatam.xAxis,
+        categories: categoriesMatam
+      };
+      (this.chartOptionsBarDepartmentMatam.series![0] as Highcharts.SeriesColumnOptions).data = valuesMatam;
+
+      this.updateFlag = true;
+    }
+    // -- Saint-Louis
+          const saintLouis = data.find(region => region['region'] === 'Saint-Louis');
+        if (saintLouis && saintLouis['departements']) {
+          const categories = saintLouis['departements'].map((dep: any) => dep['departement']);
+          const values = saintLouis['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+          const pieData = saintLouis['departements'].map((dep: any) => ({
+            name: dep['departement'],
+            y: dep['totalDemandes'] ?? 0
+          }));
+
+          // Mise à jour Pie chart Saint-Louis
+          (this.chartOptionsPieDepartmentSaintLouis.series![0] as Highcharts.SeriesPieOptions).data = pieData;
+
+          // Mise à jour Line chart Saint-Louis
+          this.chartOptionsLineDepartmentSaintLouis.xAxis = {
+            ...this.chartOptionsLineDepartmentSaintLouis.xAxis,
+            categories: categories
+          };
+          (this.chartOptionsLineDepartmentSaintLouis.series![0] as Highcharts.SeriesLineOptions).data = values;
+
+          // Mise à jour Bar chart Saint-Louis
+          this.chartOptionsBarDepartmentSaintLouis.xAxis = {
+            ...this.chartOptionsBarDepartmentSaintLouis.xAxis,
+            categories: categories
+          };
+          (this.chartOptionsBarDepartmentSaintLouis.series![0] as Highcharts.SeriesColumnOptions).data = values;
+
+          this.updateFlag = true; // si vous utilisez un flag pour rafraîchir la vue Angular
+        }
     
- 
+        // -- Sedhiou --
+        const sedhiou = data.find(region => region['region'] === 'Sédhiou');
+        if (sedhiou && sedhiou['departements']) {
+          const categories = sedhiou['departements'].map((dep: any) => dep['departement']);
+          const values = sedhiou['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+          const pieData = sedhiou['departements'].map((dep: any) => ({
+            name: dep['departement'],
+            y: dep['totalDemandes'] ?? 0
+          }));
+
+          // Mise à jour Pie chart Sédhiou
+          (this.chartOptionsPieDepartmentSedhiou.series![0] as Highcharts.SeriesPieOptions).data = pieData;
+
+          // Mise à jour Line chart Sédhiou
+          this.chartOptionsLineDepartmentSedhiou.xAxis = {
+            ...this.chartOptionsLineDepartmentSedhiou.xAxis,
+            categories: categories
+          };
+          (this.chartOptionsLineDepartmentSedhiou.series![0] as Highcharts.SeriesLineOptions).data = values;
+
+          // Mise à jour Bar chart Sédhiou
+          this.chartOptionsBarDepartmentSedhiou.xAxis = {
+            ...this.chartOptionsBarDepartmentSedhiou.xAxis,
+            categories: categories
+          };
+          (this.chartOptionsBarDepartmentSedhiou.series![0] as Highcharts.SeriesColumnOptions).data = values;
+
+          this.updateFlag = true; // Indique à Angular de rafraîchir les graphiques
+        }
+
+        // -- Tambacounda
+        const tambacounda = data.find(region => region['region'] === 'Tambacounda');
+        if (tambacounda && tambacounda['departements']) {
+          const categoriesTambacounda = tambacounda['departements'].map((dep: any) => dep['departement']);
+          const valuesTambacounda = tambacounda['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+          const pieDataTambacounda = tambacounda['departements'].map((dep: any) => ({
+            name: dep['departement'],
+            y: dep['totalDemandes'] ?? 0
+          }));
+
+          // Mise à jour Pie chart Tambacounda
+          (this.chartOptionsPieDepartmentTambacounda.series![0] as Highcharts.SeriesPieOptions).data = pieDataTambacounda;
+
+          // Mise à jour Line chart Tambacounda
+          this.chartOptionsLineDepartmentTambacounda.xAxis = {
+            ...this.chartOptionsLineDepartmentTambacounda.xAxis,
+            categories: categoriesTambacounda
+          };
+          (this.chartOptionsLineDepartmentTambacounda.series![0] as Highcharts.SeriesLineOptions).data = valuesTambacounda;
+
+          // Mise à jour Bar chart Tambacounda
+          this.chartOptionsBarDepartmentTambacounda.xAxis = {
+            ...this.chartOptionsBarDepartmentTambacounda.xAxis,
+            categories: categoriesTambacounda
+          };
+          (this.chartOptionsBarDepartmentTambacounda.series![0] as Highcharts.SeriesColumnOptions).data = valuesTambacounda;
+
+          this.updateFlag = true;
+        }
+
+        // -- Thies --
+        const thies = data.find(region => region['region'] === 'Thiès');
+        if (thies && thies['departements']) {
+          const categoriesThies = thies['departements'].map((dep: any) => dep['departement']);
+          const valuesThies = thies['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+          const pieDataThies = thies['departements'].map((dep: any) => ({
+            name: dep['departement'],
+            y: dep['totalDemandes'] ?? 0
+          }));
+
+          // Mise à jour Pie chart Thies
+          (this.chartOptionsPieDepartmentThies.series![0] as Highcharts.SeriesPieOptions).data = pieDataThies;
+
+          // Mise à jour Line chart Thies
+          this.chartOptionsLineDepartmentThies.xAxis = {
+            ...this.chartOptionsLineDepartmentThies.xAxis,
+            categories: categoriesThies
+          };
+          (this.chartOptionsLineDepartmentThies.series![0] as Highcharts.SeriesLineOptions).data = valuesThies;
+
+          // Mise à jour Bar chart Thies
+          this.chartOptionsBarDepartmentThies.xAxis = {
+            ...this.chartOptionsBarDepartmentThies.xAxis,
+            categories: categoriesThies
+          };
+          (this.chartOptionsBarDepartmentThies.series![0] as Highcharts.SeriesColumnOptions).data = valuesThies;
+
+          this.updateFlag = true;
+        }
+        // --- Ziguinchor ---
+      const ziguinchor = data.find(region => region['region'] === 'Ziguinchor');
+      if (ziguinchor && ziguinchor['departements']) {
+        const categoriesZiguinchor = ziguinchor['departements'].map((dep: any) => dep['departement']);
+        const valuesZiguinchor = ziguinchor['departements'].map((dep: any) => dep['totalDemandes'] ?? 0);
+        const pieDataZiguinchor = ziguinchor['departements'].map((dep: any) => ({
+          name: dep['departement'],
+          y: dep['totalDemandes'] ?? 0
+        }));
+
+        // Mise à jour Pie chart Ziguinchor
+        (this.chartOptionsPieDepartmentZiguinchor.series![0] as Highcharts.SeriesPieOptions).data = pieDataZiguinchor;
+
+        // Mise à jour Line chart Ziguinchor
+        this.chartOptionsLineDepartmentZiguinchor.xAxis = {
+          ...this.chartOptionsLineDepartmentZiguinchor.xAxis,
+          categories: categoriesZiguinchor
+        };
+        (this.chartOptionsLineDepartmentZiguinchor.series![0] as Highcharts.SeriesLineOptions).data = valuesZiguinchor;
+
+        // Mise à jour Bar chart Ziguinchor
+        this.chartOptionsBarDepartmentZiguinchor.xAxis = {
+          ...this.chartOptionsBarDepartmentZiguinchor.xAxis,
+          categories: categoriesZiguinchor
+        };
+        (this.chartOptionsBarDepartmentZiguinchor.series![0] as Highcharts.SeriesColumnOptions).data = valuesZiguinchor;
+
+        this.updateFlag = true;
+      }
+
+});
+
+
 }
+
+// la region de Dakar
+ 
+chartOptionsPieDepartmentDakar: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+                '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+                '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)',
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: []
+  }]
+};
+
+chartOptionsLinepieDepartmentDakar: Highcharts.Options = {
+  accessibility: {
+    point: { valueDescriptionFormat: '{xDescription}{separator}{value}' }
+  },
+  xAxis: {
+    title: { text: 'Les Departements' },
+    categories: []
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe'
+  }]
+};
+
+chartOptionsBarDepartmentDakar: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Departements' },
+  xAxis: {
+    categories: [],
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+
+getChartOptionsByTypeDakar(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentDakar;
+    case 'line':
+      return this.chartOptionsLinepieDepartmentDakar;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentDakar;
+  }
+}
+
+
+
+// La region de Diourbel 
+chartOptionsLineDepartmentDiourbel: Highcharts.Options = {
+  accessibility: {
+    point: {
+      valueDescriptionFormat: '{xDescription}{separator}{value}'
+    }
+  },
+  xAxis: {
+    title: { text: 'Les Départements' },
+    categories: []
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe',
+    dataLabels: { enabled: true }
+  }]
+};
+
+chartOptionsBarDepartmentDiourbel: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements' },
+  xAxis: {
+    categories: [],
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+
+chartOptionsPieDepartmentDiourbel: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format:
+          '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: []
+  }]
+};
+getChartOptionsByTypeDiourbel(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie': return this.chartOptionsPieDepartmentDiourbel;
+    case 'line': return this.chartOptionsLineDepartmentDiourbel;
+    case 'bar':
+    default: return this.chartOptionsBarDepartmentDiourbel;
+  }
+}
+
+
+// La region de fatick
+chartOptionsLineDepartmentFatick: Highcharts.Options = {
+  accessibility: { point: { valueDescriptionFormat: '{xDescription}{separator}{value}' } },
+  xAxis: { title: { text: 'Les Départements' }, categories: [] },
+  yAxis: { type: 'linear', title: { text: 'Nombre de demandes' } },
+  tooltip: { headerFormat: '<b>{series.name}</b><br />', pointFormat: '{point.y}' },
+  plotOptions: { line: { dataLabels: { enabled: true, formatter() { return this.y; }, style: { fontWeight: 'bold', color: '#000' }, align: 'center', verticalAlign: 'bottom', y: -5 }, enableMouseTracking: true } },
+  series: [{ name: 'Demandes', type: 'line', data: [], color: '#2caffe', dataLabels: { enabled: true } }]
+};
+
+chartOptionsPieDepartmentFatick: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{ type: 'pie', name: 'Demandes', data: [] }]
+};
+
+chartOptionsBarDepartmentFatick: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements' },
+  xAxis: { categories: [], title: { text: null }, gridLineWidth: 0.5, lineWidth: 0.5 },
+  yAxis: { min: 0, title: { text: 'Nombre de demandes', align: 'high' }, labels: { overflow: 'justify' }, gridLineWidth: 0.5 },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: { enabled: true, style: { fontWeight: 'bold', color: '#000' }, inside: false }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{ name: 'Demandes', type: 'column', data: [], colorByPoint: true, dataLabels: { enabled: true, style: { fontSize: '13px', fontWeight: 'bold', color: '#000' } } }]
+};
+getChartOptionsByTypeFatick(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentFatick;
+    case 'line':
+      return this.chartOptionsLineDepartmentFatick;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentFatick;
+  }
+}
+
+
+// la region de kaffrine
+chartOptionsBarDepartmentKaffrine: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements de Kaffrine' },
+  xAxis: {
+    categories: [],
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+chartOptionsPieDepartmentKaffrine: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format:
+          '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: []
+  }]
+};
+chartOptionsLineDepartmentKaffrine: Highcharts.Options = {
+  accessibility: {
+    point: {
+      valueDescriptionFormat: '{xDescription}{separator}{value}'
+    }
+  },
+  xAxis: {
+    title: { text: 'Les Départements' },
+    categories: []
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe',
+    dataLabels: { enabled: true }
+  }]
+};
+getChartOptionsByTypeKaffrine(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentKaffrine;
+    case 'line':
+      return this.chartOptionsLineDepartmentKaffrine;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentKaffrine;
+  }
+}
+
+// La region de Kaoloack
+chartOptionsPieDepartmentKaolack: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format:
+          '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: []
+  }]
+};
+
+chartOptionsLineDepartmentKaolack: Highcharts.Options = {
+  accessibility: {
+    point: {
+      valueDescriptionFormat: '{xDescription}{separator}{value}'
+    }
+  },
+  xAxis: {
+    title: { text: 'Les Départements' },
+    categories: []
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe',
+    dataLabels: { enabled: true }
+  }]
+};
+
+chartOptionsBarDepartmentKaolack: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements de Kaolack' },
+  xAxis: {
+    categories: [],
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+
+getChartOptionsByTypeKaolack(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentKaolack;
+    case 'line':
+      return this.chartOptionsLineDepartmentKaolack;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentKaolack;
+  }
+}
+
+
+// la Region de kedougou
+chartOptionsPieDepartmentKedougou: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format:
+          '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: []
+  }]
+};
+chartOptionsLineDepartmentKedougou: Highcharts.Options = {
+  accessibility: {
+    point: {
+      valueDescriptionFormat: '{xDescription}{separator}{value}'
+    }
+  },
+  xAxis: {
+    title: { text: 'Les Départements' },
+    categories: []
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe',
+    dataLabels: { enabled: true }
+  }]
+};
+chartOptionsBarDepartmentKedougou: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements de Kédougou' },
+  xAxis: {
+    categories: [],
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+getChartOptionsByTypeKedougou(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentKedougou;
+    case 'line':
+      return this.chartOptionsLineDepartmentKedougou;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentKedougou;
+  }
+}
+
+// la Region de kolda
+chartOptionsPieDepartmentkolda: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format:
+          '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: []
+  }]
+};
+chartOptionsLineDepartmentkolda: Highcharts.Options = {
+  accessibility: {
+    point: {
+      valueDescriptionFormat: '{xDescription}{separator}{value}'
+    }
+  },
+  xAxis: {
+    title: { text: 'Les Départements' },
+    categories: []
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe',
+    dataLabels: { enabled: true }
+  }]
+};
+chartOptionsBarDepartmentkolda: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements de Kolda' },
+  xAxis: {
+    categories: [],
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+getChartOptionsByTypeKolda(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentkolda;
+    case 'line':
+      return this.chartOptionsLineDepartmentkolda;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentkolda;
+  }
+}
+      
+// La Region de Louga
+chartOptionsPieDepartmentLouga: Highcharts.Options = {
+  chart: { type: 'pie', plotShadow: false },
+  tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+  accessibility: { point: { valueSuffix: '%' } },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format:
+          '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+          '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+          '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+        connectorColor: 'rgba(128,128,128,0.5)'
+      }
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Demandes',
+    data: [] // alimenté dynamiquement
+  }]
+};
+chartOptionsLineDepartmentLouga: Highcharts.Options = {
+  accessibility: {
+    point: {
+      valueDescriptionFormat: '{xDescription}{separator}{value}'
+    }
+  },
+  xAxis: {
+    title: { text: 'Les Départements' },
+    categories: [] // alimenté dynamiquement
+  },
+  yAxis: {
+    type: 'linear',
+    title: { text: 'Nombre de demandes' }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: '{point.y}'
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        formatter: function () { return this.y; },
+        style: { fontWeight: 'bold', color: '#000' },
+        align: 'center',
+        verticalAlign: 'bottom',
+        y: -5
+      },
+      enableMouseTracking: true
+    }
+  },
+  series: [{
+    name: 'Demandes',
+    type: 'line',
+    data: [],
+    color: '#2caffe',
+    dataLabels: { enabled: true }
+  }]
+};
+chartOptionsBarDepartmentLouga: Highcharts.Options = {
+  chart: { type: 'column' },
+  title: { text: 'Les Départements de Louga' },
+  xAxis: {
+    categories: [], // alimenté dynamiquement
+    title: { text: null },
+    gridLineWidth: 0.5,
+    lineWidth: 0.5
+  },
+  yAxis: {
+    min: 0,
+    title: { text: 'Nombre de demandes', align: 'high' },
+    labels: { overflow: 'justify' },
+    gridLineWidth: 0.5
+  },
+  tooltip: { valueSuffix: ' demandes' },
+  plotOptions: {
+    column: {
+      borderRadius: 10,
+      groupPadding: 0.1,
+      dataLabels: {
+        enabled: true,
+        style: { fontWeight: 'bold', color: '#000' },
+        inside: false
+      }
+    }
+  },
+  legend: { enabled: false },
+  credits: { enabled: false },
+  series: [{
+    name: 'Demandes',
+    type: 'column',
+    data: [],
+    colorByPoint: true,
+    dataLabels: {
+      enabled: true,
+      style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+    }
+  }]
+};
+getChartOptionsByTypeLouga(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentLouga;
+    case 'line':
+      return this.chartOptionsLineDepartmentLouga;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentLouga;
+  }
+}
+          
+// -- La region de Matam
+chartOptionsBarDepartmentMatam: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements de Matam' },
+xAxis: {
+  categories: ['Kanel', 'Matam', 'Ranérou'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0],  // données dynamiques à remplacer
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+chartOptionsPieDepartmentMatam: Highcharts.Options = {
+chart: { type: 'pie', plotShadow: false },
+tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+accessibility: { point: { valueSuffix: '%' } },
+plotOptions: {
+  pie: {
+    allowPointSelect: true,
+    cursor: 'pointer',
+    dataLabels: {
+      enabled: true,
+      format:
+        '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+        '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+        '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+      connectorColor: 'rgba(128,128,128,0.5)'
+    }
+  }
+},
+series: [{
+  type: 'pie',
+  name: 'Demandes',
+  data: [] // données dynamiques à remplir
+}]
+};
+
+chartOptionsLineDepartmentMatam: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements de Matam' },
+xAxis: {
+  categories: ['Kanel', 'Matam', 'Ranérou'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'line',
+  data: [0, 0, 0], // données dynamiques à remplacer
+  // colorByPoint: true,
+  // colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+getChartOptionsByTypeMatam(type: string): Highcharts.Options {
+  switch (type) {
+    case 'pie':
+      return this.chartOptionsPieDepartmentMatam;
+    case 'line':
+      return this.chartOptionsLineDepartmentMatam;
+    case 'bar':
+    default:
+      return this.chartOptionsBarDepartmentMatam;
+  }
+}
+
+
+// La region de saint-louis
+// LA REGION DE SAINT-LOUIS
+chartOptionsBarDepartmentSaintLouis: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements de Saint-Louis' },
+xAxis: {
+  categories: ['Dagana', 'Podor', 'Saint-Louis'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false 
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0],  // données dynamiques à remplacer
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+chartOptionsPieDepartmentSaintLouis: Highcharts.Options = {
+chart: { type: 'pie', plotShadow: false },
+tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+accessibility: { point: { valueSuffix: '%' } },
+plotOptions: {
+  pie: {
+    allowPointSelect: true,
+    cursor: 'pointer',
+    dataLabels: {
+      enabled: true,
+      format:
+        '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+        '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+        '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+      connectorColor: 'rgba(128,128,128,0.5)'
+    }
+  }
+},
+series: [{
+  type: 'pie',
+  name: 'Demandes',
+  data: []  // données dynamiques à remplir
+}]
+};
+
+chartOptionsLineDepartmentSaintLouis: Highcharts.Options = {
+chart: { type: 'line' },
+title: { text: 'Les Départements de Saint-Louis' },
+xAxis: {
+  categories: ['Dagana', 'Podor', 'Saint-Louis'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  line: {
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' }
+    },
+    enableMouseTracking: true
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'line',
+  data: [0, 0, 0],  // données dynamiques à remplacer
+  color: '#2caffe',
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+getChartOptionsByTypeSaintLouis(type: string): Highcharts.Options {
+switch (type) {
+  case 'pie':
+    return this.chartOptionsPieDepartmentSaintLouis;
+  case 'line':
+    return this.chartOptionsLineDepartmentSaintLouis;
+  case 'bar':
+  default:
+    return this.chartOptionsBarDepartmentSaintLouis;
+}
+}
+
+// La region de sedhiou
+// --- REGION DE SEDHIOU ---
+chartOptionsBarDepartmentSedhiou: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Sédhiou', 'Bounkiling', 'Goudomp'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0],  // données dynamiques à mettre à jour
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+chartOptionsPieDepartmentSedhiou: Highcharts.Options = {
+chart: { type: 'pie', plotShadow: false },
+tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+accessibility: { point: { valueSuffix: '%' } },
+plotOptions: {
+  pie: {
+    allowPointSelect: true,
+    cursor: 'pointer',
+    dataLabels: {
+      enabled: true,
+      format:
+        '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+        '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+        '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+      connectorColor: 'rgba(128,128,128,0.5)'
+    }
+  }
+},
+series: [{
+  type: 'pie',
+  name: 'Demandes',
+  data: []  // données dynamiques à mettre à jour
+}]
+};
+chartOptionsLineDepartmentSedhiou: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Sédhiou', 'Bounkiling', 'Goudomp'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0],  // données dynamiques à mettre à jour
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+getChartOptionsByTypeSedhiou(type: string): Highcharts.Options {
+switch (type) {
+  case 'pie':
+    return this.chartOptionsPieDepartmentSedhiou;
+  case 'line':
+    return this.chartOptionsLineDepartmentSedhiou;
+  case 'bar':
+  default:
+    return this.chartOptionsBarDepartmentSedhiou;
+}
+}
+
+
+// La region de tambacounda
+// --- REGION DE TAMBACOUNDA ---
+
+chartOptionsBarDepartmentTambacounda: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Bakel', 'Tambacounda', 'Goudiry', 'Koumpentoum'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0, 0],  // données dynamiques à mettre à jour
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a', '#e71c13'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+chartOptionsPieDepartmentTambacounda: Highcharts.Options = {
+chart: { type: 'pie', plotShadow: false },
+tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+accessibility: { point: { valueSuffix: '%' } },
+plotOptions: {
+  pie: {
+    allowPointSelect: true,
+    cursor: 'pointer',
+    dataLabels: {
+      enabled: true,
+      format:
+        '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+        '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+        '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+      connectorColor: 'rgba(128,128,128,0.5)'
+    }
+  }
+},
+series: [{
+  type: 'pie',
+  name: 'Demandes',
+  data: []  // données dynamiques à mettre à jour
+}]
+};
+
+chartOptionsLineDepartmentTambacounda: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Bakel', 'Tambacounda', 'Goudiry', 'Koumpentoum'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0, 0],  // données dynamiques à mettre à jour
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a', '#e71c13'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+getChartOptionsByTypeTambacounda(type: string): Highcharts.Options {
+switch (type) {
+  case 'pie':
+    return this.chartOptionsPieDepartmentTambacounda;
+  case 'line':
+    return this.chartOptionsLineDepartmentTambacounda;
+  case 'bar':
+  default:
+    return this.chartOptionsBarDepartmentTambacounda;
+}
+}
+
+
+
+// la region de thies
+// LA REGION DE THIES
+chartOptionsBarDepartmentThies: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Mbour', 'Thiès', 'Rufisque', 'Tivaouane'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0, 0],
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a', '#e71c13'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+chartOptionsPieDepartmentThies: Highcharts.Options = {
+chart: { type: 'pie', plotShadow: false },
+tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+accessibility: { point: { valueSuffix: '%' } },
+plotOptions: {
+  pie: {
+    allowPointSelect: true,
+    cursor: 'pointer',
+    dataLabels: {
+      enabled: true,
+      format:
+        '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+        '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+        '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+      connectorColor: 'rgba(128,128,128,0.5)'
+    }
+  }
+},
+series: [{
+  type: 'pie',
+  name: 'Demandes',
+  data: [] // données dynamiques
+}]
+};
+
+chartOptionsLineDepartmentThies: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Mbour', 'Thiès', 'Rufisque', 'Tivaouane'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0, 0],
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a', '#e71c13'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+getChartOptionsByTypeThies(type: string): Highcharts.Options {
+switch (type) {
+  case 'pie':
+    return this.chartOptionsPieDepartmentThies;
+  case 'line':
+    return this.chartOptionsLineDepartmentThies;
+  case 'bar':
+  default:
+    return this.chartOptionsBarDepartmentThies;
+}
+}
+
+
+// la region de ziguinchor
+// LA REGION DE ZIGUINCHOR
+chartOptionsBarDepartmentZiguinchor: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Bignona', 'Oussouye', 'Ziguinchor'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0],
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+chartOptionsPieDepartmentZiguinchor: Highcharts.Options = {
+chart: { type: 'pie', plotShadow: false },
+tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})' },
+accessibility: { point: { valueSuffix: '%' } },
+plotOptions: {
+  pie: {
+    allowPointSelect: true,
+    cursor: 'pointer',
+    dataLabels: {
+      enabled: true,
+      format:
+        '<span style="font-size: 1.2em"><b>{point.name}</b></span><br>' +
+        '<span style="opacity: 0.6">{point.percentage:.1f} %</span><br>' +
+        '<span style="opacity: 0.8; font-weight: bold;">{point.y}</span>',
+      connectorColor: 'rgba(128,128,128,0.5)'
+    }
+  }
+},
+series: [{
+  type: 'pie',
+  name: 'Demandes',
+  data: [] // données dynamiques
+}]
+};
+
+chartOptionsLineDepartmentZiguinchor: Highcharts.Options = {
+chart: { type: 'column' },
+title: { text: 'Les Départements' },
+xAxis: {
+  categories: ['Bignona', 'Oussouye', 'Ziguinchor'],
+  title: { text: null },
+  gridLineWidth: 0.5,
+  lineWidth: 0.5
+},
+yAxis: {
+  min: 0,
+  title: { text: 'Nombre de demandes', align: 'high' },
+  labels: { overflow: 'justify' },
+  gridLineWidth: 0.5
+},
+tooltip: { valueSuffix: ' demandes' },
+plotOptions: {
+  column: {
+    borderRadius: 10,
+    groupPadding: 0.1,
+    dataLabels: {
+      enabled: true,
+      style: { fontWeight: 'bold', color: '#000' },
+      inside: false
+    }
+  }
+},
+legend: { enabled: false },
+credits: { enabled: false },
+series: [{
+  name: 'Demandes',
+  type: 'column',
+  data: [0, 0, 0],
+  colorByPoint: true,
+  colors: ['#dad8d8', '#1c85e8', '#27db0a'],
+  dataLabels: {
+    enabled: true,
+    style: { fontSize: '13px', fontWeight: 'bold', color: '#000' }
+  }
+}]
+};
+
+getChartOptionsByTypeZiguinchor(type: string): Highcharts.Options {
+switch (type) {
+  case 'pie':
+    return this.chartOptionsPieDepartmentZiguinchor;
+  case 'line':
+    return this.chartOptionsLineDepartmentZiguinchor;
+  case 'bar':
+  default:
+    return this.chartOptionsBarDepartmentZiguinchor;
+}
+}
+
+
+
+
   
 
 
-
-
-
-
-
-
+}

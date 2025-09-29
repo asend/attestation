@@ -33,6 +33,7 @@ import { StatistiqueComponent } from './pages/statistique/statistique.component'
 import { StatistiqueDepartmentComponent } from './pages/statistique-department/statistique-department.component';
 import { TimerComponent } from './pages/timer/timer.component';
 import { SideBarComponent } from './pages/side-bar/side-bar.component';
+import { UdpdateDemandeurUtilisateurComponent } from './pages/udpdate-demandeur-utilisateur/udpdate-demandeur-utilisateur.component';
 // import { StatistiqueMapComponent } from './pages/statistique-map/statistique-map.component';
 
 const routes: Routes = [
@@ -41,8 +42,10 @@ const routes: Routes = [
   {path: 'interco', component:IntercoComponent},
   {path: 'inscription', component:RegisterComponent,canActivate:[AccessGuard]},
   {path: 'accueil', component:AccueilComponent},
+  {path: 'update-demandeur-utilisateur/:id', component:UdpdateDemandeurUtilisateurComponent, canActivate:[TokenGuardGuard]},
+
   {path: 'demandeur', component:AddDemandeurComponent, canActivate:[TokenGuardGuard]},
-  {path: 'update-demandeur', component:UpdateDemandeurComponent, canActivate:[TokenGuardGuard]},
+  {path: 'update-demandeur/:id', component:UpdateDemandeurComponent, canActivate:[TokenGuardGuard]},
   {path: 'update-by-admin/:id', component:UpdateByAdminComponent, canActivate:[AdminGuardGuard]},
   {path: 'verification/:id', component:VerificationComponent, canActivate:[AdminGuardGuard,TokenGuardGuard]},
   {path: 'reset-password', component:RestPasswordComponent,canActivate:[AccessGuard]},

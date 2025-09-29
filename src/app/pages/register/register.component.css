@@ -41,3 +41,21 @@ form{
 #incrire{
   float: right;
 }
+/* Par défaut (md et +) -> le captcha reste à sa place */
+.recaptcha-wrapper {
+  order: initial;
+}
+
+/* Structure parent : assure-toi que c'est un conteneur flex si besoin */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* En dessous de 576px (xs) -> on pousse le captcha en dernier */
+@media (max-width: 575.98px) {
+  .recaptcha-wrapper {
+    order: 999; /* place à la fin du formulaire */
+    margin-top: 1rem;
+  }
+}

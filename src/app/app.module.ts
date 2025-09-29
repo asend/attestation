@@ -46,6 +46,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { SideBarComponent } from './pages/side-bar/side-bar.component';
 import { StatistiqueDepartmentComponent } from './pages/statistique-department/statistique-department.component';
 import { TimerComponent } from './pages/timer/timer.component';
+import { UdpdateDemandeurUtilisateurComponent } from './pages/udpdate-demandeur-utilisateur/udpdate-demandeur-utilisateur.component';
 
 
 
@@ -88,6 +89,7 @@ import { TimerComponent } from './pages/timer/timer.component';
         SideBarComponent,
         StatistiqueDepartmentComponent,
         TimerComponent,
+        UdpdateDemandeurUtilisateurComponent
 
         
     ],

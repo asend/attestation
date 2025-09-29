@@ -36,17 +36,12 @@ export class TimerComponent implements OnInit {
 
 
   getAllDemande(){
-    this.demandeService.findAllDemande({statut: 'cours'}).subscribe({
+    this.demandeService.findAllDemande({statut: '2cad843e-b6fd-4b85-815d-4bc2a499972d'}).subscribe({
       next:(data)=>{
         this.demandes = data;
-
-        if (this.demandes.length > 0 && !this.isRunning && !localStorage.getItem(this.STORAGE_KEY)) {
-          this.startTimer();
-        } 
       }
     })
   }
-
 
  
   startTimer(fromStorage = false) {

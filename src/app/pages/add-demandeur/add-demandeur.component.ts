@@ -50,6 +50,7 @@ export class AddDemandeurComponent implements OnInit {
 
   isCaptureAllowed: boolean = true;
 
+  todayMinus18!: string;
 
 
   constructor(
@@ -64,15 +65,14 @@ export class AddDemandeurComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    let d = new Date();
-    d.setFullYear(d.getFullYear() - 18);
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    let year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    this.minDate = `${year}-${month}-${day}`;
+    const today = new Date();
+    const year = today.getFullYear() - 18;
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
 
+    // Format 'YYYY-MM-DD' pour <input type="date">
+    this.todayMinus18 = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    
     this.getDemandeur(localStorage.getItem("nin") as string);
     this.getUtilsateut(Number(localStorage.getItem("userId")));
 
@@ -87,7 +87,7 @@ export class AddDemandeurComponent implements OnInit {
       fonction: ['', [Validators.required]],
       region: ['', [Validators.required]],
       departement: ['', [Validators.required]],
-      telephone: ['', [Validators.required, Validators.pattern('^(\\+ ?\\(?221\\)? ?)?7[0678][0-9]{7}$|^(\\+ ?\\(?221\\)? ?)?7[0678] [0-9]{3} [0-9]{2} [0-9]{2}$')]],
+      telephone: ['', [Validators.required]], // , Validators.pattern('^(\\+ ?\\(?221\\)? ?)?7[0678][0-9]{7}$|^(\\+ ?\\(?221\\)? ?)?7[0678] [0-9]{3} [0-9]{2} [0-9]{2}$')
       file: ['', [Validators.required]],
     });
 
@@ -209,51 +209,6 @@ async onCreate() {
     });
   }
   
-  
-// async onCreate() {
-//   if (this.demandeurForm.invalid) {
-//     this.demandeurForm.markAllAsTouched();
-//     return;
-//   }
-
-//   if (!this.uploadedImages || this.uploadedImages.length === 0) {
-//     Swal.fire({ icon: "error", title: "Veuillez ajouter un fichier." });
-//     return;
-//   }
-
-//   const firstFile = this.uploadedImages[0];
-//   if (firstFile.size > 4000000) {
-//     Swal.fire({ icon: "error", title: "Fichier trop volumineux (max 4Mo)." });
-//     return;
-//   }
-
-//   if (!firstFile.type.includes("application/pdf") && !firstFile.type.includes("image/")) {
-//     Swal.fire({ icon: "error", title: "Fichier non supporté." });
-//     return;
-//   }
-
-//   this.demandeurDto.nin = localStorage.getItem("nin")!;
-//   this.loading = true;
-
-//   this.demandeurService.incription({ body: this.demandeurDto }).subscribe({
-//     next: (data) => {
-//       this.loading = false;
-
-//       for (let i = 0; i < this.uploadedImages.length; i++) {
-//         const file = this.uploadedImages[i];
-//         this.imageService.uploadImageDemandeur(file, '', Number(data)).subscribe();
-//       }
-
-//       Swal.fire({ icon: "success", title: "Informations enregistrées." }).then(() => {
-//         this.router.navigate(['mes-demandes', data]);
-//       });
-//     },
-//     error: () => {
-//       this.loading = false;
-//       Swal.fire({ icon: "error", title: "Échec lors de l'enregistrement." });
-//     }
-//   });
-// }
 
 
 convertToBase64(file: File): Promise<string> {
@@ -359,7 +314,11 @@ async onImageUploads(event: Event) {
 }
 
 
-
+onlogout() {
+  localStorage.clear();
+  this.router.navigate(['connexion']);
+  window.location.reload();
+}
 
 
 
